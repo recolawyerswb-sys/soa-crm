@@ -1,0 +1,11 @@
+@php
+    $modalViewName = 'create-client';
+@endphp
+
+<x-dashboard.forms.modal
+    title="{{ __('Crear cliente') }}"
+    description="{{ __('Proporciona los detalles del nuevo cliente.') }}"
+    modalName="{{ $modalViewName }}"
+>
+    @livewire('business.customers.create-client-modal-form')
+</x-dashboard.forms.modal>

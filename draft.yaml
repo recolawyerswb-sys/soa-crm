@@ -1,0 +1,116 @@
+models:
+  # CUSTOMERS, AGENTS, APPOINTMENTS
+  Team:
+    name: string
+    description: text nullable
+    slogan: string nullable
+    color_code: string nullable default:33c4ff
+    total_customers: integer default:0
+    no_members: integer default:0
+    relationships:
+      hasMany: Agent
+
+  Profile:
+    full_name: string
+    phone_1: string
+    phone_2: string nullable
+    preferred_contact_method: string nullable
+    country: string nullable
+    city: string nullable
+    address: text nullable
+    dni_type: string nullable
+    dni_number: string nullable
+    birthdate: date nullable
+    user_id: unsignedInteger
+    relationships:
+      belongsTo: User
+      hasOne: Customer, Agent
+
+  Customer:
+    type: string nullable default:lead
+    phase: string nullable
+    origin: string nullable
+    status: string nullable
+    no_calls: integer default:0
+    last_contact_at: datetime nullable
+    profile_id: unsignedInteger
+    relationships:
+      belongsTo: Profile
+      hasOne: Assignment
+
+  Agent:
+    # name: string
+    position: string nullable default:A # A B C
+    no_calls: integer default:0
+    status: string default:1 # 1: Active, 0: Inactive, 2: Suspended
+    is_leader: boolean default:false
+    team_id: unsignedInteger
+    profile_id: unsignedInteger nullable
+    relationships:
+      belongsTo: Team, Profile
+      hasMany: Assignment
+
+  Assignment:
+    customer_id: unsignedInteger
+    agent_id: unsignedInteger
+    status: string default:1
+    notes: text nullable
+    relationships:
+      belongsTo: Customer, Agent
+      hasMany: ClientTracking
+
+  # MOVIMIENTOS, CUENTAS
+  # WALLET ID MUST TO BE A STRING TYPE TO SUPPORT NANOID
+  Wallet:
+    coin_currency: string
+    address: text
+    network: string
+
+    # NUEVOS CAMPOS
+    bank_network: string
+    account_number: string
+    card_number: string
+    code: string
+
+    balance: decimal default:0.00
+    total_withdrawn: decimal default:0.00
+    total_ammount: decimal default:0.00
+    last_movement_id: unsignedInteger nullable
+    user_id: unsignedInteger nullable
+    relationships:
+      hasMany: Movement
+      belongsTo: User
+
+  # PARA MOVIMIENTO, VAMOS A USAR 8 CHARS CON SHA Y ENCRIPTACION
+  Movement:
+    amount: decimal
+    type: string
+    status: string default:pending # Active, Pending, Cancelled
+    note: text nullable
+    wallet_id: unsignedInteger nullable
+    relationships:
+      belongsTo: Wallet
+
+  # LLAMADAS, NOTAS, EMAIL PLANTILLA
+  Call:
+    customer_id: unsignedInteger
+    agent_id: unsignedInteger
+    duration: integer nullable
+    status: string default:1 # 1: Successfull, 2: Cancelled, 3: No Answer
+    note: text nullable
+    relationships:
+      belongsTo: Customer, Agent
+
+  ClientTracking:
+    assignment_id: unsignedInteger
+    status: string nullable
+    notes: text nullable
+    relationships:
+      belongsTo: Assignment
+
+  EmailTemplate:
+    name: string
+    subject: string
+    body: text
+
+

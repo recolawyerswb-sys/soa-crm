@@ -1,0 +1,20 @@
+// stubs/livewire.modal.stub
+
+<x-dashboard.forms.modal
+    title="{{ title }}"
+    description="{{ description }}"
+    modalName="{{ modalName }}"
+    formActionName="save"
+>
+    {{-- FORM FIELDS --}}
+    <div class="p-4">
+        <x-dashboard.forms.input-text
+            label="{{ __('Nombre') }}"
+            name="name"
+            placeholder="{{ __('Escribe el nombre') }}"
+            wire:model="name"
+        />
+
+        {{-- Puedes agregar más campos por defecto aquí si lo deseas --}}
+    </div>
+</x-dashboard.forms.modal>

@@ -1,0 +1,18 @@
+<?php
+
+namespace [namespace];
+
+use Livewire\Component;
+
+class [class] extends Component
+{
+    public string $pageTitle = 'Lista de ';
+    public string $pageDescription = 'Maneja tus  de una forma facil y rapida';
+    public string $primaryBtnLabel = 'Crear ';
+    public string $primaryModalName = 'create-';
+
+    public function render()
+    {
+        return view('[view]');
+    }
+}

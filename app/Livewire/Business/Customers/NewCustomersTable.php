@@ -1,0 +1,189 @@
+<?php
+
+namespace App\Livewire\Business\Customers;
+
+use App\Helpers\ClientHelper;
+use App\Livewire\SoaTable\Column;
+use App\Livewire\SoaTable\Action;
+use App\Livewire\SoaTable\BulkAction;
+use App\Livewire\SoaTable\Filter;
+use App\Livewire\SoaTable\SoaTable;
+use App\Models\Customer;
+use Flux\Flux;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Livewire;
+
+// Heredamos de nuestra clase base LivewireTable
+class NewCustomersTable extends SoaTable
+{
+
+    // protected $listeners = ['reloadCustomersTable' => '$refresh'];
+
+    /**
+     * Define el modelo de Eloquent para esta tabla.
+     */
+    protected string $model = Customer::class;
+
+    public string $title = 'Registros actuales';
+
+    public ?string $viewRouteName = 'business.customers.edit';
+    // public string $description = 'Lista de equipos con sus respectivos agentes y clientes.';
+
+    /**
+     * Define la consulta base para la tabla.
+     * Aquí puedes añadir joins, scopes, etc.
+     */
+    public function query(): Builder
+    {
+        // Usamos el modelo definido para iniciar la consulta.
+        // Puedes agregar relaciones que necesites con with().
+        return Customer::query()
+            ->with(['assignment.agent.profile', 'profile.user.wallet'])
+            ->orderByDesc('id');
+    }
+
+    /**
+     * Define las columnas que se mostrarán en la tabla.
+     */
+    protected function columns(): array
+    {
+        return [
+            Column::make('ID', 'id')
+                ->searchable(),
+            Column::make('Nombre', 'profile.full_name')
+                ->searchable(),
+            Column::make('Email', 'profile.user.email')
+                ->searchable()
+                ->canSee(fn () => Auth::user()->isAdmin()),
+            Column::make('Fase', 'phase'),
+            Column::make('Origen', 'origin'),
+            Column::make('Estado', 'status'),
+            Column::make('Tipo de cliente', 'type'),
+            Column::make('Llamadas totales', 'no_calls')
+                ->sortable(),
+            Column::make(__('Asignado a'), 'assignment.agent.profile.full_name'),
+            // Column::make(__('ID Wallet'), 'profile.user.wallet.id'),
+            Column::make(__('Saldo'), 'profile.user.wallet.balance')
+                ->currency(),
+        ];
+    }
+
+    /**
+     * Define las acciones disponibles para cada fila.
+     */
+    protected function additionalActions():  array
+    {
+        return [
+            // // Action::make('Llamar', 'makeCall')
+            // //     ->classes('text-green-600 hover:text-green-900 font-bold'), // Clases personalizadas
+            Action::make('noAnswerAction', 'chat-bubble-bottom-center-text')
+                ->canSee(fn () => Auth::user()->isAdmin()),
+            Action::make('fastEdit', 'pencil'),
+        ];
+    }
+
+    /**
+     * Define las acciones masivas adicionales para esta tabla.
+     * "Eliminar Seleccionados" se hereda automáticamente desde el Trait.
+     */
+    protected function additionalBulkActions(): array
+    {
+        return [
+            BulkAction::make('Cambiar Estados', 'showMassiveChangePhaseForm'),
+            BulkAction::make('Asignacion Multiple', 'showMassiveAssignForm'),
+        ];
+    }
+
+    protected function filters(): array
+    {
+        return [
+
+            // Filtro de botones para el estado
+            Filter::make(
+                key: 'phase',
+                label: 'Fase',
+                options: ClientHelper::getPhases(),
+                column: 'phase'
+            ),
+            Filter::make(
+                key: 'origin',
+                label: 'Origen',
+                options: ClientHelper::getOrigins(),
+                column: 'origin'
+            ),
+            Filter::make(
+                key: 'status',
+                label: 'Estado',
+                options: ClientHelper::getStatus(),
+                column: 'status'
+            ),
+            Filter::make(
+                key: 'type',
+                label: 'Tipo',
+                options: ClientHelper::getTypes(),
+                column: 'type'
+            ),
+        ];
+    }
+
+    // =================================================================
+    // MÉTODOS PÚBLICOS PARA LAS ACCIONES INDIVIDUALES
+    // =================================================================
+
+    public function fastEdit($rowId): void
+    {
+        $this->dispatch('enable-edit-for-create-client-modal', $rowId);
+        Flux::modal('create-client')->show();
+    }
+
+    public function noAnswerAction($rowId): void
+    {
+        dd("Sin respuesta para agregar nota y seguimiento junto a cambio de estado noAnswer: {$rowId}");
+        // Redirige a la ruta de edición o abre un modal.
+    }
+
+    // =================================================================
+    // MÉTODOS PÚBLICOS PARA LAS ACCIONES MASIVAS
+    // =================================================================
+
+    /**
+     * Implementación de la acción masiva "Marcar como VIP".
+     */
+    public function showMassiveChangePhaseForm(): void
+    {
+        // 1. Obtiene los modelos de las filas seleccionadas.
+        $selectedCustomers = $this->getSelectedRowsQuery()
+            ->with('profile') // carga la relación
+            ->get()
+            ->mapWithKeys(function ($customer) {
+                return [$customer->id => $customer->profile?->full_name];
+            })
+            ->toArray();
+
+        $this->dispatch('send-selected-customers-table-records', $selectedCustomers);
+
+        Flux::modal('update-mark-info-modal')->show();
+    }
+
+    /**
+     * Implementación de la acción masiva "Asignar a Agente Top".
+     */
+    public function showMassiveAssignForm()
+    {
+        // $selectedCustomers = $this->getSelectedRowsQuery()->with('profile')->pluck('profile.full_name', 'id')->toArray();
+
+        $selectedCustomers = $this->getSelectedRowsQuery()
+            ->with('profile') // carga la relación
+            ->get()
+            ->mapWithKeys(function ($customer) {
+                return [$customer->id => $customer->profile?->full_name];
+            })
+            ->toArray();
+
+        $this->dispatch('send-selected-customers-table-records', $selectedCustomers);
+
+        Flux::modal('massive-assignment')->show();
+    }
+}

@@ -1,0 +1,44 @@
+created:
+    - database/factories/TeamFactory.php
+    - database/factories/ProfileFactory.php
+    - database/factories/CustomerFactory.php
+    - database/factories/AgentFactory.php
+    - database/factories/AssignmentFactory.php
+    - database/factories/WalletFactory.php
+    - database/factories/MovementFactory.php
+    - database/factories/CallFactory.php
+    - database/factories/ClientTrackingFactory.php
+    - database/factories/EmailTemplateFactory.php
+    - database/migrations/2025_07_23_084330_create_teams_table.php
+    - database/migrations/2025_07_23_084331_create_profiles_table.php
+    - database/migrations/2025_07_23_084332_create_customers_table.php
+    - database/migrations/2025_07_23_084333_create_agents_table.php
+    - database/migrations/2025_07_23_084334_create_assignments_table.php
+    - database/migrations/2025_07_23_084335_create_wallets_table.php
+    - database/migrations/2025_07_23_084336_create_movements_table.php
+    - database/migrations/2025_07_23_084337_create_calls_table.php
+    - database/migrations/2025_07_23_084338_create_client_trackings_table.php
+    - database/migrations/2025_07_23_084339_create_email_templates_table.php
+    - app/Models/Team.php
+    - app/Models/Profile.php
+    - app/Models/Customer.php
+    - app/Models/Agent.php
+    - app/Models/Assignment.php
+    - app/Models/Wallet.php
+    - app/Models/Movement.php
+    - app/Models/Call.php
+    - app/Models/ClientTracking.php
+    - app/Models/EmailTemplate.php
+models:
+    AgentLead: {  }
+    User: {  }
+    Team: { name: string, description: 'text nullable', slogan: 'string nullable', color_code: 'string nullable default:33c4ff', total_customers: 'integer default:0', no_members: 'integer default:0', relationships: { hasMany: Agent } }
+    Profile: { full_name: string, email: 'string nullable', phone_1: 'string nullable', phone_2: 'string nullable', preferred_contact_method: 'string nullable', country: 'string nullable', city: 'string nullable', address: 'text nullable', dni_type: 'string nullable', dni_number: 'string nullable', birthdate: 'date nullable', user_id: 'unsignedInteger nullable', relationships: { belongsTo: User, hasOne: 'Customer, Agent' } }
+    Customer: { source: 'string nullable', type: 'string nullable default:lead', phase: 'string nullable', origin: 'string nullable', status: 'string nullable', no_calls: 'integer default:0', last_contact_at: 'datetime nullable', profile_id: 'unsignedInteger nullable', relationships: { belongsTo: Profile, hasOne: Assignment } }
+    Agent: { name: string, position: 'string nullable', no_calls: 'integer default:0', status: 'string default:active', is_leader: 'boolean default:false', team_id: unsignedInteger, profile_id: 'unsignedInteger nullable', relationships: { belongsTo: 'Team, Profile', hasMany: Assignment } }
+    Assignment: { customer_id: unsignedInteger, agent_id: unsignedInteger, status: 'string default:active', notes: 'text nullable', relationships: { belongsTo: 'Customer, Agent', hasMany: ClientTracking } }
+    Wallet: { coin_currency: string, address: text, network: string, balance: 'decimal default:0.00', total_withdrawn: 'decimal default:0.00', total_ammount: 'decimal default:0.00', last_movement_id: 'unsignedInteger nullable', user_id: 'unsignedInteger nullable', relationships: { hasMany: Movement, belongsTo: User } }
+    Movement: { amount: decimal, type: string, status: 'string default:pending', note: 'text nullable', wallet_id: 'unsignedInteger nullable', relationships: { belongsTo: Wallet } }
+    Call: { customer_id: unsignedInteger, agent_id: unsignedInteger, duration: 'integer nullable', status: 'string default:1', note: 'text nullable', relationships: { belongsTo: 'Customer, Agent' } }
+    ClientTracking: { assignment_id: unsignedInteger, action: 'string nullable', notes: 'text nullable', relationships: { belongsTo: Assignment } }
+    EmailTemplate: { name: string, subject: string, body: text }
