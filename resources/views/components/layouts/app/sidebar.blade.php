@@ -83,7 +83,7 @@
             <flux:spacer />
 
             <!-- Desktop User Menu -->
-            <flux:dropdown class="hidden lg:block" position="bottom" align="start">
+            {{-- <flux:dropdown class="hidden lg:block" position="bottom" align="start">
                 <flux:profile
                     :name="auth()->user()->name"
                     :initials="auth()->user()->initials()"
@@ -125,52 +125,8 @@
                         </flux:menu.item>
                     </form>
                 </flux:menu>
-            </flux:dropdown>
+            </flux:dropdown> --}}
         </flux:sidebar>
-
-        <!-- Secondary Main Header Nav -->
-        @if (request()->is('crm'))
-            <flux:header class="hidden lg:flex! py-5 bg-white lg:bg-zinc-50 dark:bg-zinc-950">
-                <div class="w-full">
-                    <h1 class="text-3xl font-bold text-gray-900 dark:text-neutral-50">
-                        {{-- Título del panel de control --}}
-                        @php
-                            echo $greetingMessage;
-                        @endphp
-                    </h1>
-                </div>
-                @if (!request()->is('settings/*'))
-                    <flux:navbar class="gap-4">
-                        {{-- ADMIN HELPER BUTTONS --}}
-                        @role('admin')
-                            <flux:modal.trigger name="create-client">
-                                <flux:button variant="primary" class="cursor-pointer" @click="$dispatch('unable-edit-for-create-client-modal')">Crear un cliente</flux:button>
-                            </flux:modal.trigger>
-                            <flux:modal.trigger name="create-user">
-                                <flux:button variant="primary" class="cursor-pointer">Crear un nuevo usuario</flux:button>
-                            </flux:modal.trigger>
-                        @endrole
-                        @role('agent-leader|admin')
-                            <flux:modal.trigger name="fast-assign">
-                                <flux:button>Asignación rápida</flux:button>
-                            </flux:modal.trigger>
-                        @endrole
-                        {{-- CUSTOMER HELPER BUTTONS --}}
-                        @role('cliente')
-                            <flux:modal.trigger name="create-movement">
-                                <flux:button variant="primary" class="cursor-pointer">Crear movimiento</flux:button>
-                            </flux:modal.trigger>
-                        @endrole
-                        {{-- AGENT HELPER BUTTONS --}}
-                        {{-- @role('agent-leader')
-                            <flux:modal.trigger name="assign-agent-to-customer">
-                                <flux:button variant="primary" class="cursor-pointer">Asigna</flux:button>
-                            </flux:modal.trigger>
-                        @endrole --}}
-                    </flux:navbar>
-                @endif
-            </flux:header>
-        @endif
 
         <!-- Mobile User Menu -->
         <flux:header class="lg:hidden">

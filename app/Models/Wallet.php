@@ -67,6 +67,11 @@ class Wallet extends Model
         ];
     }
 
+    public static function getTotalAccBalance(): float
+    {
+        return self::query()->sum('balance');
+    }
+
     public function addBalance($amount, $movementId): void
     {
         DB::transaction(function () use ($amount, $movementId) {

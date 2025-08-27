@@ -41,10 +41,15 @@ class Agent extends Model
         ];
     }
 
+    public static function getAgentsCount(): int
+    {
+        return self::count();
+    }
+
     public static function getDefaultAgentId(): ?int
     {
         return Agent::whereHas('profile', function ($query) {
-            $query->where('full_name', 'crm_agent');
+            $query->where('full_name', 'crm');
         })->first()?->id;
     }
 

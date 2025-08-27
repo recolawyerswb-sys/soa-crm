@@ -41,6 +41,11 @@ class Customer extends Model
         ];
     }
 
+    public static function getCustomersCount(): int
+    {
+        return self::count();
+    }
+
     public function profile(): BelongsTo
     {
         return $this->belongsTo(Profile::class);

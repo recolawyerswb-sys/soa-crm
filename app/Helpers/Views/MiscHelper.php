@@ -10,14 +10,13 @@ class MiscHelper
     public static function getGreeting()
     {
         $hour = (int)date('H');
-        $userName = strtolower(Auth::check() ? Auth::user()->name : 'Usuario');
 
-        if ($hour >= 6 && $hour < 12) {
-            return 'Buenos días ' . $userName . '!';
-        } elseif ($hour >= 12 && $hour < 20) {
-            return 'Buenas tardes ' . $userName . '!';;
+        if ($hour < 6 || $hour >= 20) {
+            return 'Buenas noches';
+        } elseif ($hour < 12) {
+            return 'Buenos días';
         } else {
-            return 'Buenas noches ' . $userName . '!';;
+            return 'Buenas tardes';
         }
     }
 }
