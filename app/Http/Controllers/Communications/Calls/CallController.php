@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Communications\Calls;
-\
+
 use App\Http\Controllers\Controller;
 use App\Services\TwilioService;
 use Illuminate\Http\Request;
