@@ -3,6 +3,7 @@
 namespace App\Livewire\Business\Customers;
 
 use App\Helpers\ClientHelper;
+use App\Http\Controllers\CallController;
 use App\Livewire\SoaTable\Column;
 use App\Livewire\SoaTable\Action;
 use App\Livewire\SoaTable\BulkAction;
@@ -81,6 +82,7 @@ class NewCustomersTable extends SoaTable
             Action::make('noAnswerAction', 'chat-bubble-bottom-center-text')
                 ->canSee(fn () => Auth::user()->isAdmin()),
             Action::make('fastEdit', 'pencil'),
+            Action::make('makeCall', 'phone'),
         ];
     }
 
@@ -142,6 +144,11 @@ class NewCustomersTable extends SoaTable
     {
         dd("Sin respuesta para agregar nota y seguimiento junto a cambio de estado noAnswer: {$rowId}");
         // Redirige a la ruta de edición o abre un modal.
+    }
+
+    public function makeCall(Customer $customer): void
+    {
+        CallController::testCall($customer);
     }
 
     // =================================================================

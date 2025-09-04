@@ -12,7 +12,7 @@ trait Notifies
      * @param string $status
      * @return void
      */
-    public function notify(string $title, string $message = 'La operacion ha finalizado con exito', string $status = '200'): void
+    public function notify(string $title = "Operacion exitosa", string $message = 'Todo salio sin percances', string $status = '200'): void
     {
         // Implement notification logic here
         // Example: $user->notify(new NotificationClass($message));

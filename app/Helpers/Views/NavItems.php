@@ -54,24 +54,29 @@ class NavItems extends SinglePageNavItems
                     ],
                 ],
             ],
-            // "llamadas" => [
-            //     "isGroup" => true,
-            //     "icon" => "phone",
-            //     "heading" => "Llamadas",
-            //     "role" => "admin|agent|agent-leader",
-            //     "items" => [
-            //         [
-            //             "routeName" => "sells.calls.index",
-            //             "label" => "Historial",
-            //             "icon" => "phone",
-            //         ],
-            //         [
-            //             "routeName" => "sells.calls.reports",
-            //             "label" => "Reportes",
-            //             "icon" => "chart-pie",
-            //         ],
-            //     ],
-            // ],
+            "llamadas" => [
+                "isGroup" => true,
+                "icon" => "phone",
+                "heading" => "Llamadas",
+                "role" => "admin|agent|agent-leader",
+                "items" => [
+                    [
+                        "routeName" => "sells.calls.index",
+                        "label" => "Historial",
+                        "icon" => "phone",
+                    ],
+                    [
+                        "routeName" => "sells.calls.test",
+                        "label" => "Pruebas",
+                        "icon" => "beaker",
+                    ],
+                    [
+                        "routeName" => "sells.calls.reports",
+                        "label" => "Reportes",
+                        "icon" => "chart-pie",
+                    ],
+                ],
+            ],
             "cuentasMovimientos" => [
                 "isGroup" => true,
                 "icon" => "banknotes",

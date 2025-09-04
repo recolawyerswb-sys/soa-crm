@@ -11,9 +11,9 @@
     {{-- PROFILE FIELDS --}}
     <flux:heading>{{ __('Datos de perfil') }}</flux:heading>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <flux:input label="Nombre completo" wire:model="form.full_name"/>
-        <flux:input label="Correo electrónico" wire:model="form.email"/>
-        <flux:input label="Teléfono 1" wire:model="form.phone_1"/>
+        <flux:input label="Nombre completo*" wire:model="form.full_name"/>
+        <flux:input label="Correo electrónico*" wire:model="form.email"/>
+        <flux:input label="Teléfono 1*" wire:model="form.phone_1"/>
         <flux:input label="Teléfono 2" wire:model="form.phone_2"/>
         <flux:select label="Preferencia de contacto" wire:model="form.preferred_contact_method" placeholder="Elije la preferencia de contacto...">
         @foreach ($this->preferredContactMethods as $preferredContactMethod)

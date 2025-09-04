@@ -7,7 +7,6 @@ use App\Livewire\SoaTable\Action;
 use App\Livewire\SoaTable\Filter;
 use App\Livewire\SoaTable\SoaTable;
 use App\Models\Agent;
-use App\Models\Customer;
 use Flux\Flux;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -63,8 +62,6 @@ class NewAgentsTable extends SoaTable
     {
         return [
             Action::make('fastEdit', 'pencil'),
-            // Action::make('Llamar', 'makeCall')
-            //     ->classes('text-green-600 hover:text-green-900 font-bold'), // Clases personalizadas
         ];
     }
 

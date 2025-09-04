@@ -31,6 +31,7 @@ class ClientHelper
     {
         return [
             'no_answer' => 'No Answer',
+            'new' => 'New',
             'interested' => 'Interesado',
             'not_interested' => 'No Interesado',
             'call_again' => 'Call Again',
