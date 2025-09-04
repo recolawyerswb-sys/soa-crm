@@ -34,7 +34,7 @@ Route::prefix('sells')
                                 </Response>', 200, [
                                     'Content-Type' => 'text/xml'
                                 ]);
-                        });
+                        })->name('voice');
                     });
             });
     });
