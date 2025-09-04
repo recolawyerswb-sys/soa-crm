@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use Twilio\Jwt\ClientToken;
+use Twilio\TwiML\VoiceResponse;
 
 // LLAMADAS ROUTES
 Route::prefix('sells')
@@ -29,15 +30,12 @@ Route::prefix('sells')
                     ->group(function () {
                         # Registar a call
                         Route::post('voice', function (Request $request) {
-                            return response('<?xml version="1.0" encoding="UTF-8"?>
-                                <Response>
-                                    <Say voice="alice" language="es-ES">
-                                        Hola, esta es una llamada de prueba desde Laravel con Twilio.
-                                    </Say>
-                                    <Pause length="60"/>
-                                </Response>', 200, [
-                                    'Content-Type' => 'text/xml'
-                                ]);
+                            $response = new VoiceResponse();
+                            $response->say(
+                                "Hola, esta es una llamada de prueba desde Laravel con Twilio.",
+                                ['voice' => 'alice', 'language' => 'es-ES']
+                            );
+                            return $response;
                         })->name('voice');
 
                         # Estado de la llamada
