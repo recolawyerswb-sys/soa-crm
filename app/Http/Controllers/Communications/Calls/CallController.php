@@ -11,7 +11,7 @@ class CallController extends Controller
 {
     public function makeCall(string $number): string
     {
-        $url = route('twilio.voice'); // endpoint TwiML
+        $url = route('sells.calls.twilio.voice'); // endpoint TwiML
         return app(TwilioService::class)->makeCall($number, $url);
     }
 }

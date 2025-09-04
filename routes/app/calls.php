@@ -25,7 +25,7 @@ Route::prefix('sells')
                 Route::prefix('twilio')
                     ->name('twilio.')
                     ->group(function () {
-                        Route::post('/twilio/voice', function (Request $request) {
+                        Route::post('/voice', function (Request $request) {
                             return response('<?xml version="1.0" encoding="UTF-8"?>
                                 <Response>
                                     <Say voice="alice" language="es-ES">
