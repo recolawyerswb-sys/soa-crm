@@ -89,23 +89,30 @@
 <script>
     let device;
 
-    fetch('/crm/sells/calls/twilio/token')
-    .then(res => res.json())
-    .then(data => {
-        device = new Twilio.Device(data.token);
+    async function initTwilioDevice() {
+        const response = await fetch('/twilio/token');
+        const data = await response.json();
+
+        // ⚡ Importante: solo crear Twilio.Device después de un gesto del usuario
+        device = new Twilio.Device(data.token, {
+            codecPreferences: ["opus", "pcmu"],
+            fakeMicInput: false
+        });
 
         device.on('ready', () => console.log("Device listo"));
-        device.on('connect', call => console.log("Conectado"));
-        device.on('disconnect', call => console.log("Colgado"));
-    });
-
-    // Hacer llamada
-    function callNumber(num) {
-    device.connect({ To: num });
+        device.on('connect', () => console.log("Conectado"));
+        device.on('disconnect', () => console.log("Colgado"));
     }
 
-    // Colgar
+    function makeBrowserCall(toNumber) {
+        if (!device) {
+            console.error("Device aún no inicializado.");
+            return;
+        }
+        device.connect({ To: toNumber });
+    }
+
     function hangup() {
-    if (device) device.disconnectAll();
+        if (device) device.disconnectAll();
     }
 </script>
