@@ -24,4 +24,15 @@ class TwilioService
             'body' => $message,
         ]);
     }
+
+    public function makeCall(string $to, string $url): string
+    {
+        $call = $this->client->calls->create(
+            $to,
+            $this->from,
+            ["url" => $url] // TwiML Bin o endpoint que define qué decir en la llamada
+        );
+
+        return $call->sid; // para poder rastrear luego duración, estado, etc.
+    }
 }

@@ -1,0 +1,4 @@
+tunnels:
+  laravel:
+    addr: 3434
+    proto: http
