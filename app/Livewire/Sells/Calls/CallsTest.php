@@ -4,6 +4,7 @@ namespace App\Livewire\Sells\Calls;
 
 use App\Http\Controllers\Communications\Calls\CallController;
 use App\Http\Controllers\Communications\Sms\SmsController;
+use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 use Twilio\Exceptions\TwimlException;
 use Twilio\Rest\Client;
@@ -17,7 +18,8 @@ class CallsTest extends Component
     public $showModal = false;
     public $clientName;
     public $clientCountry;
-    public $callDuration;
+    public $callDuration = '00:00';
+    public $callSid;
 
     public function sendSms()
     {
@@ -43,6 +45,21 @@ class CallsTest extends Component
         $this->callDuration = "En curso..."; // luego se actualiza con Twilio webhook
 
         $this->showModal = true;
+    }
+
+    public function updateDuration()
+    {
+        if ($this->callSid) {
+            $response = Http::withBasicAuth(
+                config('services.twilio.sid'),
+                config('services.twilio.token')
+            )->get("https://api.twilio.com/2010-04-01/Accounts/".config('services.twilio.sid')."/Calls/{$this->callSid}.json");
+
+            if ($response->ok()) {
+                $data = $response->json();
+                $this->callDuration = $data['duration'] ?? $this->callDuration;
+            }
+        }
     }
 
     public function render()

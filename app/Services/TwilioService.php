@@ -25,12 +25,17 @@ class TwilioService
         ]);
     }
 
-    public function makeCall(string $to, string $url): string
+    public function makeCall(string $to, string $url, string $statusCallback): string
     {
         $call = $this->client->calls->create(
             $to,
             $this->from,
-            ["url" => $url] // TwiML Bin o endpoint que define qué decir en la llamada
+            [
+                "url" => $url,
+                "statusCallback" => $statusCallback,
+                "statusCallbackEvent" => ["initiated", "ringing", "answered", "completed"],
+                "statusCallbackMethod" => "POST",
+            ]
         );
 
         return $call->sid; // para poder rastrear luego duración, estado, etc.

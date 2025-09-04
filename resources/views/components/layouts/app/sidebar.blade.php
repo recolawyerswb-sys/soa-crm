@@ -183,6 +183,7 @@
         {{-- @livewireScripts --}}
         @livewireScriptConfig
         @fluxScripts
+        <script src="https://sdk.twilio.com/js/client/v1.14/twilio.min.js"></script>
         <x-dashboard.soa-notification.notification></x-dashboard.soa-notification.notification>
     </body>
 </html>

@@ -52,17 +52,30 @@
 
     @if($showModal)
         <div class="fixed inset-0 z-10 bg-black/60 flex items-center justify-center p-4">
-
             <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-xl w-full max-w-sm p-6 space-y-4"
-                 wire:click.away="$set('showModal', false)"> <h2 class="text-xl font-bold text-zinc-900 dark:text-neutral-100">Información de la llamada</h2>
+                 wire:click.away="$set('showModal', false)"
+                 wire:poll.3s="updateDuration">
+
+                <h2 class="text-xl font-bold text-zinc-900 dark:text-neutral-100">
+                    Información de la llamada
+                </h2>
 
                 <div class="text-sm text-zinc-600 dark:text-neutral-300 space-y-2 border-t dark:border-zinc-700 pt-4">
-                    <p><strong class="font-medium text-zinc-800 dark:text-neutral-200">Nombre:</strong> {{ $clientName }}</p>
-                    <p><strong class="font-medium text-zinc-800 dark:text-neutral-200">País:</strong> {{ $clientCountry }}</p>
-                    <p><strong class="font-medium text-zinc-800 dark:text-neutral-200">Duración:</strong> {{ $callDuration }}</p>
+                    <p>
+                        <strong class="font-medium text-zinc-800 dark:text-neutral-200">Nombre:</strong>
+                        {{ $clientName }}
+                    </p>
+                    <p>
+                        <strong class="font-medium text-zinc-800 dark:text-neutral-200">País:</strong>
+                        {{ $clientCountry }}
+                    </p>
+                    <p>
+                        <strong class="font-medium text-zinc-800 dark:text-neutral-200">Duración:</strong>
+                        {{ $callDuration }} segundos
+                    </p>
                 </div>
 
-                <div class="pt-2 text-right">
+                <div class="pt-2 text-right space-x-2">
                     <button wire:click="$set('showModal', false)"
                             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 dark:focus:ring-offset-zinc-800 transition-colors">
                         Cerrar
@@ -72,3 +85,27 @@
         </div>
     @endif
 </div>
+
+<script>
+    let device;
+
+    fetch('/crm/sells/calls/twilio/token')
+    .then(res => res.json())
+    .then(data => {
+        device = new Twilio.Device(data.token);
+
+        device.on('ready', () => console.log("Device listo"));
+        device.on('connect', call => console.log("Conectado"));
+        device.on('disconnect', call => console.log("Colgado"));
+    });
+
+    // Hacer llamada
+    function callNumber(num) {
+    device.connect({ To: num });
+    }
+
+    // Colgar
+    function hangup() {
+    if (device) device.disconnectAll();
+    }
+</script>
