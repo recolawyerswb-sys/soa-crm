@@ -29,26 +29,15 @@ Route::prefix('sells')
                     ->name('twilio.')
                     ->group(function () {
                         # Registar a call
-                        Route::post('voice', function (Request $request) {
+                        Route::get('voice', function (Request $request) {
                             $response = new VoiceResponse();
-                            $response->say(
-                                "Hola, esta es una llamada de prueba desde Laravel con Twilio.",
-                                ['voice' => 'alice', 'language' => 'es-ES']
-                            );
+                            $response->say('Prueba realizada correctamente.', ['voice' => 'alice', 'language' => 'es-ES']);
                             return $response;
                         })->name('voice');
 
                         # Estado de la llamada
                         Route::post('status', function (Request $request) {
-                            $sid = $request->input('CallSid');
-                            $status = $request->input('CallStatus');
-                            $duration = $request->input('CallDuration'); // solo al finalizar
-
-                            Log::info("Call $sid status: $status, duration: $duration");
-
-                            // Si usas broadcasting: emite evento a Livewire/JS
-                            // broadcast(new \App\Events\CallUpdated($sid, $status, $duration));
-
+                            Log::info('Call Status', $request->all());
                             return response('OK', 200);
                         })->name('status');
 

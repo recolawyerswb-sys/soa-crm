@@ -41,7 +41,8 @@
                     <span wire:loading.remove wire:target="sendSms">Enviar SMS</span>
                     <span wire:loading wire:target="sendSms">Enviando...</span>
                 </button>
-                <button type="button" wire:click="makeCall" onclick="initTwilioDevice(); makeBrowserCall('{{ $number }}')"
+                <button type="button" wire:click="makeCall"
+                {{-- onclick="initTwilioDevice(); makeBrowserCall('{{ $number }}')" --}}
                         class="w-full inline-flex justify-center py-2.5 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:focus:ring-offset-zinc-800 transition-colors disabled:opacity-50">
                     <span wire:loading.remove wire:target="makeCall">Llamar desde el navegador</span>
                     <span wire:loading wire:target="makeCall">Llamando...</span>
