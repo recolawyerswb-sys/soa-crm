@@ -90,7 +90,7 @@
     let device;
 
     async function initTwilioDevice() {
-        const response = await fetch('/twilio/token');
+        const response = await fetch('/crm/sells/calls/twilio/token');
         const data = await response.json();
 
         // ⚡ Importante: solo crear Twilio.Device después de un gesto del usuario
