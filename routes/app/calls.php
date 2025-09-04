@@ -49,7 +49,7 @@ Route::prefix('sells')
                             Log::info("Call $sid status: $status, duration: $duration");
 
                             // Si usas broadcasting: emite evento a Livewire/JS
-                            broadcast(new \App\Events\CallUpdated($sid, $status, $duration));
+                            // broadcast(new \App\Events\CallUpdated($sid, $status, $duration));
 
                             return response('OK', 200);
                         })->name('status');

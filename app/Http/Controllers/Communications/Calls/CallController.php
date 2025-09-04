@@ -12,7 +12,7 @@ class CallController extends Controller
     public function makeCall(string $number): string
     {
         $url = route('sells.calls.twilio.voice'); // endpoint TwiML
-        $statusCallback = route('twilio.status');
+        $statusCallback = route('sells.calls.twilio.status');
         return app(TwilioService::class)->makeCall($number, $url, $statusCallback);
     }
 }
