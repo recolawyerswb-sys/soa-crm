@@ -62,7 +62,7 @@ Route::prefix('sells')
                             );
 
                             $token->allowClientOutgoing(config('services.twilio.twiml_app_sid'));
-                            $token->allowClientIncoming('user_computadora');
+                            $token->allowClientIncoming('iserlatam');
 
                             return response()->json(['token' => $token->toJWT()]);
                         })->name('token');
