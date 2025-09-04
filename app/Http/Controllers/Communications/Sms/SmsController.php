@@ -17,12 +17,8 @@ class SmsController extends Controller
         $this->twilio = $twilio;
     }
 
-    public function send(string $number, string $message): RedirectResponse
+    public function send(string $number, string $message): void
     {
         $this->twilio->sendSms($number, $message);
-
-        // Aquí más adelante irá la lógica Twilio
-        // Por ahora, solo guardamos un mensaje en sesión
-        return back()->with('status', "Mensaje enviado a {$number}");
     }
 }

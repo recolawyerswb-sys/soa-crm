@@ -24,7 +24,7 @@ class CallModalTest extends Component
         app(SmsController::class)->send($this->number, $this->message);
 
         // Redirigir para refrescar sesión
-        return redirect()->route('sms.form');
+        return back()->with('status', "Mensaje enviado a {$this->number}");
     }
 
     public function render()
