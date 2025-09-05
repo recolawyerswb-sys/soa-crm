@@ -33,21 +33,21 @@ class CallController extends Controller
 
     public function voiceResponse(Request $request)
     {
-        // $response = new VoiceResponse();
-        // $response->say('Prueba realizada correctamente.', ['voice' => 'alice', 'language' => 'es-ES']);
-        // return response($response, 200)->header('Content-Type', 'text/xml');
-
         $response = new VoiceResponse();
-        $dial = $response->dial('', ['callerId' => config('services.twilio.from')]); // Tu número de Twilio
+        $response->say('Prueba realizada correctamente.', ['voice' => 'alice', 'language' => 'es-ES']);
+        return response($response, 200)->header('Content-Type', 'text/xml');
 
-        // El número al que llamamos viene en la petición de Twilio
-        if ($request->has('To')) {
-            $dial->number($request->input('To'));
-        } else {
-            $response->say('Gracias por llamar');
-        }
+        // $response = new VoiceResponse();
+        // $dial = $response->dial('', ['callerId' => config('services.twilio.from')]); // Tu número de Twilio
 
-        return response($response)->header('Content-Type', 'text/xml');
+        // // El número al que llamamos viene en la petición de Twilio
+        // if ($request->has('To')) {
+        //     $dial->number($request->input('To'));
+        // } else {
+        //     $response->say('Gracias por llamar');
+        // }
+
+        // return response($response)->header('Content-Type', 'text/xml');
     }
 
     public function statusCallback(Request $request)
