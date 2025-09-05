@@ -33,7 +33,7 @@ class CallController extends Controller
     public function voiceResponse(Request $request)
     {
         $response = new VoiceResponse();
-        $response->say('Prueba realizada correctamente y pandis tiene calambre en la cuquita.', ['voice' => 'Polly.Andres-Generative', 'language' => 'es-MX']);
+        $response->say('Prueba realizada pandita lider tiene el cosito popochito y delicioso con leche condensada.', ['voice' => 'Polly.Andres-Generative', 'language' => 'es-MX']);
         return response($response, 200)->header('Content-Type', 'text/xml');
 
         // $response = new VoiceResponse();
