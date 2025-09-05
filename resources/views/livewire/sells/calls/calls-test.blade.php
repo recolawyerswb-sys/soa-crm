@@ -105,13 +105,17 @@
 
         console.log(`Iniciando llamada a ${toNumber}...`);
 
+        // 1. Abrimos el modal de Livewire
+        @this.call('openCallModal');
+
         try {
-            // 1. Abrimos el modal de Livewire
-            @this.call('openCallModal');
 
             // 2. Obtenemos el token de nuestro backend
             const response = await fetch("{{ route('sells.calls.twilio.token') }}");
             const data = await response.json();
+
+            // El resto del código es muy similar
+            updateCallStatus("Obteniendo token...");
 
             // 3. Inicializamos Twilio Device (¡esto pide permiso para el micro!)
             device = new Twilio.Device(data.token, {
@@ -158,7 +162,16 @@
     // --- Funciones de Ayuda para la UI ---
 
     function updateCallStatus(status) {
-        document.getElementById('call-status').textContent = status;
+        // Busca el elemento en el DOM
+        const statusElement = document.getElementById('call-status');
+
+        // Solo si el elemento existe, actualiza su contenido
+        if (statusElement) {
+            statusElement.textContent = status;
+        } else {
+            // Si no existe, muestra un log para saber qué está pasando
+            console.log(`Estado de llamada: ${status} (UI no lista todavía)`);
+        }
     }
 
     function startTimer() {
