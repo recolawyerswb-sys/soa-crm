@@ -35,6 +35,7 @@ class CallController extends Controller
     {
         $response = new VoiceResponse();
         $response->say('Prueba realizada correctamente.', ['voice' => 'alice', 'language' => 'es-ES']);
+        echo $response;
         return response($response, 200)->header('Content-Type', 'text/xml');
 
         // $response = new VoiceResponse();

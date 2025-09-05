@@ -33,7 +33,7 @@ Route::prefix('sells')
                         Route::get('token', [CallController::class, 'generateToken'])
                             ->name('token');
 
-                        Route::post('voice', [CallController::class, 'voiceResponse'])
+                        Route::get('voice', [CallController::class, 'voiceResponse'])
                             ->name('voice');
 
                         Route::post('status', [CallController::class, 'statusCallback'])
