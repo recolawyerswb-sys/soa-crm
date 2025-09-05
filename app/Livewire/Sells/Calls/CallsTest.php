@@ -23,7 +23,7 @@ class CallsTest extends Component
     {
         $this->validate([
             'number' => 'required|string',
-            'message' => 'required|string|max:160',
+            'message' => 'string|max:160',
         ]);
 
         // Llamamos al controlador
