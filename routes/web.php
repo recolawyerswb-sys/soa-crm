@@ -39,4 +39,8 @@ Route::prefix('crm')
         require __DIR__.'/app/wallet.php';
     });
 
-require __DIR__.'/app/calls.php';
+Route::prefix('crm')
+    ->group(function () {
+        require __DIR__.'/app/calls.php';
+    });
+
