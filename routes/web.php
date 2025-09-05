@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Communications\Calls\CallController;
 use App\Http\Controllers\CustomerApiController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -37,10 +38,21 @@ Route::prefix('crm')
     ->group(function () {
         require __DIR__.'/app/business.php';
         require __DIR__.'/app/wallet.php';
+        require __DIR__.'/app/calls.php';
     });
 
-Route::prefix('crm')
+# TWILIO SERVICES ROUTES
+Route::prefix('crm/services/twilio')
+    ->name('services.twilio.')
     ->group(function () {
-        require __DIR__.'/app/calls.php';
+        # Registar a call
+        Route::get('token', [CallController::class, 'generateToken'])
+            ->name('token');
+
+        Route::post('voice', [CallController::class, 'voiceResponse'])
+            ->name('voice');
+
+        Route::post('status', [CallController::class, 'statusCallback'])
+            ->name('status');
     });
 

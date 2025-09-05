@@ -25,19 +25,5 @@ Route::prefix('sells')
                 Volt::route('reports', 'calls.reports.index')
                     ->name('reports')
                     ->middleware(['role:admin']);
-
-                Route::prefix('twilio')
-                    ->name('twilio.')
-                    ->group(function () {
-                        # Registar a call
-                        Route::get('token', [CallController::class, 'generateToken'])
-                            ->name('token');
-
-                        Route::post('voice', [CallController::class, 'voiceResponse'])
-                            ->name('voice');
-
-                        Route::post('status', [CallController::class, 'statusCallback'])
-                            ->name('status');
-                    });
             });
     });
