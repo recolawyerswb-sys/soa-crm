@@ -17,7 +17,7 @@
                 <label for="number" class="block text-sm font-medium text-zinc-700 dark:text-neutral-300 mb-1">
                     Número de teléfono
                 </label>
-                <input id="number" type="tel" wire:model.defer="number" placeholder="+1 (555) 123-4567"
+                <input id="number" type="tel" wire:model.live="number" placeholder="+1 (555) 123-4567"
                        class="block w-full px-3 py-2 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-neutral-100 sm:text-sm transition-colors">
                 @error('number')
                     <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
