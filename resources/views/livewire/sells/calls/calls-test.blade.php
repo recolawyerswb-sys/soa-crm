@@ -95,13 +95,13 @@
      * Función principal que inicia la llamada.
      * Se llama desde el botón "Llamar".
      */
-    async function startCall(toNumber) {
-        if (!toNumber) {
+    async function startCall(numberToDial, customerId = null) {
+        if (!customerId && !numberToDial) {
             alert('Por favor, ingresa un número de teléfono.');
             return;
         }
 
-        console.log(`Iniciando llamada a ${toNumber}...`);
+        console.log(`Iniciando llamada a ${numberToDial}...`);
 
         // 1. Abrimos el modal de Livewire
         @this.call('openCallModal');
@@ -111,7 +111,6 @@
             // 2. Obtenemos el token de nuestro backend
             const response = await fetch("{{ route('services.twilio.token') }}");
             const data = await response.json();
-            console.log('Token recibido:', data.token);
 
             // El resto del código es muy similar
             updateCallStatus("Obteniendo token...");
@@ -120,6 +119,16 @@
             device = new Twilio.Device(data.token, {
                 codecPreferences: ["opus", "pcmu"],
             });
+
+            const callParams = {};
+            if (customerId) {
+                // Esta parte se ignorará porque customerId es null
+                callParams.customerId = customerId;
+            } else {
+                // Entrará aquí y preparará el número para enviarlo
+                callParams.destinationNumber = numberToDial;
+            }
+
 
             // 4. Registramos los eventos para actualizar la UI
             device.on('ready', () => updateCallStatus("Listo para llamar"));
@@ -131,7 +140,7 @@
                 updateCallStatus("Llamada finalizada");
                 stopTimer(); // Detiene el cronómetro
                 // Opcional: Cierra el modal después de unos segundos
-                setTimeout(() => @this.set('showModal', false), 2000);
+                setTimeout(() => @this.set('showModal', false), 3000);
             });
             device.on('error', err => {
                 console.error(err);
@@ -141,7 +150,7 @@
 
             // 5. Realizamos la llamada
             updateCallStatus("Llamando...");
-            device.connect({ params: { To: toNumber } });
+            device.connect({ params: callParams });
 
         } catch (error) {
             console.error('Error al iniciar la llamada:', error);

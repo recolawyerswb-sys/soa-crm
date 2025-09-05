@@ -37,13 +37,15 @@ class CallController extends Controller
         // return response($response, 200)->header('Content-Type', 'text/xml');
 
         $response = new VoiceResponse();
-        $dial = $response->dial('', ['callerId' => config('services.twilio.from')]); // Tu número de Twilio
 
-        // El número al que llamamos viene en la petición de Twilio
-        if ($request->has('To')) {
-            $dial->number($request->input('To'));
+        // Verificamos si recibimos el número desde el JS
+        if ($request->has('destinationNumber')) {
+            $numberToDial = $request->input('destinationNumber');
+            // Preparamos el TwiML para marcar ese número
+            $response->dial($numberToDial, ['callerId' => config('services.twilio.from')]);
         } else {
-            $response->say('Gracias por llamar');
+            // Si por alguna razón no llega el número, lo indicamos en la llamada
+            $response->say('No se ha proporcionado un número de destino. Adiós.');
         }
 
         return response($response)->header('Content-Type', 'text/xml');
