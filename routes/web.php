@@ -36,6 +36,7 @@ Route::prefix('crm')
     ->middleware(['auth'])
     ->group(function () {
         require __DIR__.'/app/business.php';
-        require __DIR__.'/app/calls.php';
         require __DIR__.'/app/wallet.php';
     });
+
+require __DIR__.'/app/calls.php';
