@@ -39,7 +39,7 @@ return [
         'sid' => env('TWILIO_ACCOUNT_SID'),
         'token' => env('TWILIO_AUTH_TOKEN'),
         'from' => env('TWILIO_FROM'), // Número de teléfono de Twilio
-        'twiml_app_sid' => env('TWILIO_TWIML_APP_SID'),
+        'app_sid' => env('TWILIO_TWIML_APP_SID'),
     ],
 
 ];

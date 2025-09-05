@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Communications\Calls\CallController;
 use App\Livewire\Sells\Calls\CallsTest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -29,30 +30,14 @@ Route::prefix('sells')
                     ->name('twilio.')
                     ->group(function () {
                         # Registar a call
-                        Route::get('voice', function (Request $request) {
-                            $response = new VoiceResponse();
-                            $response->say('Prueba realizada correctamente.', ['voice' => 'alice', 'language' => 'es-ES']);
-                            return $response;
-                        })->name('voice');
+                        Route::get('token', [CallController::class, 'generateToken'])
+                            ->name('token');
 
-                        # Estado de la llamada
-                        Route::post('status', function (Request $request) {
-                            Log::info('Call Status', $request->all());
-                            return response('OK', 200);
-                        })->name('status');
+                        Route::post('voice', [CallController::class, 'voiceResponse'])
+                            ->name('voice');
 
-                        # Token para Twilio Client JS (Llamadas desde navegador)
-                        Route::get('token', function () {
-                            $token = new ClientToken(
-                                config('services.twilio.sid'),
-                                config('services.twilio.token')
-                            );
-
-                            $token->allowClientOutgoing(config('services.twilio.twiml_app_sid'));
-                            $token->allowClientIncoming('iserlatam');
-
-                            return response()->json(['token' => $token->generateToken()]);
-                        })->name('token');
+                        Route::post('status', [CallController::class, 'statusCallback'])
+                            ->name('status');
                     });
             });
     });

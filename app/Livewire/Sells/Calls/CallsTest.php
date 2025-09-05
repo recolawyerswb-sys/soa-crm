@@ -18,8 +18,6 @@ class CallsTest extends Component
     public $showModal = false;
     public $clientName;
     public $clientCountry;
-    public $callDuration = '00:00';
-    public $callSid;
 
     public function sendSms()
     {
@@ -35,31 +33,12 @@ class CallsTest extends Component
         return back()->with('status', "Mensaje enviado a {$this->number}");
     }
 
-    public function makeCall()
+    public function openCallModal()
     {
-        $sid = app(CallController::class)->makeCall($this->number);
-
         // Aquí podrías buscar datos del cliente en tu DB
         $this->clientName = "Cliente Demo";
-        $this->clientCountry = "Argentina";
-        $this->callDuration = "En curso..."; // luego se actualiza con Twilio webhook
-
+        $this->clientCountry = "Argentina"; // luego se actualiza con Twilio webhook
         $this->showModal = true;
-    }
-
-    public function updateDuration()
-    {
-        if ($this->callSid) {
-            $response = Http::withBasicAuth(
-                config('services.twilio.sid'),
-                config('services.twilio.token')
-            )->get("https://api.twilio.com/2010-04-01/Accounts/".config('services.twilio.sid')."/Calls/{$this->callSid}.json");
-
-            if ($response->ok()) {
-                $data = $response->json();
-                $this->callDuration = $data['duration'] ?? $this->callDuration;
-            }
-        }
     }
 
     public function render()
