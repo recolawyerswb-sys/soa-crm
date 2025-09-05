@@ -46,7 +46,7 @@ class CallController extends Controller
             $response->say('Gracias por llamar');
         }
 
-        // return response($response)->header('Content-Type', 'text/xml');
+        return response($response)->header('Content-Type', 'text/xml');
     }
 
     public function statusCallback(Request $request)
