@@ -113,6 +113,7 @@
             // 2. Obtenemos el token de nuestro backend
             const response = await fetch("{{ route('sells.calls.twilio.token') }}");
             const data = await response.json();
+            console.log('Token recibido:', data.token);
 
             // El resto del código es muy similar
             updateCallStatus("Obteniendo token...");
