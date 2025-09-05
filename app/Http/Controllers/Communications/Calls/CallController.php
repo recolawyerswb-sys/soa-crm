@@ -39,10 +39,14 @@ class CallController extends Controller
 
         $response = new VoiceResponse();
 
-        Log::info('Parámetros recibidos (intento 2):', $request->all());
+        // Log::info('Parámetros recibidos (intento 2):', $request->all());
+
+        $response->say('Conectando su llamada, por favor espere.', ['voice' => 'Polly.Andres-Generative', 'language' => 'es-MX']);
+        $response->play('https://api.twilio.com/cowbell.mp3', ['loop' => 10]);
 
         // Verificamos si recibimos el número desde el JS
         if ($request->has('To')) {
+            // AQUI OBTENEMOS EL NUMERO DEL CLIENTE
             $numberToDial = $request->input('To');
             $response->dial($numberToDial, ['callerId' => config('services.twilio.from')]);
         } else {
