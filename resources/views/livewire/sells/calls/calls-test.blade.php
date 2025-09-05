@@ -49,7 +49,7 @@
                 </button> --}}
             </div>
         </form>
-        <button onclick="startCall('{{ $number }}')" class="bg-blue-500 text-white p-2 rounded">
+        <button onclick="startCall('{{ $number }}', null)" class="bg-blue-500 text-white p-2 rounded">
             Llamar
             <span wire:loading>Llamando...</span>
         </button>
@@ -149,8 +149,8 @@
             });
 
             // 5. Realizamos la llamada
-            updateCallStatus("Llamando...");
             device.connect({ params: callParams });
+            updateCallStatus("Llamando...");
 
         } catch (error) {
             console.error('Error al iniciar la llamada:', error);

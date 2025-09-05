@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Communications\Calls;
 use App\Http\Controllers\Controller;
 use App\Services\TwilioService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Twilio\Jwt\ClientToken;
 use Twilio\TwiML\VoiceResponse;
 
@@ -38,6 +39,8 @@ class CallController extends Controller
 
         $response = new VoiceResponse();
 
+        Log::info('Parámetros recibidos en el webhook de voz:', $request->all());
+
         // Verificamos si recibimos el número desde el JS
         if ($request->has('destinationNumber')) {
             $numberToDial = $request->input('destinationNumber');
@@ -45,7 +48,7 @@ class CallController extends Controller
             $response->dial($numberToDial, ['callerId' => config('services.twilio.from')]);
         } else {
             // Si por alguna razón no llega el número, lo indicamos en la llamada
-            $response->say('No se ha proporcionado un número de destino. Adiós.');
+            $response->say('No se ha proporcionado un número de destino. Adiós.', ['voice' => 'Polly.Andres-Generative', 'language' => 'es-MX']);
         }
 
         return response($response)->header('Content-Type', 'text/xml');
