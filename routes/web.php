@@ -5,10 +5,6 @@ use App\Http\Controllers\CustomerApiController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return redirect()->route('dashboard');
-})->middleware(['auth', 'verified']);
-
 Route::get('/customers', [CustomerApiController::class, 'index'])
     ->middleware(['auth', 'role:admin']);
 
