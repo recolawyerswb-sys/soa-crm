@@ -120,16 +120,6 @@
                 codecPreferences: ["opus", "pcmu"],
             });
 
-            const callParams = {};
-            if (customerId) {
-                // Esta parte se ignorará porque customerId es null
-                callParams.customerId = customerId;
-            } else {
-                // Entrará aquí y preparará el número para enviarlo
-                callParams.destinationNumber = numberToDial;
-            }
-
-
             // 4. Registramos los eventos para actualizar la UI
             device.on('ready', () => updateCallStatus("Listo para llamar"));
             device.on('connect', connection => {
@@ -148,8 +138,11 @@
                 stopTimer();
             });
 
+            const callParams = {
+               To: numberToDial
+            };
             // 5. Realizamos la llamada
-            device.connect({ params: callParams });
+            device.connect(callParams);
             updateCallStatus("Llamando...");
 
         } catch (error) {

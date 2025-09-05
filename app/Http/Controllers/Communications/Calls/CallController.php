@@ -39,16 +39,15 @@ class CallController extends Controller
 
         $response = new VoiceResponse();
 
-        Log::info('Parámetros recibidos en el webhook de voz:', $request->all());
+        Log::info('Parámetros recibidos (intento 2):', $request->all());
 
         // Verificamos si recibimos el número desde el JS
-        if ($request->has('destinationNumber')) {
-            $numberToDial = $request->input('destinationNumber');
-            // Preparamos el TwiML para marcar ese número
+        if ($request->has('To')) {
+            $numberToDial = $request->input('To');
             $response->dial($numberToDial, ['callerId' => config('services.twilio.from')]);
         } else {
-            // Si por alguna razón no llega el número, lo indicamos en la llamada
-            $response->say('No se ha proporcionado un número de destino. Adiós.', ['voice' => 'Polly.Andres-Generative', 'language' => 'es-MX']);
+            $response->say('Error, no se recibió el número de destino. Revisa los logs.');
+            Log::error('El parámetro "To" no fue encontrado en la request.');
         }
 
         return response($response)->header('Content-Type', 'text/xml');
