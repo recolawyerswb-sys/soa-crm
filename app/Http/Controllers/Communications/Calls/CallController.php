@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Communications\Calls;
 
 use App\Http\Controllers\Controller;
@@ -35,8 +34,7 @@ class CallController extends Controller
     {
         $response = new VoiceResponse();
         $response->say('Prueba realizada correctamente.', ['voice' => 'Polly.Andres-Generative', 'language' => 'es-MX']);
-        echo $response;
-        // return response($response, 200)->header('Content-Type', 'text/xml');
+        return response($response, 200)->header('Content-Type', 'text/xml');
 
         // $response = new VoiceResponse();
         // $dial = $response->dial('', ['callerId' => config('services.twilio.from')]); // Tu número de Twilio
