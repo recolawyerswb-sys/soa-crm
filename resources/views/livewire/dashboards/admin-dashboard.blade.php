@@ -1,155 +1,102 @@
-<div class="relative ">
-    <flux:header class="hidden lg:flex! py-5 bg-white lg:bg-zinc-50 dark:bg-zinc-950">
-        <div class="w-full flex flex-col gap-1">
-            <h1 class="text-xl text-gray-900 dark:text-neutral-50">
-                {{ $greetingTimeMessage }}!
-                <b>{{ $userName }}.</b>
-            </h1>
-            <p class="text-sm text-neutral-200">En este espacio podras administrar tus usuarios y tus datos personales. <i>Buena suerte</i></p>
-        </div>
-        <flux:navbar class="gap-4">
-            {{-- ADMIN HELPER BUTTONS --}}
-            {{-- @role('admin')
-                <flux:modal.trigger name="create-client">
-                    <flux:button variant="primary" class="cursor-pointer" @click="$dispatch('unable-edit-for-create-client-modal')">Crear un cliente</flux:button>
-                </flux:modal.trigger>
-                <flux:modal.trigger name="create-user">
-                    <flux:button variant="primary" class="cursor-pointer">Crear un nuevo usuario</flux:button>
-                </flux:modal.trigger>
-            @endrole --}}
-            <flux:dropdown class="hidden lg:block" position="bottom" align="start">
-                <flux:button icon:trailing="light-bulb" variant="subtle">Tema</flux:button>
-                <flux:menu class="w-auto">
-                    <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
-                        <flux:radio value="light" icon="sun">{{ __('Claro') }}</flux:radio>
-                        <flux:radio value="dark" icon="moon">{{ __('Oscuro') }}</flux:radio>
-                    </flux:radio.group>
-                </flux:menu>
-            </flux:dropdown>
+{{-- Contenedor principal del Dashboard con estilos base y espacio para el footer --}}
+<div class="relative min-h-screen pb-24 bg-shape-dots">
 
-            <flux:dropdown class="hidden lg:block" position="bottom" align="start">
-                <flux:profile
-                    avatar:color="indigo"
-                    :initials="auth()->user()->initials()"
-                    icon:trailing="chevrons-up-down"
-                />
+    {{-- 1. HEADER --}}
+    <x-dashboard.header />
 
-                <flux:menu class="max-w-[12rem]">
-                    <flux:menu.radio.group>
-                        <div class="p-0 text-sm font-normal">
-                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <div class="grid flex-1 text-start text-sm leading-tight">
-                                    <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                    <span class="truncate text-xs">{{ auth()->user()->email }}</span>
-                                    <span class="truncate text-xs">Rol actual: {{ auth()->user()->getCurrentRole() }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </flux:menu.radio.group>
+    {{-- 2. CONTENIDO PRINCIPAL --}}
+    {{-- `space-y-8` crea un espaciado vertical limpio entre cada sección --}}
+    <div class="h-full p-4 md:p-6 space-y-8">
+        <x-dashboard.stats.refresh-btn />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                {{-- <h2 class="text-lg font-bold text-gray-800 dark:text-zinc-200 mb-4">
+                    Balances, agentes y llamadas
+                </h2> --}}
+                {{-- Grid responsive de 4 columnas para todas las tarjetas de estadísticas --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {{-- Fila 1 de Stats --}}
+                    <x-dashboard.stats.stat
+                        title="Balance total de usuarios"
+                        content="{{ '$' . number_format(\App\Models\Wallet::getTotalAccBalance(), 2) }}"
+                    />
+                    <x-dashboard.stats.stat
+                        title="Agentes totales"
+                        content="{{ $this->totalAgents }}"
+                    />
+                    <x-dashboard.stats.stat
+                        title="Clientes totales"
+                        content="{{ $this->totalCustomers }}"
+                    />
+                    <x-dashboard.stats.stat
+                        title="Llamadas totales"
+                        content="0"
+                    />
+                </div>
+            </div>
 
-                    <flux:menu.separator />
-
-                    <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Ajustes') }}</flux:menu.item>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-
-                    <form method="POST" action="{{ route('logout') }}" class="w-full">
-                        @csrf
-                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Cerrar Sesion') }}
-                        </flux:menu.item>
-                    </form>
-                </flux:menu>
-            </flux:dropdown>
-
-        </flux:navbar>
-    </flux:header>
-
-    <div class="px-7">
-        <div class="grid grid-cols-4 auto-rows-auto gap-4">
-            {{-- COL 1, FILA 1, TITULO --}}
-            <div class="col-span-3">
-                <h2 class="text-lg font-semibold">Estadisticas generales del negocio</h2>
-            </div>
-            {{-- COL 1, FILA 2, STATS --}}
-            <div class="col-start-1 row-start-2">
-                <x-dashboard.stat title="Balance total de los usuarios">
-                    {{ '$' . number_format(\App\Models\Wallet::getTotalAccBalance(), 2) }}
-                </x-dashboard.stat>
-            </div>
-            <div class="col-start-2 row-start-2">
-                <x-dashboard.stat title="Agentes totales">
-                    {{-- Data: sum(movimientos where status='pendiente') --}}
-                    {{ $this->totalAgents }}
-                </x-dashboard.stat>
-            </div>
-            <div class="col-start-3 row-start-2">
-                <x-dashboard.stat title="Clientes totales">
-                    {{-- Data: sum(movimientos where status='pendiente') --}}
-                    {{ $this->totalCustomers }}
-                </x-dashboard.stat>
-            </div>
-            <div class="col-start-1 row-start-3">
-                <x-dashboard.stat title="Llamadas totales">
-                    {{-- Data: sum(movimientos where status='pendiente') --}}
-                    0
-                </x-dashboard.stat>
-            </div>
-            <div class="col-start-2 row-start-3">
-                <x-dashboard.stat title="Clientes en linea">
-                    {{-- Data: sum(movimientos where status='pendiente') --}}
-                    0
-                </x-dashboard.stat>
-            </div>
-            <div class="col-start-3 row-start-3">
-                <x-dashboard.stat title="Agentes en linea">
-                    {{-- Data: sum(movimientos where status='pendiente') --}}
-                    0
-                </x-dashboard.stat>
-            </div>
-            {{-- COL 1, FILA 4, TITULO --}}
-            <div class="row-span-5 col-start-4 row-start-1">
-                9
-            </div>
-            <div class="col-span-3 row-start-4">
-                <h2 class="text-lg font-semibold">Estadisticas generales de mi perfil</h2>
-            </div>
-            <div class="row-start-5">
-                <x-dashboard.stat title="Mi balance">
-                    {{-- Data: sum(movimientos where status='pendiente') --}}
-                    {{ '$' . number_format($this->userTotalBalance, 2) }}
-                </x-dashboard.stat>
-            </div>
-            <div class="row-start-5">
-                <x-dashboard.stat title="Mi total depositado">
-                    {{-- Data: sum(movimientos where status='pendiente') --}}
-                    {{ '$' . number_format($this->userTotalDeposit, 2) }}
-                </x-dashboard.stat>
-            </div>
-            <div class="row-start-5">
-                <x-dashboard.stat title="Mi total retirado">
-                    {{-- Data: sum(movimientos where status='pendiente') --}}
-                    {{ '$' . number_format($this->userTotalWithdrawal, 2) }}
-                </x-dashboard.stat>
+            <div>
+                {{-- <h2 class="text-2xl font-bold text-gray-800 dark:text-zinc-200 mb-4">
+                    Mis saldos y billetera
+                </h2> --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {{-- Fila 2 de Stats --}}
+                    <x-dashboard.stats.stat
+                        title="Mi balance"
+                        content="{{ '$' . number_format($this->userTotalBalance, 2) }}"
+                    />
+                    <x-dashboard.stats.stat
+                        title="Mi total depositado"
+                        content="{{ '$' . number_format($this->userTotalDeposit, 2) }}"
+                    />
+                    <x-dashboard.stats.stat
+                        title="Mi total retirado"
+                        content="{{ '$' . number_format($this->userTotalWithdrawal, 2) }}"
+                    />
+                    <x-dashboard.stats.stat
+                        title="Agentes en línea"
+                        content="0"
+                    />
+                </div>
             </div>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <div class="bg-white dark:bg-zinc-800 dark:border dark:border-white/5 rounded-xl">
+                    {{-- <p class="text-center text-gray-400 dark:text-zinc-500 py-8">
+                        Tu componente de tabla de usuarios irá aquí.
+                    </p> --}}
+                    <livewire:business.customers.widgets.latest-customers-widget />
+                </div>
+            </div>
+            <div>
+                <div class="bg-white dark:bg-zinc-800 dark:border dark:border-white/5 rounded-xl">
+                    {{-- <p class="text-center text-gray-400 dark:text-zinc-500 py-8">
+                        Tu componente de tabla de movimientos irá aquí.
+                    </p> --}}
+                    <livewire:accounts.movements.widgets.latest-movements-widget />
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="fixed bottom-0 flex w-full gap-3">
-        <!-- Trigger for creating a new client. MODAL. Only change the name -->
-        <flux:modal.trigger name="create-client">
-            <flux:button icon="plus" variant="primary">
-                Crear un cliente
+    {{-- 3. FOOTER FIJO CON ACCIONES --}}
+    {{-- <footer class="sticky bottom-0 left-0 right-0 w-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-t border-gray-200 dark:border-zinc-700">
+        <div class="flex items-center gap-3 p-4 max-w-7xl mx-auto">
+            <flux:modal.trigger name="create-client">
+                <flux:button icon="plus" variant="primary">
+                    Crear un cliente
+                </flux:button>
+            </flux:modal.trigger>
+            <flux:button variant="ghost" href="{{ route('wallet.movements.index') }}">
+                Ir a movimientos
             </flux:button>
-        </flux:modal.trigger>
-        <flux:button variant="ghost" href="{{ route('wallet.movements.index') }}">Ir a movimientos</flux:button>
-        {{-- <flux:button variant="ghost" href="{{ route('sells.calls.index') }}">Ir a reporte de llamadas</flux:button> --}}
-        <flux:button variant="filled" icon="information-circle" class="ms-auto">
-            Ayuda
-        </flux:button>
-    </div>
+            <flux:button variant="filled" icon="information-circle" class="ms-auto">
+                Ayuda
+            </flux:button>
+        </div>
+    </footer> --}}
 
 </div>
-

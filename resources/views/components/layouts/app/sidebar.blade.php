@@ -18,7 +18,6 @@
             {{-- BUSINESS MODALS --}}
             <livewire:modals.business.customer.create-client-modal />
             <livewire:modals.business.assignment.assign-customers-modal />
-            <livewire:modals.business.customer.update-mark-info-modal />
             <livewire:modals.business.agents.create-agent-modal />
             <livewire:modals.business.teams.create-team-modal />
             <livewire:modals.business.assignments.create-assignment-modal />
@@ -26,25 +25,28 @@
 
             {{-- WALLET MODALS --}}
             <livewire:modals.accounts.update-wallet-modal />
-            <livewire:modals.accounts.movements.create-movement />
-            {{-- <livewire:modals.business.user.create /> --}}
+
+            {{-- CALL MODALS --}}
         @endrole
-        @role('agent-leader|admin')
+        @role('agent|leader_agent|admin')
             {{-- <livewire:modals.business.assignment.fast-assign /> --}}
+            <livewire:modals.sells.calls.init-call-modal />
+            <livewire:modals.business.customer.update-mark-info-modal />
+            <livewire:modals.business.client-tracking.create-client-tracking-modal/>
         @endrole
-        @role('cliente')
-            {{-- <livewire:modals.movement.create-movement /> --}}
+        @role('admin|customer')
+            <livewire:modals.accounts.movements.create-movement />
         @endrole
 
         {{-- SIDEBAR --}}
-        <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+        <flux:sidebar sticky stashable class="bg-zinc-50 dark:bg-ct-dark-bg">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
             <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
                 <x-app-logo />
             </a>
 
-            <flux:navlist variant="outline">
+            <flux:navlist variant="solid">
                 {{-- HOME SHARED ITEM --}}
                 <flux:navlist.item
                     icon="home"
@@ -54,8 +56,8 @@
                     {{ __('Inicio') }}
                 </flux:navlist.item>
                 @foreach ($navItems as $navItem)
-                    @role($navItem['role'])
-                        @if (!$navItem['isGroup'])
+                    @if (!$navItem['isGroup'])
+                        @role($navItem['canSee'])
                             <flux:navlist.item
                                 icon="{{ $navItem['icon'] }}"
                                 :href="route($navItem['routeName'])"
@@ -63,20 +65,24 @@
                                 wire:navigate>
                                 {{ __($navItem['label']) }}
                             </flux:navlist.item>
-                        @elseif ($navItem['isGroup'])
+                        @endrole
+                    @elseif ($navItem['isGroup'])
+                        @role($navItem['role'])
                             <flux:navlist.group :heading="__($navItem['heading'])" class="grid" expandable>
                                 @foreach ($navItem['items'] as $item)
-                                    <flux:navlist.item
-                                        icon="{{ $item['icon'] }}"
-                                        :href="route($item['routeName'])"
-                                        :current="request()->routeIs($item['routeName'])"
-                                        wire:navigate>
-                                        {{ __($item['label']) }}
-                                    </flux:navlist.item>
+                                    @role($item['canSee'])
+                                        <flux:navlist.item
+                                            icon="{{ $item['icon'] }}"
+                                            :href="route($item['routeName'])"
+                                            :current="request()->routeIs($item['routeName'])"
+                                            wire:navigate>
+                                            {{ __($item['label']) }}
+                                        </flux:navlist.item>
+                                    @endrole
                                 @endforeach
                             </flux:navlist.group>
-                        @endif
-                    @endrole
+                        @endrole
+                    @endif
                 @endforeach
             </flux:navlist>
 
@@ -183,7 +189,6 @@
         {{-- @livewireScripts --}}
         @livewireScriptConfig
         @fluxScripts
-        <script src="https://sdk.twilio.com/js/client/v1.14/twilio.min.js"></script>
         <x-dashboard.soa-notification.notification></x-dashboard.soa-notification.notification>
     </body>
 </html>

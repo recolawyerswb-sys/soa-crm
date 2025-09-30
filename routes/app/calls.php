@@ -18,12 +18,15 @@ Route::prefix('sells')
             ->group(function () {
                 Volt::route('/', 'calls.index')
                     ->name('index')
+                    ->lazy()
                     ->middleware(['role:admin,manager']);
                 Route::get('/test', CallsTest::class)
                     ->name('test')
+                    ->lazy()
                     ->middleware(['role:admin|agente|agent-leader']);
                 Volt::route('reports', 'calls.reports.index')
                     ->name('reports')
+                    ->lazy()
                     ->middleware(['role:admin']);
             });
     });

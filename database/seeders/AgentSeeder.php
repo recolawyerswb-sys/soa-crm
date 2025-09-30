@@ -28,7 +28,7 @@ class AgentSeeder extends Seeder
             'password' => Hash::make('password'), // ⚠️ cambia en producción
         ]);
 
-        $userAgent->assignRole('agente');
+        $userAgent->assignRole('agent');
 
         // $defaultTeam = Team::where('name', 'Crm')->first();
         $profile = $userAgent->profile()->create([
@@ -47,6 +47,8 @@ class AgentSeeder extends Seeder
         $agent = $profile->agent()->create([
             'position' => fake()->randomElement(['A', 'B', 'C']),
             'is_leader' => false,
+            'day_off' => 3, //
+            'checkin_hour' => '09:00:00',
             'status' => fake()->randomElement(['1', '0', '2']),
             'team_id' => $team->id,
         ]);

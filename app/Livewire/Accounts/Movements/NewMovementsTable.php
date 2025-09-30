@@ -25,7 +25,8 @@ class NewMovementsTable extends SoaTable
     protected string $model = Movement::class;
 
     public string $title = 'Registros actuales';
-    // public string $description = 'Lista de equipos con sus respectivos agentes y clientes.';
+
+    public bool $enableSearch = false;
 
     /**
      * Define la consulta base para la tabla.
@@ -76,9 +77,12 @@ class NewMovementsTable extends SoaTable
     {
         return [
             // Action::make('fastEdit', 'pencil'),
-            Action::make('approve', 'hand-thumb-up'),
-            Action::make('decline', 'hand-thumb-down'),
-            Action::make('fastEdit', 'pencil'),
+            Action::make('approve', 'hand-thumb-up')
+                ->label('Aprobar'),
+            Action::make('decline', 'hand-thumb-down')
+                ->label('Rechazar'),
+            Action::make('fastEdit', 'pencil')
+                ->label('Editar'),
         ];
     }
 
@@ -100,13 +104,13 @@ class NewMovementsTable extends SoaTable
 
             Filter::makeInput(
                 key: 'CustomerName',
-                label: 'Nombre del cliente',
+                label: 'Cliente',
                 column: 'wallet.user.name'
             ),
 
             Filter::make(
                 key: 'type',
-                label: 'Tipo de solicitud',
+                label: 'Tipo',
                 options: [
                     '1' => 'Deposito',
                     '2' => 'Retiro',
@@ -117,7 +121,7 @@ class NewMovementsTable extends SoaTable
 
             Filter::make(
                 key: 'status',
-                label: 'Estado actual',
+                label: 'Estado',
                 options: [
                     '1' => 'Aprobado',
                     '2' => 'Pendiente',
@@ -141,7 +145,7 @@ class NewMovementsTable extends SoaTable
     public function approve(Movement $movement): void
     {
         if ($movement->status !== '2') {
-            $this->notify('Solo se pueden aprobar movimientos pendientes.', status: '400');
+            $this->notify('Este movimiento ya fue aprobado.', status: '100');
             return;
         }
         // FILL CONFIRMATION MODAL PROPS
@@ -157,7 +161,7 @@ class NewMovementsTable extends SoaTable
     public function decline(Movement $movement): void
     {
         if ($movement->status !== '2') {
-            $this->notify('Solo se pueden aprobar movimientos pendientes.', status: '400');
+            $this->notify('Este movimiento ya fue aprobado.', status: '100');
             return;
         }
         // FILL CONFIRMATION MODAL PROPS
@@ -177,7 +181,7 @@ class NewMovementsTable extends SoaTable
         $movement->approve();
         $this->dispatch('refreshTableData');
         Flux::modal('generic-confirmation-modal')->close();
-        // $this->notify('Movimiento aprobado correctamente.');
+        $this->notify('Movimiento aprobado correctamente.');
     }
 
     #[On('decline-movement')]

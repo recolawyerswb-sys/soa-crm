@@ -5,38 +5,30 @@ use function Livewire\Volt\{computed, state};
 
 $authUserBalance = computed(fn () => auth()->user()->wallet->balance);
 state(['authUserCurrency' => auth()->user()->wallet->coin_currency]);
+state(['authUserTotalDeposit' => auth()->user()->wallet->total_deposit]);
 
 ?>
 
-<section class="index-model-section">
+<section class="index-model-section bg-shape-dots">
     <div class="index-model-header">
         @include('partials.model-heading', ['actions' => false, 'title' => __('Lista de movimientos'), 'subtitle' => __('Maneja el control de las asignaciones y seguimientos')])
-        <div class="flex flex-wrap gap-4 mb-6">
-            <div class="w-full sm:w-1/3">
-                <x-dashboard.stat
-                    title="Balance Total"
-                    description="El balance que presentas actualment."
-                >
-                    {{-- Data: sum(movimientos where status='pendiente') --}}
-                    <span class="text-white" wire:poll.10s>
-                        ${{ $this->authUserBalance }}
-                    </span>
-                </x-dashboard.stat>
-            </div>
-            <div class="w-full sm:w-1/3">
-                <x-dashboard.stat
-                    title="Moneda actual"
-                    description="El balance que presentas actualment."
-                >
-                    {{-- Data: sum(movimientos where status='pendiente') --}}
-                    <span class="text-white">
-                        {{ $this->authUserCurrency }}
-                    </span>
-                </x-dashboard.stat>
-            </div>
-            <div class="w-full sm:w-1/3">
-                <!-- Column 3 content -->
-            </div>
+        <x-dashboard.stats.refresh-btn />
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-6">
+            <x-dashboard.stats.stat
+                title="Balance Total"
+                description="El balance que presentas actualmente."
+                content="{{ '$' . number_format($this->authUserBalance, 2) }}"
+            />
+            <x-dashboard.stats.stat
+                title="Moneda actual"
+                description="La moneda en la que tienes tu cuenta."
+                :content="$this->authUserCurrency"
+            />
+            <x-dashboard.stats.stat
+                title="Total depositado"
+                description="El balance que has ingresado en total."
+                content="{{ '$' . number_format($this->authUserTotalDeposit, 2) }}"
+            />
         </div>
         @livewire('accounts.movements.new-movements-table')
     </div>

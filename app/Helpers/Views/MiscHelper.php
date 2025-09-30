@@ -19,4 +19,10 @@ class MiscHelper
             return 'Buenas tardes';
         }
     }
+
+    public static function genAvatarUrl($avatarName, $params)
+    {
+        $baseUrl = "https://api.dicebear.com/9.x/$avatarName/svg";
+        return $baseUrl . '?' . http_build_query($params);
+    }
 }

@@ -30,7 +30,7 @@ class ClientUserSeeder extends Seeder
         ]);
 
         // 2. Asignar rol de cliente
-        $user->assignRole('cliente');
+        $user->assignRole('customer');
 
         // 3. Crear perfil relacionado
         $profile = $user->profile()->create([

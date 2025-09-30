@@ -27,18 +27,18 @@ class RoleSeeder extends Seeder
 
         // LIDERES
         $rsLideres = [
-            'agente_lider',
+            'lead_agent',
         ];
 
         // AGENTES
         $rsAsesores = [
-            'crm_agente',
-            'agente',
+            'crm_agent',
+            'agent',
         ];
 
         // CLIENTES
         $rsClientes = [
-            'cliente',
+            'customer',
         ];
 
         // COMBINANDO TODOS LOS ROLES

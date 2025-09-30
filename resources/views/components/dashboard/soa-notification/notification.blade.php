@@ -40,7 +40,7 @@
     class="fixed top-0 right-0 z-50 max-w-sm w-full mt-4 mr-2"
     style="display: flex;"
 >
-    <div class="rounded w-full shadow-lg overflow-hidden dark:bg-zinc-800">
+    <div class="rounded w-full shadow-lg overflow-hidden bg-white dark:bg-slate-800">
         {{-- CONTENT ROW --}}
         <div class="flex gap-2 px-3 py-3">
             {{-- ICON COLUMN --}}
@@ -61,9 +61,9 @@
             </div>
             {{-- DETAILS COLUMN --}}
             <div class="flex flex-col w-full">
-                <span class="text-white font-semibold" x-text="title"></span>
+                <span class="dark:text-white text-slate-700 font-semibold" x-text="title"></span>
                 {{-- DESCRIPTION ROW --}}
-                <p class="text-sm text-white" x-text="message"></p>
+                <p class="text-sm dark:text-white text-slate-400" x-text="message"></p>
             </div>
             {{-- ACTIONS COLUMN --}}
             <div class="flex justify-center items-start w-auto">

@@ -1,18 +1,65 @@
 {
+  "__commonjsHelpers-C4iS2aBk.js": {
+    "file": "assets/_commonjsHelpers-C4iS2aBk.js",
+    "name": "_commonjsHelpers"
+  },
+  "_call-BrDnqm_Z.js": {
+    "file": "assets/call-BrDnqm_Z.js",
+    "name": "call",
+    "imports": [
+      "__commonjsHelpers-C4iS2aBk.js"
+    ]
+  },
   "resources/css/app.css": {
-    "file": "assets/app-CO_depd-.css",
+    "file": "assets/app-CKXYvaoj.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/css/custom.css": {
-    "file": "assets/custom-Dg_CNkrB.css",
+    "file": "assets/custom-BeURPzvl.css",
     "src": "resources/css/custom.css",
     "isEntry": true
   },
-  "resources/js/app.js": {
-    "file": "assets/app-CMuhQTn7.js",
+  "resources/js/Pages/Dashboard/Help/Index.jsx": {
+    "file": "assets/Index-DIAoCxaV.js",
+    "name": "Index",
+    "src": "resources/js/Pages/Dashboard/Help/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "__commonjsHelpers-C4iS2aBk.js"
+    ]
+  },
+  "resources/js/app.jsx": {
+    "file": "assets/app-B5oAs9K9.js",
     "name": "app",
-    "src": "resources/js/app.js",
-    "isEntry": true
+    "src": "resources/js/app.jsx",
+    "isEntry": true,
+    "imports": [
+      "__commonjsHelpers-C4iS2aBk.js"
+    ],
+    "dynamicImports": [
+      "resources/js/Pages/Dashboard/Help/Index.jsx"
+    ]
+  },
+  "resources/js/communications.js": {
+    "file": "assets/communications-CfuffvP2.js",
+    "name": "communications",
+    "src": "resources/js/communications.js",
+    "isEntry": true,
+    "imports": [
+      "_call-BrDnqm_Z.js",
+      "__commonjsHelpers-C4iS2aBk.js"
+    ]
+  },
+  "resources/js/crm.js": {
+    "file": "assets/crm-2NWOYSN4.js",
+    "name": "crm",
+    "src": "resources/js/crm.js",
+    "isEntry": true,
+    "imports": [
+      "_call-BrDnqm_Z.js",
+      "__commonjsHelpers-C4iS2aBk.js"
+    ]
   }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Accounts\Movements\MovementType;
 use App\Traits\Notifies;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

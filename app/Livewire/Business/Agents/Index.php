@@ -11,6 +11,10 @@ class Index extends Component
     public string $primaryBtnLabel = 'Crear agente';
     public string $primaryModalName = 'create-agent';
 
+    public function placeholder() {
+        return view('livewire.placeholders.business.customer-fp-index');
+    }
+
     public function render()
     {
         return view('livewire.business.agents.index');

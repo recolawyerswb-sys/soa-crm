@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('client_trackings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('assignment_id');
-            $table->string('action')->nullable();
+            // $table->string('status')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
         });

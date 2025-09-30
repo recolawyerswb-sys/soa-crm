@@ -1,4 +1,4 @@
-<flux:modal wire:loading.class='blur-xs' name="generic-confirmation-modal" class="min-w-[22rem]">
+<flux:modal name="generic-confirmation-modal" class="min-w-[22rem]">
     <div class="space-y-6">
         <div>
             <flux:heading size="lg">Esta seguro de {{ $actionTitleName }}?</flux:heading>
@@ -14,7 +14,9 @@
                 <flux:button variant="ghost">Cancelar</flux:button>
             </flux:modal.close>
             <flux:button
-                @click="$dispatch('{{ $actionEventName }}', {id: '{{ $targetId }}'})" class="capitalize" type="submit" variant="primary">
+                @click="$dispatch('{{ $actionEventName }}', {id: '{{ $targetId }}'})"
+                class="capitalize cursor-pointer"
+                variant="primary">
                 {{ $actionBtnLabel }}
             </flux:button>
         </div>

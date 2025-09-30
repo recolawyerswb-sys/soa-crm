@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('position')->default('A');
             $table->integer('no_calls')->default(0);
             $table->string('status')->default('1'); // 1 active, 0 inactive, 2 suspended
+            $table->unsignedTinyInteger('day_off')->nullable();
+            $table->time('checkin_hour')->nullable();
             $table->boolean('is_leader')->default(false);
             $table->foreignId('team_id');
             $table->foreignId('profile_id');

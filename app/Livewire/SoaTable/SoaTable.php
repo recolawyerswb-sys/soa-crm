@@ -26,6 +26,8 @@ abstract class SoaTable extends Component
     public string $title = 'Tabla';
     public string $description = '';
 
+    public bool $enableSearch = true;
+
     // Métodos Abstractos (Contratos para las clases hijas)
     abstract protected function columns(): array;
     abstract protected function query(): Builder;

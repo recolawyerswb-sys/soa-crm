@@ -1,4 +1,4 @@
-<section class="index-model-section">
+<section class="index-model-section bg-shape-dots">
     <div class="index-model-header">
         @include('partials.model-heading', ['actions' => false, 'title' => $pageTitle, 'subtitle' => $pageDescription])
         @livewire('business.assignments.new-assignments-table')

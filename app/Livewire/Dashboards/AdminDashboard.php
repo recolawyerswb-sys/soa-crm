@@ -37,6 +37,11 @@ class AdminDashboard extends Component
         $this->totalAgents = \App\Models\Agent::getAgentsCount();
     }
 
+    public function placeholder()
+    {
+        return view('livewire.placeholders.dashboards.db-skeleton');
+    }
+
     public function render()
     {
         return view('livewire.dashboards.admin-dashboard');

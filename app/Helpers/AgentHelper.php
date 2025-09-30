@@ -2,10 +2,11 @@
 
 namespace App\Helpers;
 
+use App\Helpers\Agent\FormatHelper;
 use App\Models\Agent;
 use Illuminate\Support\Collection;
 
-class AgentHelper
+class AgentHelper extends FormatHelper
 {
     // Add shared role-related helper methods here
 

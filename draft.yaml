@@ -43,12 +43,22 @@ models:
     position: string nullable default:A # A B C
     no_calls: integer default:0
     status: string default:1 # 1: Active, 0: Inactive, 2: Suspended
+    day_off: unsignedTinyInteger
     is_leader: boolean default:false
     team_id: unsignedInteger
     profile_id: unsignedInteger nullable
     relationships:
       belongsTo: Team, Profile
       hasMany: Assignment
+
+  Attendance:
+    notes: text nullable
+    att_status: char # a: super puntual (+-15 antes), b: puntual, c: tardio (+-15 despues), d: en descanso
+    agent_id: unsignedInteger
+
+  CheckIn:
+    check_in_time: time
+    agent_id: unsignedInteger
 
   Assignment:
     customer_id: unsignedInteger

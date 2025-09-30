@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Agent extends Model
 {
@@ -21,6 +22,8 @@ class Agent extends Model
         'position',
         'no_calls',
         'status',
+        'day_off',
+        'checkin_hour',
         'is_leader',
         'team_id',
         'profile_id',
@@ -36,21 +39,11 @@ class Agent extends Model
         return [
             'id' => 'integer',
             'is_leader' => 'boolean',
+            'day_off' => 'integer',
+            'checkin_hour' => 'datetime',
             'team_id' => 'integer',
             'profile_id' => 'integer',
         ];
-    }
-
-    public static function getAgentsCount(): int
-    {
-        return self::count();
-    }
-
-    public static function getDefaultAgentId(): ?int
-    {
-        return Agent::whereHas('profile', function ($query) {
-            $query->where('full_name', 'crm');
-        })->first()?->id;
     }
 
     public function team(): BelongsTo
@@ -66,5 +59,15 @@ class Agent extends Model
     public function assignments(): HasMany
     {
         return $this->hasMany(Assignment::class);
+    }
+
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(Schedule::class);
+    }
+
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class);
     }
 }

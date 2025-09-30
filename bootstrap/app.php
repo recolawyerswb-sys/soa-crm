@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,6 +22,14 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'crm/services/*',
         ]);
+        $middleware->web([
+            \App\Http\Middleware\HandleInertiaRequests::class,
+        ]);
+    })
+    ->withSchedule(function (Schedule $schedule) {
+        $schedule->command('app:check-agent-attendance')
+            ->weekdays()
+            ->dailyAt('08:15');
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response) {

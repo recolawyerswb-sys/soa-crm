@@ -20,13 +20,38 @@ trait RoleTrait
         return $this->hasRole('admin');
     }
 
-    public function isCliente()
+    public function isManager()
     {
-        return $this->hasRole('cliente');
+        return $this->hasRole('manager');
+    }
+
+    public function isCrmManager()
+    {
+        return $this->hasRole('crm_manager');
+    }
+
+    public function isBanki()
+    {
+        return $this->hasRole('banki');
     }
 
     public function isAgente()
     {
-        return $this->hasRole('agente');
+        return $this->hasRole('agent');
+    }
+
+    public function isLeadAgent()
+    {
+        return $this->hasRole('lead_agent');
+    }
+
+    public function isCrmAgent()
+    {
+        return $this->hasRole('crm_agent');
+    }
+
+    public function isCliente()
+    {
+        return $this->hasRole('customer');
     }
 }

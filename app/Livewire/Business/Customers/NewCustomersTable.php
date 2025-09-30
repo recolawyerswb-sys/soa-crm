@@ -79,10 +79,17 @@ class NewCustomersTable extends SoaTable
         return [
             // // Action::make('Llamar', 'makeCall')
             // //     ->classes('text-green-600 hover:text-green-900 font-bold'), // Clases personalizadas
-            Action::make('noAnswerAction', 'chat-bubble-bottom-center-text')
-                ->canSee(fn () => Auth::user()->isAdmin()),
-            Action::make('fastEdit', 'pencil'),
-            Action::make('makeCall', 'phone'),
+            // Action::make('noAnswerAction', 'chat-bubble-bottom-center-text')
+            //     ->canSee(fn () => Auth::user()->isAdmin()),
+            Action::make('showDetails', 'eye')
+                ->label('Ver detalles'),
+            Action::make('fastEdit', 'pencil')
+                ->label('Editar')
+                ->canSee(fn () => auth()->user()->isAdmin()),
+            Action::make('makeCall', 'phone')
+                ->label('Llamar'),
+            Action::make('sendWpMessage', 'chat-bubble-oval-left-ellipsis')
+                ->label('Abrir Whatsapp'),
         ];
     }
 
@@ -134,6 +141,11 @@ class NewCustomersTable extends SoaTable
     // MÉTODOS PÚBLICOS PARA LAS ACCIONES INDIVIDUALES
     // =================================================================
 
+    public function showDetails(Customer $customer)
+    {
+        return redirect(route('business.customers.show', $customer));
+    }
+
     public function fastEdit($rowId): void
     {
         $this->dispatch('enable-edit-for-create-client-modal', $rowId);
@@ -143,12 +155,24 @@ class NewCustomersTable extends SoaTable
     public function noAnswerAction($rowId): void
     {
         dd("Sin respuesta para agregar nota y seguimiento junto a cambio de estado noAnswer: {$rowId}");
-        // Redirige a la ruta de edición o abre un modal.
+    }
+
+    public function sendWpMessage(Customer $customer)
+    {
+        return redirect("https://wa.me/" . substr($customer->profile->phone_1, 1));
     }
 
     public function makeCall(Customer $customer): void
     {
-        CallController::testCall($customer);
+        $preCustomer = [
+            'id' => $customer->id,
+            'full_name' => $customer->profile->full_name,
+            'country' => $customer->profile->country,
+            'status' => $customer->status,
+            'balance' => $customer->profile->user->wallet->balance,
+        ];
+        $this->dispatch('send-client-basic-information-for-call', $preCustomer);
+        Flux::modal('init-call')->show();
     }
 
     // =================================================================

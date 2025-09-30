@@ -2,8 +2,14 @@
 
 use App\Http\Controllers\Communications\Calls\CallController;
 use App\Http\Controllers\CustomerApiController;
+use App\Http\Controllers\Dashboard\Pages\HelpPageController;
+use App\Livewire\Dashboard\Welcome;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+
+Route::get('/', Welcome::class)
+    ->name('welcome')
+    ->lazy();
 
 Route::get('/customers', [CustomerApiController::class, 'index'])
     ->middleware(['auth', 'role:admin']);
@@ -52,3 +58,9 @@ Route::prefix('crm/services/twilio')
             ->name('status');
     });
 
+# HELP ROUTES (INERTIA, ONLY FRONTEND)
+Route::prefix('pages')
+    ->name('pages.')
+    ->group(function () {
+        Route::get('help', [HelpPageController::class, 'show'])->name('help');
+    });

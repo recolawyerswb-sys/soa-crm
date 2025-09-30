@@ -17,7 +17,7 @@ class ClientTracking extends Model
      */
     protected $fillable = [
         'assignment_id',
-        'action',
+        // 'action',
         'notes',
     ];
 

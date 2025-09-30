@@ -87,7 +87,7 @@
     @endif
 </div>
 
-<script>
+{{-- <script>
     let device;
     let timerInterval;
 
@@ -191,4 +191,4 @@
             clearInterval(timerInterval);
         }
     }
-</script>
+</script> --}}

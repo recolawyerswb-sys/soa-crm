@@ -35,3 +35,43 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* CUSTOM BACKGROUNDS */
+.bg-shape-dots {
+    /* background: #000000;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 1.5px, transparent 1.5px);
+    background-size: 30px 30px;
+    background-position: 0 0; */
+
+    /* ALWAYS LIGHT THEME IS USED BY DEFAULT */
+    @apply bg-gradient-to-r from-slate-50 from-0% via-indigo-50 via-50% to-indigo-100 to-100%;
+    /* background: conic-gradient(at bottom right, #eff5fc, #e9eff7, #edf4fa); */
+
+    @variant dark {
+        background: #020617;
+        background-image:
+            linear-gradient(to right, rgba(71,85,105,0.15) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(71,85,105,0.15) 1px, transparent 1px),
+            radial-gradient(circle at 50% 60%, rgba(236,72,153,0.15) 0%, rgba(168,85,247,0.05) 40%, transparent 70%);
+        background-size: 40px 40px, 40px 40px, 100% 100%;
+    }
+}
+
+.bg-gradient {
+    background: radial-gradient(125% 125% at 50% 10%, #000000 40%, #0d1a36 100%);
+}
+
+/* HEADER BACKGROUND */
+.header-bg {
+    background: transparent;
+
+    @variant dark {
+        background: #020617;
+        background: linear-gradient(180deg, rgba(2, 6, 23, 1) 20%, rgba(6, 6, 61, 0) 88%);
+    }
+}
+
+/* TABLE CUSTOM STYLES */
+.table-bg {
+    @apply dark:bg-[#020617];
+}

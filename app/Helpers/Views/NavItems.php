@@ -12,31 +12,42 @@ class NavItems extends SinglePageNavItems
                 "isGroup" => true,
                 "icon" => "building-storefront",
                 "heading" => "Negocio",
-                "role" => "admin|agente",
+                "role" => "admin|agent",
                 "items" => [
                     // CLIENTES
                     [
                         "routeName" => "business.customers.index",
                         "label" => "Clientes",
                         "icon" => "users",
+                        "canSee" => "admin|agent|agent-lead",
                     ],
                     // AGENTES
                     [
                         "routeName" => "business.agents.index",
                         "label" => "Agentes",
                         "icon" => "briefcase",
+                        "canSee" => "admin|agent-lead",
                     ],
                     // EQUIPOS
                     [
                         "routeName" => "business.teams.index",
                         "label" => "Equipos",
                         "icon" => "user-group",
+                        "canSee" => "admin|agent-lead",
                     ],
                     // ASIGNACIONES
                     [
                         "routeName" => "business.assignments.index",
                         "label" => "Asignaciones",
                         "icon" => "arrow-uturn-up",
+                        "canSee" => "admin|agent|agent-lead",
+                    ],
+                    // SEGUIMIENTOS
+                    [
+                        "routeName" => "business.client-tracking.index",
+                        "label" => "Seguimientos",
+                        "icon" => "signal",
+                        "canSee" => "admin|agent|agent-lead",
                     ],
                 ],
             ],
@@ -44,13 +55,14 @@ class NavItems extends SinglePageNavItems
                 "isGroup" => true,
                 "icon" => "cog-6-tooth",
                 "heading" => "Administrativo",
-                "role" => "admin",
+                "role" => "admin|manager",
                 "items" => [
                     // ROLES Y PERMISOS
                     [
                         "routeName" => "business.access-control.index",
                         "label" => "Roles y permisos",
                         "icon" => "shield-check",
+                        "canSee" => "admin|manager",
                     ],
                 ],
             ],
@@ -64,16 +76,19 @@ class NavItems extends SinglePageNavItems
                         "routeName" => "sells.calls.index",
                         "label" => "Historial",
                         "icon" => "phone",
+                        "canSee" => "admin|agent|agent-lead",
                     ],
                     [
                         "routeName" => "sells.calls.test",
                         "label" => "Pruebas",
                         "icon" => "beaker",
+                        "canSee" => "admin",
                     ],
                     [
                         "routeName" => "sells.calls.reports",
                         "label" => "Reportes",
                         "icon" => "chart-pie",
+                        "canSee" => "admin",
                     ],
                 ],
             ],
@@ -87,11 +102,13 @@ class NavItems extends SinglePageNavItems
                         "routeName" => "wallet.index",
                         "label" => "Cuentas",
                         "icon" => "currency-dollar",
+                        "canSee" => "admin",
                     ],
                     [
                         "routeName" => "wallet.movements.index",
                         "label" => "Movimientos",
                         "icon" => "banknotes",
+                        "canSee" => "admin",
                     ],
                 ],
             ],

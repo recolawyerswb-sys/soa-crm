@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -77,5 +78,16 @@ class Customer extends Model
 
             $this->delete();
         });
+    }
+
+    /**
+     * Accessor para obtener el nombre completo desde el perfil relacionado.
+     * Laravel lo llamará automáticamente cuando pidas el atributo "display_name".
+     */
+    protected function displayName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->profile?->full_name ?? 'Cliente sin perfil',
+        );
     }
 }

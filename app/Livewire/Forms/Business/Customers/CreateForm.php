@@ -109,7 +109,7 @@ class CreateForm extends CustomTranslatedForm
                     'password' => Hash::make('password'),
                 ]);
 
-                $user->assignRole('cliente');
+                $user->assignRole('customer');
 
                 $profile = $user->profile()->create([
                     'full_name' => $this->full_name,

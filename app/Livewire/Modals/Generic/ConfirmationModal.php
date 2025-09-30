@@ -23,6 +23,11 @@ class ConfirmationModal extends Component
         $this->targetId = $targetId;
     }
 
+    public function placeholder()
+    {
+        return view('livewire.placeholders.confirm-modal-skeleton');
+    }
+
     public function render()
     {
         return view('livewire.modals.generic.confirmation-modal');
