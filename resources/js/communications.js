@@ -130,6 +130,7 @@ function initializeTwilioCallHandler() {
         startBtn.addEventListener('click', (event) => {
             const customerId = event.currentTarget.dataset.customerId;
             startCall(customerId);
+            startBtn.setAttribute('disabled', true);
         });
     }
 
@@ -141,6 +142,7 @@ function initializeTwilioCallHandler() {
 
         endBtn.addEventListener('click', () => {
             hangup();
+            startBtn.setAttribute('disabled', false);
         });
     }
 }
