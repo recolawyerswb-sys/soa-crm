@@ -3,15 +3,8 @@
     "file": "assets/_commonjsHelpers-C4iS2aBk.js",
     "name": "_commonjsHelpers"
   },
-  "_call-BrDnqm_Z.js": {
-    "file": "assets/call-BrDnqm_Z.js",
-    "name": "call",
-    "imports": [
-      "__commonjsHelpers-C4iS2aBk.js"
-    ]
-  },
   "resources/css/app.css": {
-    "file": "assets/app-CKXYvaoj.css",
+    "file": "assets/app-BzQBF-0W.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -42,23 +35,12 @@
       "resources/js/Pages/Dashboard/Help/Index.jsx"
     ]
   },
-  "resources/js/communications.js": {
-    "file": "assets/communications-CfuffvP2.js",
-    "name": "communications",
-    "src": "resources/js/communications.js",
-    "isEntry": true,
-    "imports": [
-      "_call-BrDnqm_Z.js",
-      "__commonjsHelpers-C4iS2aBk.js"
-    ]
-  },
   "resources/js/crm.js": {
-    "file": "assets/crm-2NWOYSN4.js",
+    "file": "assets/crm-CKkapbx8.js",
     "name": "crm",
     "src": "resources/js/crm.js",
     "isEntry": true,
     "imports": [
-      "_call-BrDnqm_Z.js",
       "__commonjsHelpers-C4iS2aBk.js"
     ]
   }

@@ -121,15 +121,24 @@ function initializeTwilioCallHandler() {
     const startBtn = document.getElementById('start-call-btn');
     const endBtn = document.getElementById('end-call-btn');
 
-    if (startBtn) {
+    // ✅ PATRÓN DE GUARDIA PARA EL BOTÓN DE INICIO
+    // Solo añade el listener si el botón existe Y si no lo hemos procesado antes.
+    if (startBtn && !startBtn.hasAttribute('data-listener-attached')) {
+        // Marcamos el botón como "procesado"
+        startBtn.setAttribute('data-listener-attached', 'true');
+
         startBtn.addEventListener('click', (event) => {
-            // Leemos el ID del cliente desde el data-attribute del botón
             const customerId = event.currentTarget.dataset.customerId;
             startCall(customerId);
         });
     }
 
-    if (endBtn) {
+    // ✅ PATRÓN DE GUARDIA PARA EL BOTÓN DE COLGAR
+    // Hacemos lo mismo para el botón de colgar.
+    if (endBtn && !endBtn.hasAttribute('data-listener-attached')) {
+        // Marcamos el botón como "procesado"
+        endBtn.setAttribute('data-listener-attached', 'true');
+
         endBtn.addEventListener('click', () => {
             hangup();
         });

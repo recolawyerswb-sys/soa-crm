@@ -42,7 +42,7 @@ class CallController extends Controller
         // Log::info('Parámetros recibidos (intento 2):', $request->all());
 
         $response->say('Conectando su llamada, por favor espere.', ['voice' => 'Polly.Andres-Generative', 'language' => 'es-MX']);
-        $response->play('https://soacrm.recolawyers.com/sounds/ultimo-minuto-rcn.mp3', ['loop' => 1]);
+        // $response->play('https://soacrm.recolawyers.com/sounds/ultimo-minuto-rcn.mp3', ['loop' => 1]);
 
         // Verificamos si recibimos el número desde el JS
         if ($request->has('To')) {
