@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ $title ?? 'SOA CRM - Tu mejor aliado' }}</title>
         @livewireStyles
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/crm.js'])
         @fluxAppearance
     </head>
     <body class="antialiased">

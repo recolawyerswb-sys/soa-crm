@@ -11,7 +11,6 @@ export default defineConfig({
                 'resources/css/custom.css',
                 'resources/js/app.jsx',
                 'resources/js/crm.js',
-                'resources/js/communications.js',
             ],
             refresh: [
                 'resources/routes/**',
