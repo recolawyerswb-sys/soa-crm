@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Communications\Calls;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Services\TwilioService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -33,25 +34,45 @@ class CallController extends Controller
 
     public function voiceResponse(Request $request)
     {
-        // $response = new VoiceResponse();
-        // $response->say('Prueba realizada pandita lider tiene el cosito popochito y delicioso con leche condensada.', ['voice' => 'Polly.Andres-Generative', 'language' => 'es-MX']);
-        // return response($response, 200)->header('Content-Type', 'text/xml');
+        Log::info('Parámetros recibidos en webhook:', $request->all());
 
         $response = new VoiceResponse();
-
-        // Log::info('Parámetros recibidos (intento 2):', $request->all());
+        $numberToDial = null;
 
         $response->say('Conectando su llamada, por favor espere.', ['voice' => 'Polly.Andres-Generative', 'language' => 'es-MX']);
-        // $response->play('https://soacrm.recolawyers.com/sounds/ultimo-minuto-rcn.mp3', ['loop' => 1]);
 
-        // Verificamos si recibimos el número desde el JS
-        if ($request->has('To')) {
-            // AQUI OBTENEMOS EL NUMERO DEL CLIENTE
-            $numberToDial = $request->input('To');
-            $response->dial($numberToDial, ['callerId' => config('services.twilio.from')]);
+        // ✅ Paso 1: Buscamos el 'customerId' que envió el JavaScript.
+        if ($request->has('customerId')) {
+
+            try {
+                // ✅ Paso 2: Buscamos al cliente en la base de datos.
+                // findOrFail detendrá la ejecución si el cliente no existe, pasando al bloque catch.
+                $customer = Customer::with('profile')->findOrFail($request->input('customerId'));
+
+                // ✅ Paso 3: Obtenemos el número de teléfono del modelo del cliente.
+                // Asegúrate de que 'phone' sea el nombre correcto de la columna en tu base de datos.
+                $numberToDial = $customer->profile->phone_1;
+
+            } catch (\Exception $e) {
+                // Si el cliente no se encuentra, lo registramos en el log y le avisamos al usuario.
+                Log::error('IVR Error: No se encontró el cliente con ID: ' . $request->input('customerId'));
+                $response->say('Error, no pudimos encontrar los datos del cliente.');
+                return response($response)->header('Content-Type', 'text/xml');
+            }
+
+        }
+
+        // ✅ Paso 4: Realizamos la llamada si encontramos un número.
+        if ($numberToDial) {
+            $response->dial($numberToDial, [
+                'callerId' => config('services.twilio.from'),
+                // 'action' => route('calls.handleDialStatus'), // Esta acción es para saber el estado final
+                'method' => 'POST'
+            ]);
         } else {
-            $response->say('Error, no se recibió el número de destino. Revisa los logs.');
-            Log::error('El parámetro "To" no fue encontrado en la request.');
+            // Si no se recibió 'customerId' o hubo otro problema.
+            $response->say('Error, no se recibió un destino para la llamada.');
+            Log::error('El parámetro "customerId" no fue encontrado en la request.');
         }
 
         return response($response)->header('Content-Type', 'text/xml');
