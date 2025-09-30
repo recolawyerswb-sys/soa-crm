@@ -56,13 +56,15 @@
             Cerrar
         </flux:button>
         <flux:spacer />
-        {{-- ✅ Botón para iniciar llamada, llama a JS con el ID del cliente --}}
-        <flux:button id="start-call-btn" variant="primary" data-customer-id="{{ $this->customerId }}">
-            Iniciar llamada
-        </flux:button>
-        {{-- ✅ Botón para colgar, llama a la función hangup() --}}
-        <flux:button id="end-call-btn" variant="danger" class="hidden">
-            Colgar
-        </flux:button>
+        <div class="flex gap-2">
+            {{-- ✅ Botón para iniciar llamada, llama a JS con el ID del cliente --}}
+            <flux:button id="start-call-btn" variant="primary" data-customer-id="{{ $this->customerId }}">
+                Iniciar llamada
+            </flux:button>
+            {{-- ✅ Botón para colgar, llama a la función hangup() --}}
+            <flux:button id="end-call-btn" variant="danger" class="hidden">
+                Colgar
+            </flux:button>
+        </div>
     </div>
 </div>

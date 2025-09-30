@@ -94,6 +94,14 @@ function startTimer() {
     const durationElement = document.getElementById('call-duration');
     if (!durationElement) return;
 
+    // ✅ AÑADIR ESTA VERIFICACIÓN (GUARDIA)
+    // Si el elemento no existe cuando se inicia el timer, mostramos un error en consola
+    // y salimos de la función para evitar que se rompa.
+    if (!durationElement) {
+        console.error('Error: No se encontró el elemento "call-duration". El temporizador no puede iniciar.');
+        return;
+    }
+
     timerInterval = setInterval(() => {
         seconds++;
         const min = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -130,7 +138,10 @@ function initializeTwilioCallHandler() {
         startBtn.addEventListener('click', (event) => {
             const customerId = event.currentTarget.dataset.customerId;
             startCall(customerId);
-            startBtn.setAttribute('disabled', true);
+
+            startBtn.disabled = true;
+            // ✅ Añadimos las clases visuales de "desactivado"
+            startBtn.classList.add('opacity-50', 'pointer-events-none');
         });
     }
 
@@ -142,7 +153,9 @@ function initializeTwilioCallHandler() {
 
         endBtn.addEventListener('click', () => {
             hangup();
-            startBtn.setAttribute('disabled', false);
+            startBtn.disabled = false;
+            // ✅ Quitamos las clases visuales de "desactivado"
+            startBtn.classList.remove('opacity-50', 'pointer-events-none');
         });
     }
 }
