@@ -4,6 +4,7 @@ import { Device } from "@twilio/voice-sdk";
 // TWILIO SERVICES
 let device;
 let timerInterval;
+let callStatusElement, callDurationElement;
 
 // Función principal que se activa al hacer clic en "Iniciar llamada"
 async function startCall(customerId) {
@@ -25,6 +26,16 @@ async function startCall(customerId) {
     endBtn.classList.remove('hidden');
     inProgressTitle.classList.remove('hidden');
     closeBtn.disabled = true;
+
+    // ✅ 2. Busca y asigna los elementos AHORA, que sabemos que son visibles.
+    callStatusElement = document.getElementById('call-status');
+    callDurationElement = document.getElementById('call-duration');
+
+    // Si por alguna razón siguen sin encontrarse, detenemos y mostramos un error.
+    if (!callStatusElement || !callDurationElement) {
+        console.error("No se pudieron encontrar los elementos de estado o duración en el DOM.");
+        return;
+    }
 
     updateCallStatus("Conectando...");
 
@@ -85,19 +96,17 @@ function hangup() {
 // --- Funciones de Ayuda para la UI ---
 
 function updateCallStatus(status) {
-    const statusElement = document.getElementById('call-status');
-    if (statusElement) statusElement.textContent = status;
+    if (callStatusElement) callStatusElement.textContent = status;
 }
 
 function startTimer() {
     let seconds = 0;
-    const durationElement = document.getElementById('call-duration');
-    if (!durationElement) return;
+    if (!callDurationElement) return;
 
     // ✅ AÑADIR ESTA VERIFICACIÓN (GUARDIA)
     // Si el elemento no existe cuando se inicia el timer, mostramos un error en consola
     // y salimos de la función para evitar que se rompa.
-    if (!durationElement) {
+    if (!callDurationElement) {
         console.error('Error: No se encontró el elemento "call-duration". El temporizador no puede iniciar.');
         return;
     }
@@ -106,7 +115,7 @@ function startTimer() {
         seconds++;
         const min = Math.floor(seconds / 60).toString().padStart(2, '0');
         const sec = (seconds % 60).toString().padStart(2, '0');
-        durationElement.textContent = `${min}:${sec}`;
+        callDurationElement.textContent = `${min}:${sec}`;
     }, 1000);
 }
 
