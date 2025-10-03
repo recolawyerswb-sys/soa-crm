@@ -8,36 +8,65 @@ use Twilio\Rest\Client;
 class CallHistory extends Component
 {
     public $calls = [];
+    public $pageSize = 10; // Número de llamadas por página
 
-    public function getCalls()
+    // Propiedades para manejar la paginación de Twilio
+    public $nextPageSid = null;
+    public $previousPageSid = null;
+
+    public function mount()
     {
-        // Esta es la misma lógica que usamos para obtener el historial
+        $this->loadCalls();
+    }
+
+    public function loadCalls($pageSid = null)
+    {
         $twilio = new Client(config('services.twilio.sid'), config('services.twilio.token'));
 
         try {
-            $callRecords = $twilio->calls->read([], 20); // Leemos las últimas 20 llamadas
+            // Pasamos el SID de la página que queremos cargar
+            $page = $twilio->calls->page(['page' => $pageSid, 'pageSize' => $this->pageSize]);
 
-            // Usamos una colección de Laravel para mapear y limpiar los datos
-            $this->calls = collect($callRecords)->map(function($call) {
+            // Guardamos los identificadores para los botones de paginación
+            $this->nextPageSid = $this->extractSidFromUrl($page->getNextPageUrl());
+            $this->previousPageSid = $this->extractSidFromUrl($page->getPreviousPageUrl());
+
+            $this->calls = collect($page->records)->map(function($call) {
                 return [
                     'from' => $call->fromFormatted,
                     'to' => $call->toFormatted,
                     'status' => $call->status,
-                    'start_time' => $call->startTime, // Pasamos el objeto DateTime completo
+                    'start_time' => $call->startTime,
+                    'end_time' => $call->endTime,
                     'duration' => $call->duration,
+                    'caller_name' => $call->callerName,
+                    'answered_by' => $call->answeredBy,
                 ];
             })->toArray();
 
         } catch (\Exception $e) {
-            // Manejar el error, por ejemplo, mostrando un mensaje en la vista
             session()->flash('error', 'No se pudo cargar el historial de llamadas.');
             $this->calls = [];
         }
     }
 
-    public function mount()
+    // Métodos para la paginación
+    public function nextPage()
     {
-        $this->getCalls();
+        $this->loadCalls($this->nextPageSid);
+    }
+
+    public function previousPage()
+    {
+        $this->loadCalls($this->previousPageSid);
+    }
+
+    // Helper para extraer el SID de la URL de paginación de Twilio
+    private function extractSidFromUrl($url)
+    {
+        if (!$url) return null;
+        parse_str(parse_url($url, PHP_URL_QUERY), $queryParams);
+        return $queryParams['Page'] ?? null;
     }
 
     public function placeholder()

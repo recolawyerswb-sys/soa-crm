@@ -118,6 +118,13 @@ models:
     relationships:
       belongsTo: Assignment
 
+  CallReport:
+    duration: string default:00s
+    callStatus: string # Answered, hang up
+    notes: string
+    status: string nullable
+    phase: string nullable
+
   EmailTemplate:
     name: string
     subject: string
