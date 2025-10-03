@@ -19,7 +19,7 @@ class CallHistory extends Component
         $this->loadCalls();
     }
 
-    public function loadCalls($pageSid = '1')
+    public function loadCalls($pageSid = '')
     {
         $twilio = new Client(config('services.twilio.sid'), config('services.twilio.token'));
 
@@ -68,7 +68,7 @@ class CallHistory extends Component
     {
         if (!$url) return null;
         parse_str(parse_url($url, PHP_URL_QUERY), $queryParams);
-        return $queryParams['Page'] ?? null;
+        return $queryParams['PageToken'] ?? null;
     }
 
     public function placeholder()
