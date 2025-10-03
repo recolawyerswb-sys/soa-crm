@@ -19,13 +19,13 @@ class CallHistory extends Component
         $this->loadCalls();
     }
 
-    public function loadCalls($pageSid = null)
+    public function loadCalls($pageSid = '1')
     {
         $twilio = new Client(config('services.twilio.sid'), config('services.twilio.token'));
 
         try {
             // Pasamos el SID de la página que queremos cargar
-            $page = $twilio->calls->page(['page' => $pageSid, 'pageSize' => $this->pageSize]);
+            $page = $twilio->calls->page([], $this->pageSize, $pageSid);
 
             // Guardamos los identificadores para los botones de paginación
             $this->nextPageSid = $this->extractSidFromUrl($page->getNextPageUrl());
