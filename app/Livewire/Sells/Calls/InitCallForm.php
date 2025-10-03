@@ -3,7 +3,10 @@
 namespace App\Livewire\Sells\Calls;
 
 use App\Helpers\ClientHelper;
+use App\Models\Assignment;
+use App\Models\CallReport;
 use App\Models\Customer;
+use App\Traits\Notifies;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
@@ -11,6 +14,8 @@ use Livewire\Component;
 
 class InitCallForm extends Component
 {
+    use Notifies;
+
     #[Locked]
     public $customerId;
 
@@ -44,6 +49,29 @@ class InitCallForm extends Component
         $this->status = $customer['status'];
         $this->country = $customer['country'];
         $this->balance = $customer['balance'];
+    }
+
+    #[On('saveCallReport')]
+    public function saveReport($callSid, $notes, $status, $phase)
+    {
+        // Validación (opcional pero recomendada)
+        if (!$this->customer) return;
+
+        $currentAssignment = Assignment::query()->where('customer_id', $this->customerId)->first();
+
+        // Creamos el reporte preliminar
+        CallReport::create([
+            'call_sid' => $callSid,
+            'call_status' => $status,
+            'call_notes' => $notes,
+            'customer_phase' => $phase,
+            'customer_status' => $status,
+            'assignment_id' => $currentAssignment ? $currentAssignment->id : null,
+            // duration y final_status se quedan en null por ahora
+        ]);
+
+        // Opcional: notificar al usuario que se guardó
+        $this->notify('report-saved-success');
     }
 
     public function mount()

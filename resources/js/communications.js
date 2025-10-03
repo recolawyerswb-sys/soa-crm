@@ -5,6 +5,7 @@ import { Device } from "@twilio/voice-sdk";
 let device;
 let timerInterval;
 let callStatusElement, callDurationElement;
+let currentCallSid = null;
 
 // Función principal que se activa al hacer clic en "Iniciar llamada"
 async function startCall(customerId) {
@@ -59,6 +60,8 @@ async function startCall(customerId) {
         });
 
         device.on('connect', () => {
+            currentCallSid = call.parameters.CallSid;
+            console.log('Llamada conectada con SID:', currentCallSid);
             updateCallStatus("En llamada");
             startTimer();
         });
@@ -66,6 +69,21 @@ async function startCall(customerId) {
         device.on('disconnect', () => {
             updateCallStatus("Llamada finalizada");
             stopTimer();
+            // ✅ Cuando la llamada termina, llamamos a Livewire para guardar el reporte
+            if (currentCallSid) {
+                // Obtenemos los valores actuales de los inputs del formulario
+                const notes = document.querySelector('[wire\\:model="form.notes"]').value;
+                const status = document.querySelector('[wire\\:model="form.status"]').value;
+                const phase = document.querySelector('[wire\\:model="form.phase"]').value;
+
+                // Llamamos al método del backend
+                Livewire.dispatch('saveCallReport', {
+                    callSid: currentCallSid,
+                    notes: notes,
+                    status: status,
+                    phase: phase
+                });
+            }
             // Opcional: Permitir cerrar el modal después de colgar
             closeBtn.disabled = false;
         });

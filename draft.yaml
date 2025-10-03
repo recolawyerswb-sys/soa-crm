@@ -119,11 +119,17 @@ models:
       belongsTo: Assignment
 
   CallReport:
-    duration: string default:00s
-    callStatus: string # Answered, hang up
-    notes: string
-    status: string nullable
-    phase: string nullable
+    call_sid: string unique comment:ID de llamadas de Twilio
+    call_status: string nullable
+    duration: integer nullable
+
+    call_notes: text nullable
+    customer_phase: string
+    customer_status: string
+
+    assignment_id: unsignedInteger
+    relationships:
+      belongsTo: Assignment
 
   EmailTemplate:
     name: string
