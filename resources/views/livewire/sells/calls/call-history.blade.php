@@ -13,12 +13,18 @@
         <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center justify-between">
                 {{-- Información del Llamante y Destinatario --}}
-                <div class="flex items-center space-x-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    <span>{{ $call['from'] }}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                    <span>{{ $call['to'] }}</span>
+                <div class="flex flex-col">
+                    <div class="flex items-center space-x-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        <span>{{ $call['from'] }}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                        <span>{{ $call['to'] }}</span>
+                    </div>
+                    {{-- ✅ Nombre del llamante (Caller Name) si existe --}}
+                    @if($call['caller_name'])
+                        <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            Llamante: {{ $call['caller_name'] }}
+                        </span>
+                    @endif
                 </div>
 
                 {{-- Estado de la llamada con una insignia de color --}}
@@ -37,20 +43,36 @@
             </div>
 
             <div class="mt-3 flex items-end justify-between text-sm text-gray-500 dark:text-gray-400">
-                {{-- Fecha y Hora --}}
+                {{-- Fecha y Hora de inicio y fin --}}
                 <div>
-                    <span>{{ $call['start_time']->format('d M Y') }}</span>
-                    <span class="mx-1">·</span>
-                    <span>{{ $call['start_time']->format('h:i A') }}</span>
+                    <div>
+                        <span class="font-medium text-gray-600 dark:text-gray-300">Inicio:</span>
+                        <span>{{ $call['start_time']->format('d M Y, h:i:s A') }}</span>
+                    </div>
+                    {{-- ✅ Hora de finalización --}}
+                    @if($call['end_time'])
+                    <div class="mt-1">
+                        <span class="font-medium text-gray-600 dark:text-gray-300">Fin:</span>
+                        <span>{{ $call['end_time']->format('h:i:s A') }}</span>
+                    </div>
+                    @endif
                 </div>
 
-                {{-- Duración de la llamada formateada --}}
-                <div class="font-medium text-gray-700 dark:text-gray-300">
-                    @php
-                        $minutes = floor($call['duration'] / 60);
-                        $seconds = $call['duration'] % 60;
-                    @endphp
-                    <span>Duración: {{ sprintf('%02d:%02d', $minutes, $seconds) }}</span>
+                <div class="text-right">
+                    {{-- Duración --}}
+                    <div class="font-medium text-gray-700 dark:text-gray-300">
+                        @php
+                            $minutes = floor($call['duration'] / 60);
+                            $seconds = $call['duration'] % 60;
+                        @endphp
+                        <span>Duración: {{ sprintf('%02d:%02d', $minutes, $seconds) }}</span>
+                    </div>
+                    {{-- ✅ Respondida por (Answered By) --}}
+                    @if($call['answered_by'])
+                    <div class="text-xs mt-1">
+                        <span>Respondida por: {{ $call['answered_by'] }}</span>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -64,26 +86,14 @@
      {{-- ✅ Controles de Paginación --}}
     <div class="flex justify-between items-center mt-6">
         {{-- Botón Anterior --}}
-        @if ($previousPageSid)
-            <button wire:click="previousPage" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
-                Anterior
-            </button>
-        @else
-            <button class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-200 rounded-md cursor-not-allowed dark:bg-gray-900 dark:text-gray-500 dark:border-gray-700" disabled>
-                Anterior
-            </button>
-        @endif
+        <flux:button variant="primary" wire:click="previousPage" :disabled="!$previousPageSid">
+            Anterior
+        </flux:button>
 
         {{-- Botón Siguiente --}}
-        @if ($nextPageSid)
-            <button wire:click="nextPage" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
-                Siguiente
-            </button>
-        @else
-            <button class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-200 rounded-md cursor-not-allowed dark:bg-gray-900 dark:text-gray-500 dark:border-gray-700" disabled>
-                Siguiente
-            </button>
-        @endif
+        <flux:button variant="primary" wire:click="nextPage" :disabled="!$nextPageSid">
+            Siguiente
+        </flux:button>
     </div>
 
 </div>
