@@ -17,8 +17,6 @@ class CallHistory extends Component
         try {
             $callRecords = $twilio->calls->read([], 20); // Leemos las últimas 20 llamadas
 
-            dd($callRecords);
-
             // Usamos una colección de Laravel para mapear y limpiar los datos
             $this->calls = collect($callRecords)->map(function($call) {
                 return [
