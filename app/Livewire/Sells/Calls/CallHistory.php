@@ -31,7 +31,7 @@ class CallHistory extends Component
             $this->nextPageSid = $this->extractSidFromUrl($page->getNextPageUrl());
             $this->previousPageSid = $this->extractSidFromUrl($page->getPreviousPageUrl());
 
-            $this->calls = collect($page->records)->map(function($call) {
+            $this->calls = collect($page)->map(function($call) {
                 return [
                     'from' => $call->fromFormatted,
                     'to' => $call->toFormatted,
