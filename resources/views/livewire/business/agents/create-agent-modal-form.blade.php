@@ -26,13 +26,23 @@
 
     {{-- AGENT FIELDS --}}
     <flux:heading>{{ __('Datos laborales') }}</flux:heading>
-    <div class="grid grid-cols-1 gap-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <flux:select label="Posicion del agente" wire:model="form.position" placeholder="Elije la posicion inicial...">
         @foreach ($this->positions as $position)
             <flux:select.option value="{{ $position }}">{{ $position }}</flux:select.option>
         @endforeach
         </flux:select>
         <x-dashboard.forms.select-agent-team model="form.team_id" :options="$this->teams" />
+        <flux:select label="Día de la semana" wire:model="form.day_off" placeholder="Elije el día de la semana...">
+            <flux:select.option value="1">{{ __('Lunes') }}</flux:select.option>
+            <flux:select.option value="2">{{ __('Martes') }}</flux:select.option>
+            <flux:select.option value="3">{{ __('Miércoles') }}</flux:select.option>
+            <flux:select.option value="4">{{ __('Jueves') }}</flux:select.option>
+            <flux:select.option value="5">{{ __('Viernes') }}</flux:select.option>
+            <flux:select.option value="6">{{ __('Sábado') }}</flux:select.option>
+            <flux:select.option value="7">{{ __('Domingo') }}</flux:select.option>
+        </flux:select>
+        <flux:input type='time' label="Hora de entrada" wire:model="form.checkin_hour"/>
         <flux:radio.group wire:model="form.status" label="Estado inicial">
             <flux:radio value="1" label="Activo" checked />
             <flux:radio value="0" label="Inactivo" />

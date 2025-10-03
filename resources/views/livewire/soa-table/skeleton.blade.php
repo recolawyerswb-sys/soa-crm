@@ -1,14 +1,18 @@
 <div class="table-bg text-slate-600 dark:text-slate-400 p-4 sm:p-6 rounded-lg">
 
     {{-- INICIO: CONTROLES DE ACCIONES MASIVAS --}}
-    @if(count($selectedRows) > 0 && count($this->bulkActions()) > 0)
+    @if($bulkActionsAreEnabled && count($selectedRows) > 0)
     <div class="mb-3 flex justify-between items-center">
         <div class="flex flex-col gap-2">
             <span class="text-xs font-semibold dark:text-slate-400 text-slate-600">{{ count($selectedRows) }} filas seleccionadas</span>
             <div class="flex gap-2">
                 <flux:select size='xs' placeholder="Seleccione una opcion..." wire:model.live="activeBulkAction">
                     @foreach($this->bulkActions() as $action)
-                        <option value="{{ $action->label }}">{{ $action->label }}</option>
+                        {{-- ========= INICIO: CONDICIÓN canSee AÑADIDA ========= --}}
+                        @if (is_null($action->canSee) || call_user_func($action->canSee))
+                            <option value="{{ $action->label }}">{{ $action->label }}</option>
+                        @endif
+                        {{-- ========= FIN: CONDICIÓN canSee AÑADIDA ========= --}}
                     @endforeach
                 </flux:select>
                 <flux:button wire:click="runBulkAction" size="xs" variant="primary">
@@ -141,12 +145,14 @@
             <table class="min-w-full">
                 <thead>
                     <tr>
-                        @if (count($actions) > 0)
+                        @if ($actionsAreEnabled && count($actions) > 0)
                             <th scope="col" class="ps-o pe-4 text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Acciones</th>
                         @endif
                         <th class="p-4 w-4">
-                            <input type="checkbox" wire:model.live="selectAll"
-                                class="rounded border-slate-500 bg-slate-700 text-indigo-600 focus:ring-indigo-500">
+                                @if($bulkActionsAreEnabled) {{-- <-- AÑADIR CONDICIÓN --}}
+                                    <input type="checkbox" wire:model.live="selectAll"
+                                        class="rounded border-slate-500 bg-slate-700 text-indigo-600 focus:ring-indigo-500">
+                                @endif {{-- <-- AÑADIR CONDICIÓN --}}
                         </th>
                         @foreach ($columns as $column)
                             @if (is_null($column->canSee) || call_user_func($column->canSee))
@@ -166,8 +172,8 @@
                 </thead>
                 <tbody class="divide-y divide-slate-300 dark:divide-slate-600">
                     @forelse ($rows as $row)
-                        <tr wire:key="row-{{ $row->id }}" class="{{ in_array($row->id, $selectedRows) ? 'bg-slate-800' : '' }} hover:bg-slate-700/50">
-                            @if (count($actions) > 0)
+                        <tr wire:key="row-{{ $row->id }}" class="{{ in_array($row->id, $selectedRows) ? 'bg-slate-300 dark:bg-slate-900' : '' }} hover:bg-slate-200 dark:hover:bg-slate-800">
+                            @if ($actionsAreEnabled && count($actions) > 0)
                                 <td class="py-4 text-left text-sm whitespace-nowrap">
                                     <div class="flex items-center justify-center gap-2">
                                         <flux:dropdown>
@@ -189,8 +195,10 @@
                                 </td>
                             @endif
                             <td class="p-4">
-                                <input type="checkbox" wire:model.live="selectedRows" value="{{ $row->id }}"
-                                    class="rounded border-slate-500 bg-slate-700 text-indigo-600 focus:ring-indigo-500">
+                                @if($bulkActionsAreEnabled) {{-- <-- AÑADIR CONDICIÓN --}}
+                                    <input type="checkbox" wire:model.live="selectedRows" value="{{ $row->id }}"
+                                        class="rounded border-slate-500 bg-slate-700 text-indigo-600 focus:ring-indigo-500">
+                                @endif {{-- <-- AÑADIR CONDICIÓN --}}
                             </td>
                             @foreach ($columns as $column)
                                 @if (is_null($column->canSee) || call_user_func($column->canSee))

@@ -1,13 +1,12 @@
 <?php
 
 use App\Http\Controllers\Communications\Calls\CallController;
+use App\Livewire\Sells\Calls\CallHistory;
 use App\Livewire\Sells\Calls\CallsTest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
-use Twilio\Jwt\ClientToken;
-use Twilio\TwiML\VoiceResponse;
 
 // LLAMADAS ROUTES
 Route::prefix('sells')
@@ -28,5 +27,8 @@ Route::prefix('sells')
                     ->name('reports')
                     ->lazy()
                     ->middleware(['role:admin']);
+                Route::get('history', CallHistory::class)
+                    ->name('history')
+                    ->lazy();
             });
     });

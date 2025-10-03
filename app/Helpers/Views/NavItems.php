@@ -72,18 +72,24 @@ class NavItems extends SinglePageNavItems
                 "heading" => "Llamadas",
                 "role" => "admin|agent|agent-leader",
                 "items" => [
+                    // [
+                    //     "routeName" => "sells.calls.index",
+                    //     "label" => "Historial",
+                    //     "icon" => "phone",
+                    //     "canSee" => "admin|agent|agent-lead",
+                    // ],
                     [
-                        "routeName" => "sells.calls.index",
+                        "routeName" => "sells.calls.history",
                         "label" => "Historial",
-                        "icon" => "phone",
-                        "canSee" => "admin|agent|agent-lead",
-                    ],
-                    [
-                        "routeName" => "sells.calls.test",
-                        "label" => "Pruebas",
-                        "icon" => "beaker",
+                        "icon" => "clock",
                         "canSee" => "admin",
                     ],
+                    // [
+                    //     "routeName" => "sells.calls.test",
+                    //     "label" => "Pruebas",
+                    //     "icon" => "beaker",
+                    //     "canSee" => "admin",
+                    // ],
                     [
                         "routeName" => "sells.calls.reports",
                         "label" => "Reportes",

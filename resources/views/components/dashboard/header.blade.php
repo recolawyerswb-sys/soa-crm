@@ -30,9 +30,12 @@
                 <flux:button variant="ghost" icon:trailing="currency-dollar" size="sm" class="cursor-pointer" @click="$dispatch('unable-edit-for-create-movement-modal')">Crear Movimiento</flux:button>
             </flux:modal.trigger>
         @endrole
+        @role('agent|lead_agent')
+            <flux:button wire:navigate variant="primary" href="{{ route('business.customers.index') }}" icon:trailing="users" size="sm" class="cursor-pointer">Ver clientes</flux:button>
+        @endrole
     </div>
     {{-- USER OPTIONS NAVBAR --}}
-    <flux:navbar class="gap-2">
+    <flux:navbar class="gap-2 ms-2">
         {{-- ADMIN HELPER BUTTONS --}}
         <x-table.theme-picker />
 

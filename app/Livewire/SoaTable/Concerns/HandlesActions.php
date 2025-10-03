@@ -14,6 +14,8 @@ trait HandlesActions
     public array $selectedRows = [];
     public bool $selectAll = false;
     public ?string $activeBulkAction = null;
+    public bool $bulkActionsAreEnabled = true;
+    public bool $actionsAreEnabled = true;
     public ?string $viewRouteName = null;
 
     // Métodos Públicos para Acciones por Defecto
@@ -51,10 +53,29 @@ trait HandlesActions
         return $actions;
     }
 
+     /**
+     * Define la condición para habilitar las acciones de fila.
+     * Puede ser sobrescrito por las clases hijas.
+     */
+    protected function enableActions(): bool
+    {
+        return true; // Habilitado por defecto
+    }
+
+    /**
+     * Define la condición para habilitar las acciones masivas.
+     * Puede ser sobrescrito por las clases hijas.
+     */
+    protected function enableBulkActions(): bool
+    {
+        return auth()->user()->isAdmin(); // Habilitado por defecto
+    }
+
     protected function defaultBulkActions(): array
     {
         return [
-            BulkAction::make('Eliminar Seleccionados', 'deleteSelected'),
+            BulkAction::make('Eliminar Seleccionados', 'deleteSelected')
+                ->canSee(fn () => auth()->user()->isAdmin()),
         ];
     }
 

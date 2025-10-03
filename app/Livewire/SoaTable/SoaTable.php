@@ -32,6 +32,17 @@ abstract class SoaTable extends Component
     abstract protected function columns(): array;
     abstract protected function query(): Builder;
 
+    /**
+     * >> NUEVO MÉTODO mount()
+     * Se ejecuta cuando el componente se inicializa.
+     */
+    public function mount(): void
+    {
+        // Ejecuta el método de habilitación y guarda el resultado en la propiedad.
+        $this->bulkActionsAreEnabled = $this->enableBulkActions();
+        $this->actionsAreEnabled = $this->enableActions();
+    }
+
     // Métodos del Ciclo de Vida de Livewire
     #[On('refreshTableData')]
     public function refreshTable()

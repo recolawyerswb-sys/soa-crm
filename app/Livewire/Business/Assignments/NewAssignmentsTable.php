@@ -32,11 +32,26 @@ class NewAssignmentsTable extends SoaTable
      */
     public function query(): Builder
     {
-        // Usamos el modelo definido para iniciar la consulta.
-        // Puedes agregar relaciones que necesites con with().
-        return Assignment::query()
-            ->with(['agent.profile', 'customer.profile'])
-            ->orderByDesc('id');
+        $customerQuery = '';
+
+        switch (auth()->check()) {
+            case auth()->user()->isAgente():
+                $agentId = auth()->user()->profile->agent->id;
+                // RETRIEVE RELATED AGENT RESULTS
+                $customerQuery = Assignment::query()
+                    ->where('agent_id', $agentId)
+                    ->with(['agent.profile', 'customer.profile'])
+                    ->orderByDesc('id');
+            break;
+            case auth()->user()->isAdmin():
+                // RETRIEVE ALL RESULTS
+                $customerQuery = Assignment::query()
+                    ->with(['agent.profile', 'customer.profile'])
+                    ->orderByDesc('id');
+            break;
+        }
+
+        return $customerQuery;
     }
 
     /**
@@ -51,11 +66,20 @@ class NewAssignmentsTable extends SoaTable
                 ->searchable(),
             Column::make('Cliente', 'customer.profile.full_name')
                 ->searchable(),
-            Column::make('Estado', 'status'),
+            Column::makeView('Estado', 'livewire.business.assignments.table.status-column'),
             Column::make('Notas generales', 'notes'),
             // Column::make('Slogan', 'slogan')
             //     ->addClasses('font-bold'),
         ];
+    }
+
+    /**
+     * Habilita las acciones de fila solo para usuarios
+     * con el permiso 'edit customers'.
+     */
+    protected function enableActions(): bool
+    {
+        return auth()->user()->isAdmin();
     }
 
     /**
@@ -64,7 +88,9 @@ class NewAssignmentsTable extends SoaTable
     protected function additionalActions(): array
     {
         return [
-            Action::make('fastEdit', 'pencil'),
+            Action::make('fastEdit', 'pencil')
+                ->label('editar')
+                ->canSee(fn () => auth()->user()->isAdmin()),
             // Action::make('Llamar', 'makeCall')
             //     ->classes('text-green-600 hover:text-green-900 font-bold'), // Clases personalizadas
         ];

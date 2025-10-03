@@ -38,11 +38,37 @@ class NewCustomersTable extends SoaTable
      */
     public function query(): Builder
     {
+        $customerQuery = '';
+
+        switch (auth()->check()) {
+            case auth()->user()->isAgente():
+            $agentId = auth()->user()->profile->agent->id;
+            // RETRIEVE RELATED AGENT RESULTS
+            $customerQuery = Customer::query()
+                ->whereHas('assignment', function ($query) use ($agentId) {
+
+                    // Dentro de esta función, $query es una consulta sobre el modelo Assignment.
+                    // Aquí es donde filtramos las asignaciones para que solo nos quedemos
+                    // con las que pertenecen al agente actual.
+                    // NOTA: Asegúrate de que la columna en tu tabla 'assignments'
+                    // que guarda la relación con el agente se llame 'agent_id'.
+                    // Si tiene otro nombre, simplemente ajústalo aquí.
+                    $query->where('agent_id', $agentId);
+
+                })
+                ->with(['assignment.agent.profile', 'profile.user.wallet'])
+                ->orderByDesc('id');
+            break;
+            case auth()->user()->isAdmin():
+            // RETRIEVE ALL RESULTS
+            $customerQuery = Customer::query()
+                ->with(['assignment.agent.profile', 'profile.user.wallet'])
+                ->orderByDesc('id');
+            break;
+        }
         // Usamos el modelo definido para iniciar la consulta.
         // Puedes agregar relaciones que necesites con with().
-        return Customer::query()
-            ->with(['assignment.agent.profile', 'profile.user.wallet'])
-            ->orderByDesc('id');
+        return $customerQuery;
     }
 
     /**
@@ -82,14 +108,16 @@ class NewCustomersTable extends SoaTable
             // Action::make('noAnswerAction', 'chat-bubble-bottom-center-text')
             //     ->canSee(fn () => Auth::user()->isAdmin()),
             Action::make('showDetails', 'eye')
-                ->label('Ver detalles'),
+                ->label('Ver detalles')
+                ->canSee(fn() => auth()->user()->isAdmin()),
             Action::make('fastEdit', 'pencil')
                 ->label('Editar')
                 ->canSee(fn () => auth()->user()->isAdmin()),
             Action::make('makeCall', 'phone')
                 ->label('Llamar'),
             Action::make('sendWpMessage', 'chat-bubble-oval-left-ellipsis')
-                ->label('Abrir Whatsapp'),
+                ->label('Abrir Whatsapp')
+                ->canSee(fn() => auth()->user()->isAdmin()),
         ];
     }
 

@@ -53,7 +53,13 @@ class CreateAgentForm extends CustomTranslatedForm
     public $position = '';
 
     #[Validate('nullable|string|max:50')]
-    public $status = '';
+    public $status = '1';
+
+    #[Validate('nullable|string|max:50')]
+    public $day_off = '';
+
+    #[Validate('nullable|string|max:50')]
+    public $checkin_hour = '';
 
     #[Validate('nullable|max:50')]
     public ?bool $is_leader = false;
@@ -63,6 +69,7 @@ class CreateAgentForm extends CustomTranslatedForm
 
     protected $casts = [
         'is_leader' => 'boolean',
+        'checkin_hour' => 'datetime',
     ];
 
     public function save(bool $isEditEnabled = false, int $agentId = null)
@@ -94,6 +101,8 @@ class CreateAgentForm extends CustomTranslatedForm
                 $agent->update([
                     'position' => $this->position,
                     'status' => $this->status,
+                    'day_off' => $this->day_off,
+                    'checkin_hour' => $this->checkin_hour,
                     'is_leader' => (bool) $this->is_leader,
                     'team_id' => $this->team_id,
                 ]);
@@ -106,7 +115,7 @@ class CreateAgentForm extends CustomTranslatedForm
                     'password' => Hash::make('password'),
                 ]);
 
-                $user->assignRole('agente');
+                $user->assignRole('agent');
 
                 $profile = $user->profile()->create([
                     'full_name' => $this->full_name,
@@ -124,6 +133,8 @@ class CreateAgentForm extends CustomTranslatedForm
                 $agent = $profile->agent()->create([
                     'position' => $this->position,
                     'status' => $this->status,
+                    'day_off' => $this->day_off,
+                    'checkin_hour' => $this->checkin_hour,
                     'is_leader' => (bool) $this->is_leader,
                     'team_id' => $this->team_id,
                 ]);

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Dashboards;
 
+use App\Helpers\Agent\FormatHelper;
 use App\Helpers\Views\MiscHelper;
 use Livewire\Component;
 
@@ -29,8 +30,8 @@ class AgentDashboard extends Component
 
         // USER DATA
         $this->userName = auth()->user()->name;
-        $this->dayOff = $agent->day_off;
-        $this->checkInHour = $agent->checkin_hour;
+        $this->dayOff = FormatHelper::formatDayOff($agent->day_off);
+        $this->checkInHour = FormatHelper::formatCheckinHour($agent->checkin_hour);
         $this->attendanceStatus = $agent->getLastAttendanceStatus();
 
         // STATS DATA

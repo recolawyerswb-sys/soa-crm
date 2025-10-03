@@ -33,7 +33,11 @@ class CreateClientTrackingModalForm extends Component
     public function mount()
     {
         $this->modalViewName = 'create-client-tracking';
-        $this->customers = ClientHelper::getCustomersAsArrayWithIdsAsKeys();
+        if (auth()->user()->isAgente()){
+            $this->customers = ClientHelper::getRelatedAgentCustomersAsArrayWithIdsAsKeys();
+        } else if (auth()->user()->isAdmin()) {
+            $this->customers = ClientHelper::getCustomersAsArrayWithIdsAsKeys();
+        }
         $this->agents = AgentHelper::getAgentsAsArrayWithIdsAsKeys();
     }
 

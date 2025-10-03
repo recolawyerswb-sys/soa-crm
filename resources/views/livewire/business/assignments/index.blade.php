@@ -5,11 +5,13 @@
     </div>
     <div class="index-model-actions">
         <!-- Trigger for creating a new client. MODAL. Only change the name -->
-        <flux:modal.trigger name="{{ $primaryModalName }}">
-            <flux:button icon="plus" variant="primary" @click="$dispatch('unable-edit-for-create-assignment-modal')">
-                {{ $primaryBtnLabel }}
-            </flux:button>
-        </flux:modal.trigger>
+        @role('admin')
+            <flux:modal.trigger name="{{ $primaryModalName }}">
+                <flux:button icon="plus" variant="primary" @click="$dispatch('unable-edit-for-create-assignment-modal')">
+                    {{ $primaryBtnLabel }}
+                </flux:button>
+            </flux:modal.trigger>
+        @endrole
         <flux:button variant="ghost">Ir a clientes</flux:button>
     </div>
 </section>

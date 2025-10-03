@@ -74,6 +74,8 @@ class CreateAgentModalForm extends Component
         // AGENT FIELDS
         $this->form->position = $this->agent->position;
         $this->form->status = $this->agent->status;
+        $this->form->day_off = $this->agent->day_off;
+        $this->form->checkin_hour = $this->agent->checkin_hour?->format('H:i');
         $this->form->is_leader = $this->agent->is_leader;
         $this->form->team_id = $this->agent->team_id;
     }

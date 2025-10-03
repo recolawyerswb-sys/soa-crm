@@ -58,21 +58,13 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-4">
             <div>
                 <div class="bg-white dark:bg-zinc-800 dark:border dark:border-white/5 rounded-xl">
                     {{-- <p class="text-center text-gray-400 dark:text-zinc-500 py-8">
                         Tu componente de tabla de usuarios irá aquí.
                     </p> --}}
-                    {{-- <livewire:business.customers.widgets.latest-customers-widget /> --}}
-                </div>
-            </div>
-            <div>
-                <div class="bg-white dark:bg-zinc-800 dark:border dark:border-white/5 rounded-xl">
-                    {{-- <p class="text-center text-gray-400 dark:text-zinc-500 py-8">
-                        Tu componente de tabla de movimientos irá aquí.
-                    </p> --}}
-                    {{-- <livewire:accounts.movements.widgets.latest-movements-widget /> --}}
+                    <livewire:business.agents.widgets.latest-assigned-customers-table />
                 </div>
             </div>
         </div>

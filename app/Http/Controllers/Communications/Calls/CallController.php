@@ -7,6 +7,7 @@ use App\Services\TwilioService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Twilio\Jwt\ClientToken;
+use Twilio\Rest\Client;
 use Twilio\TwiML\VoiceResponse;
 
 class CallController extends Controller
@@ -91,5 +92,39 @@ class CallController extends Controller
         // Log::info("Call status received: ", $request->all());
 
         return response('OK', 200);
+    }
+
+    public function getCallHistory(Request $request)
+    {
+        $twilio = new Client(config('services.twilio.sid'), config('services.twilio.token'));
+
+        try {
+            // Puedes añadir filtros, por ejemplo, para ver las llamadas de hoy
+            $filters = [
+                // 'startTimeAfter' => new \DateTime('today')
+            ];
+
+            // Lee los últimos 50 registros de llamada que coincidan con los filtros
+            $calls = $twilio->calls->read($filters, 50);
+
+            // Formateamos los datos para que sea más fácil usarlos en el frontend
+            $callData = array_map(function($call) {
+                return [
+                    'sid' => $call->sid,
+                    'to' => $call->toFormatted,
+                    'from' => $call->fromFormatted,
+                    'status' => $call->status,
+                    'start_time' => $call->startTime->format('Y-m-d H:i:s'),
+                    'duration' => $call->duration,
+                    'price' => $call->price,
+                    'direction' => $call->direction,
+                ];
+            }, $calls);
+
+            return response()->json($callData);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'No se pudieron obtener los registros: ' . $e->getMessage()], 500);
+        }
     }
 }

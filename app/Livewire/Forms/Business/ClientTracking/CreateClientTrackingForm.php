@@ -40,16 +40,16 @@ class CreateClientTrackingForm extends CustomTranslatedForm
 
             // SI ESTA HACIENDO EL SEGUIMIENTO UN ROL DIFERENTE A AGENTE, ENTONCES USAMOS EL AGENTE
             // QUE NOS ESTA DANDO EL FORMULARIO
-            if (!auth()->user()->isAgente()) {
+            if (auth()->user()->isAdmin()) {
                 $currentAssignment = Assignment::where([
                     'customer_id' => $this->customer_id,
                     'agent_id' => $this->agent_id
                 ])->first();
-            } else {
+            } else if (auth()->user()->isAgente()) {
                 // EN CASO DE QUE EL AGENTE SEA EL QUE TENGA LA SESION ACTIVA, VA A COLOCARSE SU ID
                 $currentAssignment = Assignment::where([
                     'customer_id' => $this->customer_id,
-                    'agent_id' => auth()->user()->id,
+                    'agent_id' => auth()->user()->profile->agent->id,
                 ])->first();
             }
 
