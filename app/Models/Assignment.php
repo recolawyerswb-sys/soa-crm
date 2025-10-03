@@ -51,4 +51,9 @@ class Assignment extends Model
     {
         return $this->hasMany(ClientTracking::class);
     }
+
+    public function callReports(): HasMany
+    {
+        return $this->hasMany(CallReport::class);
+    }
 }

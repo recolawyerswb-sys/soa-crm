@@ -34,16 +34,16 @@
     <div class="py-4 flex flex-col gap-3">
         {{-- NOTAS --}}
         <div class="grid grid-cols-1 md:grid-cols-1">
-            <flux:textarea label="Notas" wire:model="form.notes"/>
+            <flux:textarea label="Notas" wire:model="notes"/>
         </div>
         {{-- ESTADO, FASE --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <flux:select label="Estado" description:trailing="Seleccione el nuevo estado del cliente" wire:model="form.status" placeholder="Elije el estado...">
+            <flux:select label="Estado" description:trailing="Seleccione el nuevo estado del cliente" wire:model="status" placeholder="Elije el estado...">
             @foreach ($this->statuses as $status)
                 <flux:select.option value="{{ $status }}">{{ $status }}</flux:select.option>
             @endforeach
             </flux:select>
-            <flux:select label="Fase" description:trailing="Seleccione la nueva fase a la que avanza el cliente" wire:model="form.phase" placeholder="Elije la fase...">
+            <flux:select label="Fase" description:trailing="Seleccione la nueva fase a la que avanza el cliente" wire:model="phase" placeholder="Elije la fase...">
             @foreach ($this->phases as $phase)
                 <flux:select.option value="{{ $phase }}">{{ $phase }}</flux:select.option>
             @endforeach
@@ -62,8 +62,12 @@
                 Iniciar llamada
             </flux:button>
             {{-- ✅ Botón para colgar, llama a la función hangup() --}}
-            <flux:button id="end-call-btn" variant="danger" class="hidden">
+            <flux:button id="end-call-btn" variant="danger" class="hidden!">
                 Colgar
+            </flux:button>
+            {{-- ✅ Botón de Guardar (Después de la Llamada) --}}
+            <flux:button id="save-report-btn" variant="primary" color="green" class="hidden!">
+                Guardar Reporte
             </flux:button>
         </div>
     </div>

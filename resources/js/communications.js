@@ -6,6 +6,34 @@ let device;
 let timerInterval;
 let callStatusElement, callDurationElement;
 let currentCallSid = null;
+let uiElements = {};
+
+// Función central para manejar la visibilidad de los botones
+function setButtonState(state) {
+    const { startBtn, endBtn, closeBtn, saveBtn } = uiElements;
+    if (!startBtn) return;
+
+    // Ocultamos todos los botones de acción para empezar de cero
+    startBtn.classList.add('hidden!');
+    endBtn.classList.add('hidden!');
+    saveBtn.classList.add('hidden!');
+
+    closeBtn.disabled = false; // El botón cerrar se activa por defecto
+
+    if (state === 'initial') {
+        startBtn.classList.remove('hidden!');
+    } else if (state === 'in-call') {
+        endBtn.classList.remove('hidden!');
+        closeBtn.disabled = true; // No se puede cerrar el modal durante una llamada
+        endBtn.disabled = true;
+        setTimeout(() => {
+            endBtn.disabled = false;
+        }, 4000);
+    } else if (state === 'post-call') {
+        // endBtn.classList.remove('hidden!');
+        saveBtn.classList.remove('hidden!');
+    }
+}
 
 // Función principal que se activa al hacer clic en "Iniciar llamada"
 async function startCall(customerId) {
@@ -22,10 +50,9 @@ async function startCall(customerId) {
     const inProgressTitle = document.getElementById('call-in-progress-title');
 
     // Desactivamos botones y mostramos la UI de llamada en curso
-    startBtn.classList.add('hidden');
-    loadingTitle.classList.add('hidden');
-    endBtn.classList.remove('hidden');
-    inProgressTitle.classList.remove('hidden');
+    startBtn.classList.add('hidden!');
+    endBtn.classList.remove('hidden!');
+    loadingTitle.textContent = 'Llamada en curso';
     closeBtn.disabled = true;
 
     // ✅ 2. Busca y asigna los elementos AHORA, que sabemos que son visibles.
@@ -45,6 +72,8 @@ async function startCall(customerId) {
         // Obtenemos el token de nuestro backend
         const response = await fetch("/crm/services/twilio/token"); // Asegúrate que esta ruta es correcta
         const data = await response.json();
+
+        setButtonState('in-call');
 
         // Inicializamos Twilio Device
         device = new Device(data.token, {
@@ -69,23 +98,8 @@ async function startCall(customerId) {
         device.on('disconnect', () => {
             updateCallStatus("Llamada finalizada");
             stopTimer();
-            // ✅ Cuando la llamada termina, llamamos a Livewire para guardar el reporte
-            if (currentCallSid) {
-                // Obtenemos los valores actuales de los inputs del formulario
-                const notes = document.querySelector('[wire\\:model="form.notes"]').value;
-                const status = document.querySelector('[wire\\:model="form.status"]').value;
-                const phase = document.querySelector('[wire\\:model="form.phase"]').value;
-
-                // Llamamos al método del backend
-                Livewire.dispatch('saveCallReport', {
-                    callSid: currentCallSid,
-                    notes: notes,
-                    status: status,
-                    phase: phase
-                });
-            }
-            // Opcional: Permitir cerrar el modal después de colgar
-            closeBtn.disabled = false;
+            setButtonState('post-call');
+            loadingTitle.textContent = 'Llamada finalizada';
         });
 
         // ✅ Realizamos la llamada usando el customerId para máxima seguridad
@@ -108,7 +122,39 @@ function hangup() {
         device.disconnectAll();
     }
 
+    setButtonState('post-call');
+
     resetUI();
+}
+
+// ✅ Nueva función para guardar y cerrar
+function saveReportAndClose() {
+    if (currentCallSid) {
+        // Obtenemos los valores del formulario
+        const notes = document.querySelector('[wire\\:model="notes"]').value;
+        const status = document.querySelector('[wire\\:model="status"]').value;
+        const phase = document.querySelector('[wire\\:model="phase"]').value;
+
+        console.log(notes, status, phase);
+
+        // Despachamos el evento a Livewire
+        Livewire.dispatch('saveCallReport', {
+            callSid: currentCallSid,
+            notes: notes,
+            status: status,
+            phase: phase
+        });
+
+        Livewire.dispatch('show-notification', {
+            title: 'Reporte guardado exitosamente',
+        });
+
+        // Cerramos el modal
+        uiElements.closeBtn.click(); // Simulamos un clic en el botón de cerrar
+    } else {
+        alert("No hay un ID de llamada para guardar. Cierra el modal manualmente.");
+        uiElements.closeBtn.click();
+    }
 }
 
 // --- Funciones de Ayuda para la UI ---
@@ -153,37 +199,29 @@ function resetUI() {
 
 // ✅ Función de inicialización que conecta el JS con el HTML
 function initializeTwilioCallHandler() {
-    const startBtn = document.getElementById('start-call-btn');
-    const endBtn = document.getElementById('end-call-btn');
+    // Encontramos todos los botones una sola vez
+    uiElements.startBtn = document.getElementById('start-call-btn');
+    uiElements.endBtn = document.getElementById('end-call-btn');
+    uiElements.closeBtn = document.getElementById('close-btn');
+    uiElements.saveBtn = document.getElementById('save-report-btn');
 
-    // ✅ PATRÓN DE GUARDIA PARA EL BOTÓN DE INICIO
-    // Solo añade el listener si el botón existe Y si no lo hemos procesado antes.
-    if (startBtn && !startBtn.hasAttribute('data-listener-attached')) {
-        // Marcamos el botón como "procesado"
-        startBtn.setAttribute('data-listener-attached', 'true');
-
-        startBtn.addEventListener('click', (event) => {
+     // Patrón de guardia para evitar duplicar listeners
+    if (uiElements.startBtn && !uiElements.startBtn.hasAttribute('data-listener-attached')) {
+        uiElements.startBtn.setAttribute('data-listener-attached', 'true');
+        uiElements.startBtn.addEventListener('click', (event) => {
             const customerId = event.currentTarget.dataset.customerId;
             startCall(customerId);
-
-            startBtn.disabled = true;
-            // ✅ Añadimos las clases visuales de "desactivado"
-            startBtn.classList.add('opacity-50', 'pointer-events-none');
         });
     }
 
-    // ✅ PATRÓN DE GUARDIA PARA EL BOTÓN DE COLGAR
-    // Hacemos lo mismo para el botón de colgar.
-    if (endBtn && !endBtn.hasAttribute('data-listener-attached')) {
-        // Marcamos el botón como "procesado"
-        endBtn.setAttribute('data-listener-attached', 'true');
+    if (uiElements.endBtn && !uiElements.endBtn.hasAttribute('data-listener-attached')) {
+        uiElements.endBtn.setAttribute('data-listener-attached', 'true');
+        uiElements.endBtn.addEventListener('click', () => hangup());
+    }
 
-        endBtn.addEventListener('click', () => {
-            hangup();
-            startBtn.disabled = false;
-            // ✅ Quitamos las clases visuales de "desactivado"
-            startBtn.classList.remove('opacity-50', 'pointer-events-none');
-        });
+    if (uiElements.saveBtn && !uiElements.saveBtn.hasAttribute('data-listener-attached')) {
+        uiElements.saveBtn.setAttribute('data-listener-attached', 'true');
+        uiElements.saveBtn.addEventListener('click', () => saveReportAndClose());
     }
 }
 

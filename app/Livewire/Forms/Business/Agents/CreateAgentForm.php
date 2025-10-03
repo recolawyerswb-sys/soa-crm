@@ -55,7 +55,7 @@ class CreateAgentForm extends CustomTranslatedForm
     #[Validate('nullable|string|max:50')]
     public $status = '1';
 
-    #[Validate('nullable|string|max:50')]
+    #[Validate('nullable|max:50')]
     public $day_off = '';
 
     #[Validate('nullable|string|max:50')]

@@ -28,7 +28,7 @@ class InitCallForm extends Component
     #[Locked]
     public array $phases, $statuses = [];
 
-    public $status, $phase = '';
+    public $status, $phase, $notes = '';
 
     #[Computed]
     public function customer()
