@@ -16,10 +16,10 @@ class CallHistory extends Component
 
     public function mount()
     {
-        $this->loadCalls('1');
+        $this->loadCalls();
     }
 
-    public function loadCalls($pageSid)
+    public function loadCalls($pageSid = null)
     {
         $twilio = new Client(config('services.twilio.sid'), config('services.twilio.token'));
 
