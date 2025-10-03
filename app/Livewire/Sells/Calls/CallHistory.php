@@ -16,7 +16,7 @@ class CallHistory extends Component
 
     public function mount()
     {
-        $this->loadCalls('2');
+        $this->loadCalls('1');
     }
 
     public function loadCalls($pageSid)
@@ -26,6 +26,8 @@ class CallHistory extends Component
         try {
             // Pasamos el SID de la página que queremos cargar
             $page = $twilio->calls->page([], $this->pageSize, $pageSid);
+
+            dd($page);
 
             // Guardamos los identificadores para los botones de paginación
             $this->nextPageSid = $this->extractSidFromUrl($page->getNextPageUrl());
