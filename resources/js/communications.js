@@ -47,7 +47,6 @@ async function startCall(customerId) {
     const endBtn = document.getElementById('end-call-btn');
     const closeBtn = document.getElementById('close-btn');
     const loadingTitle = document.getElementById('loading-title');
-    const inProgressTitle = document.getElementById('call-in-progress-title');
 
     // Desactivamos botones y mostramos la UI de llamada en curso
     startBtn.classList.add('hidden!');
@@ -161,6 +160,7 @@ function saveReportAndClose() {
 
 function updateCallStatus(status) {
     if (callStatusElement) callStatusElement.textContent = status;
+    console.log(status);
 }
 
 function startTimer() {
