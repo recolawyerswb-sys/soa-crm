@@ -27,7 +27,7 @@ class CallHistory extends Component
             // Pasamos el SID de la página que queremos cargar
             $page = $twilio->calls->page([], $this->pageSize, $pageSid);
 
-            dd($page);
+            // dd($page);
 
             // Guardamos los identificadores para los botones de paginación
             $this->nextPageSid = $this->extractSidFromUrl($page->getNextPageUrl());
