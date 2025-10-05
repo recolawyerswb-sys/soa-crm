@@ -24,17 +24,17 @@
             <livewire:modals.business.access-control.create-role-modal />
 
             {{-- WALLET MODALS --}}
-            <livewire:modals.accounts.update-wallet-modal />
 
             {{-- CALL MODALS --}}
-        @endrole
+            @endrole
         @role('agent|leader_agent|admin')
             {{-- <livewire:modals.business.assignment.fast-assign /> --}}
             <livewire:modals.sells.calls.init-call-modal />
             <livewire:modals.business.customer.update-mark-info-modal />
             <livewire:modals.business.client-tracking.create-client-tracking-modal/>
-        @endrole
-        @role('admin|customer')
+            @endrole
+        @role('admin|agent|lead_agent|customer')
+            <livewire:modals.accounts.update-wallet-modal />
             <livewire:modals.accounts.movements.create-movement />
         @endrole
 
@@ -192,5 +192,8 @@
         @livewireScriptConfig
         @fluxScripts
         <x-dashboard.soa-notification.notification></x-dashboard.soa-notification.notification>
+        @assets
+            <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.11.2/build/js/intlTelInput.min.js"></script>
+        @endassets
     </body>
 </html>

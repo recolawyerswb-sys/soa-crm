@@ -88,6 +88,14 @@ class CreateClientModalForm extends Component
         $this->form->reset();
     }
 
+    #[On('setPhoneValue')]
+    public function setPhoneValue($model, $value)
+    {
+        // Usamos la función data_set para asignar el valor dinámicamente.
+        // Esto funciona perfectamente para propiedades anidadas como 'form.telefono1'.
+        data_set($this, $model, $value);
+    }
+
     public function render()
     {
         return view('livewire.business.customers.create-client-modal-form');

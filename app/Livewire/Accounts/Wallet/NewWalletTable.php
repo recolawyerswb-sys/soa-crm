@@ -67,7 +67,8 @@ class NewWalletTable extends SoaTable
     protected function additionalActions(): array
     {
         return [
-            Action::make('fastEdit', 'pencil'),
+            Action::make('fastEdit', 'pencil')
+                ->label('Editar'),
         ];
     }
 

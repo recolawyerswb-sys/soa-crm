@@ -101,20 +101,20 @@ class NavItems extends SinglePageNavItems
             "cuentasMovimientos" => [
                 "isGroup" => true,
                 "icon" => "banknotes",
-                "heading" => "Movimientos",
-                "role" => "admin|cliente",
+                "heading" => "Cuentas y movimientos",
+                "role" => "admin|customer",
                 "items" => [
                     [
                         "routeName" => "wallet.index",
-                        "label" => "Cuentas",
+                        "label" => "Wallets",
                         "icon" => "currency-dollar",
-                        "canSee" => "admin",
+                        "canSee" => "admin|banki",
                     ],
                     [
                         "routeName" => "wallet.movements.index",
-                        "label" => "Movimientos",
+                        "label" => auth()->user()->isCliente() ? "Mis movimientos" : "Movimientos",
                         "icon" => "banknotes",
-                        "canSee" => "admin",
+                        "canSee" => "admin|customer",
                     ],
                 ],
             ],

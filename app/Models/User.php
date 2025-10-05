@@ -88,8 +88,13 @@ class User extends Authenticatable
         return $this->hasOne(Wallet::class, 'user_id', 'id');
     }
 
-     public function checkins(): HasMany
+    public function checkins(): HasMany
     {
         return $this->hasMany(CheckIn::class);
+    }
+
+    public function callReports(): HasMany
+    {
+        return $this->hasMany(CallReport::class);
     }
 }

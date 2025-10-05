@@ -41,9 +41,9 @@ Route::prefix('wallet')
             ->group(function () {
                 Volt::route('/', 'accounts.movements.index')
                     ->name('index')
-                    ->middleware(['role:admin']);
+                    ->middleware(['role:admin|banki|customer']);
                 Volt::route('create', 'accounts.movements.create')
                     ->name('create')
-                    ->middleware(['role:admin']);
+                    ->middleware(['role:admin|banki|customer']);
             });
     });

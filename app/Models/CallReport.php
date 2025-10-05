@@ -13,14 +13,21 @@ class CallReport extends Model
         'customer_phase',
         'customer_status',
         'assignment_id',
+        'user_id',
     ];
 
     protected $casts = [
         'assignment_id' => 'integer',
+        'user_id' => 'integer',
     ];
 
     public function assignment()
     {
         return $this->belongsTo(Assignment::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

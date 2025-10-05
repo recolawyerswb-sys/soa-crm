@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 
 class Wallet extends Model
@@ -90,6 +91,31 @@ class Wallet extends Model
             $this->last_movement_id = $movementId;
             $this->save();
         });
+    }
+
+    public function getLastMovement()
+    {
+        // Buscamos el último movimiento asociado a esta wallet.
+        $lastMovement = $this->movements() // Accede a la relación para construir la consulta
+            ->latest()                   // Ordena por 'created_at' de forma descendente
+            ->select('id', 'created_at') // Selecciona solo las columnas que necesitamos
+            ->first();                  // Ejecuta la consulta y toma solo el primer resultado
+
+        // Si no se encuentra ningún movimiento, devolvemos null.
+        if (!$lastMovement) {
+            return null;
+        }
+
+        // Si se encuentra, retornamos el array con el formato deseado.
+        return [
+            'id'   => $lastMovement->id ?? 'No encontrado',
+            'date' => $lastMovement->created_at ? $lastMovement->created_at->diffForHumans() : 'No encontrado',
+        ];
+    }
+
+    public function latestMovement(): HasOne
+    {
+        return $this->hasOne(Movement::class)->latestOfMany();
     }
 
     public function movements(): HasMany

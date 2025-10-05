@@ -14,6 +14,8 @@
         <flux:input label="Nombre completo*" wire:model="form.full_name"/>
         <flux:input label="Correo electrónico*" wire:model="form.email"/>
         <flux:input label="Teléfono 1*" wire:model="form.phone_1"/>
+        {{-- <x-dashboard.forms.intl-tel-input model="form.phone_1" id="phone_1" label="Celular principal" />
+        <x-dashboard.forms.intl-tel-input model="form.phone_2" id="phone_2" label="Celular secundario" /> --}}
         <flux:input label="Teléfono 2" wire:model="form.phone_2"/>
         <flux:select label="Preferencia de contacto" wire:model="form.preferred_contact_method" placeholder="Elije la preferencia de contacto...">
         @foreach ($this->preferredContactMethods as $preferredContactMethod)

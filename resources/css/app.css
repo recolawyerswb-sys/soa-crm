@@ -42,11 +42,13 @@ body {
     --color-zinc-900: var(--color-slate-900);
     --color-zinc-950: var(--color-slate-950);
 }
+
 @theme {
     --color-accent: var(--color-indigo-500);
     --color-accent-content: var(--color-indigo-600);
     --color-accent-foreground: var(--color-white);
 }
+
 @layer theme {
     .dark {
         --color-accent: var(--color-indigo-500);
@@ -56,7 +58,6 @@ body {
 }
 
 @layer base {
-
     *,
     ::after,
     ::before,

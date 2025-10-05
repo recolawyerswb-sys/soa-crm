@@ -43,7 +43,7 @@ class NewCallReportsTable extends SoaTable
             Column::make('Estado final', 'call_status'),
             Column::make('Agente que llamo', 'assignment.agent.profile.full_name'),
             Column::make('Cliente contactado', 'assignment.customer.profile.full_name'),
-            Column::make('Notas', 'notes'),
+            Column::make('Notas', 'call_notes'),
             Column::make('Fase', 'customer_phase'),
             Column::make('Estado', 'customer_status'),
         ];

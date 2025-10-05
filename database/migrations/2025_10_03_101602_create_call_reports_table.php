@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('customer_phase');
             $table->string('customer_status');
             $table->foreignId('assignment_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

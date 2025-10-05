@@ -9,14 +9,9 @@
                 </h2>
 
                 {{-- Título y duración que se mostrarán durante la llamada --}}
-                <div id="call-in-progress-title" class="hidden">
-                    <h2 class="text-2xl">
-                        Llamando a <span class="font-bold">{{ $this->full_name }}</span>
-                    </h2>
+                <div id="call-in-progress-title">
                     {{-- ✅ Duración y estado de la llamada --}}
                     <div class="text-sm text-gray-500 font-mono flex items-center gap-2">
-                        <span id="call-status">Inicializando...</span>
-                        <span>-</span>
                         <span id="call-duration">00:00</span>
                     </div>
                 </div>
@@ -34,7 +29,7 @@
     <div class="py-4 flex flex-col gap-3">
         {{-- NOTAS --}}
         <div class="grid grid-cols-1 md:grid-cols-1">
-            <flux:textarea label="Notas" wire:model="notes"/>
+            <flux:textarea label="Notas" wire:model="notes" id="notes"/>
         </div>
         {{-- ESTADO, FASE --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

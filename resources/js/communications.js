@@ -4,8 +4,9 @@ import { Device } from "@twilio/voice-sdk";
 // TWILIO SERVICES
 let device;
 let timerInterval;
-let callStatusElement, callDurationElement;
+let callDurationElement;
 let currentCallSid = null;
+let activeCall = null;
 let uiElements = {};
 
 // Función central para manejar la visibilidad de los botones
@@ -37,6 +38,10 @@ function setButtonState(state) {
 
 // Función principal que se activa al hacer clic en "Iniciar llamada"
 async function startCall(customerId) {
+
+    setButtonState('in-call');
+    updateCallStatus("Conectando la llamada...");
+
     if (!customerId) {
         alert('Error: No se ha proporcionado un ID de cliente.');
         return;
@@ -46,25 +51,19 @@ async function startCall(customerId) {
     const startBtn = document.getElementById('start-call-btn');
     const endBtn = document.getElementById('end-call-btn');
     const closeBtn = document.getElementById('close-btn');
-    const loadingTitle = document.getElementById('loading-title');
 
     // Desactivamos botones y mostramos la UI de llamada en curso
     startBtn.classList.add('hidden!');
     endBtn.classList.remove('hidden!');
-    loadingTitle.textContent = 'Llamada en curso';
     closeBtn.disabled = true;
 
-    // ✅ 2. Busca y asigna los elementos AHORA, que sabemos que son visibles.
-    callStatusElement = document.getElementById('call-status');
     callDurationElement = document.getElementById('call-duration');
 
     // Si por alguna razón siguen sin encontrarse, detenemos y mostramos un error.
-    if (!callStatusElement || !callDurationElement) {
+    if (!callDurationElement) {
         console.error("No se pudieron encontrar los elementos de estado o duración en el DOM.");
         return;
     }
-
-    updateCallStatus("Conectando...");
 
     // --- 2. Lógica de la Llamada con Twilio ---
     try {
@@ -72,42 +71,50 @@ async function startCall(customerId) {
         const response = await fetch("/crm/services/twilio/token"); // Asegúrate que esta ruta es correcta
         const data = await response.json();
 
-        setButtonState('in-call');
-
         // Inicializamos Twilio Device
-        device = new Device(data.token, {
-            codecPreferences: ["opus", "pcmu"],
-        });
+        if (!device) {
+            device = new Device(data.token, {
+                codecPreferences: ["opus", "pcmu"],
+            });
+        } else {
+            // Si el device ya existe, actualizamos su token por si expiró
+            device.updateToken(data.token);
+        }
+
+        const callParams = { params: { customerId: customerId } };
+
+        // ✅ Obtenemos el objeto 'Call' y lo guardamos
+        activeCall = await device.connect(callParams);
 
         // Registramos los eventos para actualizar la UI
-        device.on('error', (error) => {
-            console.error(error);
+        activeCall.on('error', (error) => {
+            console.error("Error en la llamada:", error);
             updateCallStatus(`Error: ${error.message}`);
             stopTimer();
-            resetUI(); // Función para restaurar la UI
+            setButtonState('initial'); // O un estado de error
         });
 
-        device.on('connect', () => {
+        activeCall.on('accept', (call) => {
+            updateCallStatus("Llamada en curso");
             currentCallSid = call.parameters.CallSid;
             console.log('Llamada conectada con SID:', currentCallSid);
-            updateCallStatus("En llamada");
             startTimer();
         });
 
-        device.on('disconnect', () => {
-            updateCallStatus("Llamada finalizada");
+        // ✅ Asignamos los listeners a la LLAMADA, no al device
+        activeCall.on('disconnect', () => {
+            updateCallStatus("Finalizaste la llamada. Completa el reporte.");
             stopTimer();
             setButtonState('post-call');
-            loadingTitle.textContent = 'Llamada finalizada';
+            activeCall = null; // Limpiamos la llamada activa
         });
 
-        // ✅ Realizamos la llamada usando el customerId para máxima seguridad
-        const callParams = {
-            params: {
-                customerId: customerId
-            }
-        };
-        device.connect(callParams);
+        activeCall.on('reject', () => {
+            updateCallStatus("El cliente ha rechazado la llamada. Completa el reporte.");
+            stopTimer();
+            setButtonState('post-call');
+            activeCall = null; // Limpiamos la llamada activa
+        });
 
     } catch (error) {
         console.error('Error al iniciar la llamada:', error);
@@ -117,24 +124,22 @@ async function startCall(customerId) {
 }
 
 function hangup() {
-    if (device) {
-        device.disconnectAll();
+    console.log("Intentando colgar la llamada...");
+    // Usamos el objeto de la llamada activa para desconectar
+    if (activeCall) {
+        activeCall.disconnect();
     }
-
-    setButtonState('post-call');
-
-    resetUI();
+    console.log('Llamada finalizada con SID', currentCallSid);
 }
 
 // ✅ Nueva función para guardar y cerrar
 function saveReportAndClose() {
     if (currentCallSid) {
         // Obtenemos los valores del formulario
-        const notes = document.querySelector('[wire\\:model="notes"]').value;
+        // const notes = document.querySelector('[wire\\:model="notes"]');
+        const notes = document.getElementById('notes').value;
         const status = document.querySelector('[wire\\:model="status"]').value;
         const phase = document.querySelector('[wire\\:model="phase"]').value;
-
-        console.log(notes, status, phase);
 
         // Despachamos el evento a Livewire
         Livewire.dispatch('saveCallReport', {
@@ -144,12 +149,11 @@ function saveReportAndClose() {
             phase: phase
         });
 
-        Livewire.dispatch('show-notification', {
-            title: 'Reporte guardado exitosamente',
-        });
-
         // Cerramos el modal
         uiElements.closeBtn.click(); // Simulamos un clic en el botón de cerrar
+        notes.value = '';
+        status.value = '';
+        phase.value = '';
     } else {
         alert("No hay un ID de llamada para guardar. Cierra el modal manualmente.");
         uiElements.closeBtn.click();
@@ -159,8 +163,9 @@ function saveReportAndClose() {
 // --- Funciones de Ayuda para la UI ---
 
 function updateCallStatus(status) {
-    if (callStatusElement) callStatusElement.textContent = status;
+    const loadingTitle = document.getElementById('loading-title');
     console.log(status);
+    loadingTitle.textContent = status;
 }
 
 function startTimer() {

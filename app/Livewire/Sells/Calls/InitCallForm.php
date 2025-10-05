@@ -67,11 +67,12 @@ class InitCallForm extends Component
             'customer_phase' => $phase,
             'customer_status' => $status,
             'assignment_id' => $currentAssignment ? $currentAssignment->id : null,
+            'user_id' => auth()->user()->id,
             // duration y final_status se quedan en null por ahora
         ]);
 
         // Opcional: notificar al usuario que se guardó
-        $this->notify('report-saved-success');
+        $this->notify('Reporte guardado exitosamente');
     }
 
     public function mount()
