@@ -20,22 +20,14 @@
         {{-- SECCIÓN DE ESTADÍSTICAS --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             {{-- BALANCES Y ASIGNACION --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div class="grid grid-cols-1 gap-2">
                 <x-dashboard.stats.stat
                     title="Mi balance"
                     content="{{ '$' . number_format($this->userTotalBalance, 2) }}"
                 />
                 <x-dashboard.stats.stat
-                    title="Mi total depositado"
-                    content="{{ '$' . number_format($this->userTotalDeposit, 2) }}"
-                />
-                <x-dashboard.stats.stat
                     title="Mi total retirado"
                     content="{{ '$' . number_format($this->userTotalWithdrawal, 2) }}"
-                />
-                <x-dashboard.stats.stat
-                    title="Agente asignado"
-                    content="{{ strtoupper($this->assignedAgentName) }}"
                 />
             </div>
 

@@ -88,7 +88,8 @@ class NewCustomersTable extends SoaTable
             Column::make('Origen', 'origin'),
             Column::make('Estado', 'status'),
             Column::make('Tipo de cliente', 'type'),
-            Column::make('Numero principal', 'profile.phone_1'),
+            Column::make('Numero principal', 'profile.phone_1')
+                ->canSee(fn () => Auth::user()->isAdmin()),
             Column::make('Llamadas totales', 'no_calls')
                 ->sortable(),
             Column::make(__('Asignado a'), 'assignment.agent.profile.full_name'),

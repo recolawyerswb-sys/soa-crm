@@ -33,6 +33,11 @@
         @role('agent|lead_agent')
             <flux:button wire:navigate variant="primary" href="{{ route('business.customers.index') }}" icon:trailing="users" size="sm" class="cursor-pointer">Ver clientes</flux:button>
         @endrole
+        @role('customer')
+            <flux:modal.trigger name="create-movement-modal">
+                <flux:button variant="primary" icon:trailing="currency-dollar" size="sm" class="cursor-pointer" @click="$dispatch('unable-edit-for-create-movement-modal')">Crear Movimiento</flux:button>
+            </flux:modal.trigger>
+        @endrole
     </div>
     {{-- USER OPTIONS NAVBAR --}}
     <flux:navbar class="gap-2 ms-2">

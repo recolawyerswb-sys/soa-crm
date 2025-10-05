@@ -65,6 +65,7 @@ class LatestCustomersMovementsWidget extends SoaTableLight
                         default => ['color' => 'gray', 'label' => $row->status],
                     };
                 }),
+            LightColumn::make('Notas generales', 'note'),
             LightColumn::make('Fecha', 'created_at')
                 ->date(),
         ];

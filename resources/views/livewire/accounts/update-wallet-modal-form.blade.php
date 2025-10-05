@@ -29,11 +29,13 @@
         <flux:input mask='99/99' icon="calendar-days" label="Fecha de expiracion" wire:model="form.exp_date"/>
     </div>
 
-    <flux:separator />
-    <flux:heading>{{ __('Balance total') }}</flux:heading>
-    <div class="grid grid-cols-1 gap-3">
-        <flux:input type='number' step="0.01" label="Balance"  icon="currency-dollar" clearable wire:model="form.balance"/>
-    </div>
+    @role('admin|banki')
+        <flux:separator />
+        <flux:heading>{{ __('Balance total') }}</flux:heading>
+        <div class="grid grid-cols-1 gap-3">
+            <flux:input type='number' step="0.01" label="Balance"  icon="currency-dollar" clearable wire:model="form.balance"/>
+        </div>
+    @endrole
 
     {{-- <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 

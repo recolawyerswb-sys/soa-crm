@@ -37,6 +37,7 @@ class NewMovementsTable extends SoaTable
         // Usamos el modelo definido para iniciar la consulta.
         // Puedes agregar relaciones que necesites con with().
         return Movement::query()
+            // ->where('wallet_id', auth()->user()->wallet->id)
             ->with(['wallet.user'])
             ->orderByDesc('created_at');
     }
@@ -68,6 +69,11 @@ class NewMovementsTable extends SoaTable
             Column::make('Notas', 'note')
                 ->addClasses('font-bold'),
         ];
+    }
+
+    protected function enableActions(): bool
+    {
+        return auth()->user()->isAdmin() ? true : false; // Habilitado por defecto
     }
 
     /**

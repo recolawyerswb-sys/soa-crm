@@ -43,7 +43,10 @@
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
             <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
-                <x-app-logo />
+                @role('admin')
+                    <x-app-logo />
+                @endrole
+                Wallet
             </a>
 
             <flux:navlist variant="solid">

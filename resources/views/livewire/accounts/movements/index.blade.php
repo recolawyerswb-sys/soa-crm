@@ -24,11 +24,13 @@ state(['authUserTotalDeposit' => auth()->user()->wallet->total_deposit]);
                 description="La moneda en la que tienes tu cuenta."
                 :content="$this->authUserCurrency"
             />
-            <x-dashboard.stats.stat
-                title="Total depositado"
-                description="El balance que has ingresado en total."
-                content="{{ '$' . number_format($this->authUserTotalDeposit, 2) }}"
-            />
+            @role('admin|banki')
+                <x-dashboard.stats.stat
+                    title="Total depositado"
+                    description="El balance que has ingresado en total."
+                    content="{{ '$' . number_format($this->authUserTotalDeposit, 2) }}"
+                />
+            @endrole
         </div>
         @livewire('accounts.movements.new-movements-table')
     </div>

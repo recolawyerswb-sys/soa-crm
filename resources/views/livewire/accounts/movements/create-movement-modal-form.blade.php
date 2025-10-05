@@ -25,9 +25,15 @@
     <flux:heading>{{ __('Datos del movimiento') }}</flux:heading>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <flux:select label="Tipo" wire:model.live="form.type" placeholder="Elije el tipo de movimiento...">
-        @foreach ($this->types as $type => $label)
-            <flux:select.option value="{{ $type }}">{{ $label }}</flux:select.option>
-        @endforeach
+            @role('admin|banki')
+                @foreach ($this->types as $type => $label)
+                    <flux:select.option value="{{ $type }}">{{ $label }}</flux:select.option>
+                @endforeach
+            @endrole
+            @role('customer')
+                <flux:select.option value="1">Deposito</flux:select.option>
+                <flux:select.option value="2">Retiro</flux:select.option>
+            @endrole
         </flux:select>
         <flux:input
             type='number'

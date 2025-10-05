@@ -112,7 +112,7 @@ class NavItems extends SinglePageNavItems
                     ],
                     [
                         "routeName" => "wallet.movements.index",
-                        "label" => auth()->user()->isCliente() ? "Mis movimientos" : "Movimientos",
+                        "label" => auth()->user()->isCliente() ? "Movimientos Universales" : "Movimientos",
                         "icon" => "banknotes",
                         "canSee" => "admin|customer",
                     ],
