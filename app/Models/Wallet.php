@@ -104,7 +104,7 @@ class Wallet extends Model
         // Si se encuentra, retornamos el array con el formato deseado.
         return [
             'id'   => $lastMovement->id ?? 'No encontrado',
-            'date' => $lastMovement->created_at ? $lastMovement->created_at->diffForHumans() : 'No encontrado',
+            'date' => $lastMovement?->created_at ? $lastMovement->created_at->diffForHumans() : 'No encontrado',
         ];
     }
 
