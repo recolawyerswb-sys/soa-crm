@@ -2,7 +2,7 @@
     $greetingMessage = App\Helpers\Views\MiscHelper::getGreeting();
     $userName = auth()->user()->name;
     $lastUserLogin = auth()->user()->lastLogin();
-    $avatarUrl = App\Helpers\Views\MiscHelper::genAvatarUrl('avataaars-neutral', ['seed' => $userName]);
+    $avatarUrl = App\Helpers\Views\MiscHelper::genAvatarUrl('fun-emoji', ['seed' => $userName]);
 @endphp
 
 <flux:header class="hidden lg:flex! py-3 sticky top-0 z-50 w-full header-bg backdrop-blur-md">

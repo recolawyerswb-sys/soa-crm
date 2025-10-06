@@ -100,7 +100,7 @@
                 <flux:dropdown class="hidden lg:block" position="bottom" align="start">
                     @php
                         $userName = auth()->user()->name;
-                        $avatarUrl = App\Helpers\Views\MiscHelper::genAvatarUrl('avataaars-neutral', ['seed' => $userName]);
+                        $avatarUrl = App\Helpers\Views\MiscHelper::genAvatarUrl('fun-emoji', ['seed' => $userName]);
                     @endphp
                     <flux:profile
                         :avatar:src="$avatarUrl"
