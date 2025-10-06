@@ -40,7 +40,7 @@ class ClientDashboard extends Component
             'address' => $wallet->address ?? 'No registrado',
             'coin_currency' => $wallet->coin_currency ?? 'No registrado',
             'network' => $wallet->network ?? 'No registrado',
-            'last_movement_details' => $wallet->getLastMovement() ?? [],
+            'last_movement_details' => $wallet->getLastMovement(),
 
             'bank_network' => $wallet->bank_network ?? 'No registrado',
             'account_number' => $wallet->account_number ?? 'No registrado',
