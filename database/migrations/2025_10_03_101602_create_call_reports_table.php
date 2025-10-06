@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('call_notes')->nullable();
             $table->string('customer_phase');
             $table->string('customer_status');
-            $table->foreignId('assignment_id')->constrained();
+            $table->foreignId('assignment_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

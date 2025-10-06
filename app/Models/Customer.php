@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\Models\CustomerDeleted;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,6 +43,28 @@ class Customer extends Model
         ];
     }
 
+    protected $dispatchesEvents = [
+        'deleting' => CustomerDeleted::class,
+    ];
+
+    protected static function booted(): void
+    {
+        parent::boot();
+        static::deleting(function (Customer $customer) {
+
+            $customer->profile()->user()->wallet()->movements()->each()->delete();
+
+            $customer->profile()->user()->wallet()->delete();
+            $customer->profile()->delete();
+
+            $customer->assignment()->delete();
+
+            // $customer->delete();
+
+            parent::delete();
+        });
+    }
+
     public static function getCustomersCount(): int
     {
         return self::count();
@@ -62,9 +85,7 @@ class Customer extends Model
         DB::transaction(function () {
             if ($this->profile && $this->profile->user && $this->profile->user->wallet) {
                 foreach ($this->profile->user->wallet->movements as $movement) {
-                    dd(
-                        $movement
-                    );
+                    $movement->delete();
                 }
 
                 $this->profile->user->wallet->delete();

@@ -118,8 +118,8 @@ class CreateMovementModalForm extends Component
         $this->displayUserBalance = $user->wallet?->balance ?? 0.0;
 
         $this->modalViewName = 'create-movement-modal';
-        $this->authUser = auth()->user()->name;
-        $this->authUserBalance = auth()->user()->wallet->balance;
+        $this->authUser = auth()->user()->name ?? 'No registrado';
+        $this->authUserBalance = auth()->user()->wallet->balance ?? 'No registrado';
         $this->types = \App\Helpers\MovementHelper::getTypes();
         $this->customers = ClientHelper::getCustomersAsArrayWithIdsAsKeys();
     }

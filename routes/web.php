@@ -3,6 +3,7 @@
 use App\Http\Controllers\Communications\Calls\CallController;
 use App\Http\Controllers\CustomerApiController;
 use App\Http\Controllers\Dashboard\Pages\HelpPageController;
+use App\Http\Controllers\Utilities\ImportExportController;
 use App\Livewire\Dashboard\Welcome;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -64,3 +65,13 @@ Route::prefix('pages')
     ->group(function () {
         Route::get('help', [HelpPageController::class, 'show'])->name('help');
     });
+
+
+# UTILITY ROUTES
+Route::prefix('utilities')
+    ->name('utilities.')
+    ->group(function () {
+        Route::get('export', [ImportExportController::class, 'export'])->name('generic.export');
+        Route::post('import', [ImportExportController::class, 'import'])->name('generic.import');
+    })
+    ->middleware(['auth', 'role:admin']);

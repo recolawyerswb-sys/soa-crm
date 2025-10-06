@@ -1,8 +1,27 @@
 <section class="index-model-section bg-shape-dots">
     <div class="index-model-header">
-        @include('partials.model-heading', ['actions' => false, 'title' => $pageTitle, 'subtitle' => $pageDescription])
+        @include('partials.model-heading', [
+            'actions' => false,
+            'title' => $pageTitle,
+            'subtitle' => $pageDescription,
+        ])
         {{-- @livewire('business.customers.customers-table') --}}
         @livewire('business.customers.new-customers-table')
+    </div>
+    <div class="flex flex-col gap-2">
+        <x-utilities.importer-exporter :model="App\Models\Customer::class" />
+        @if (session('status'))
+            <div class="flex items-center gap-4 bg-indigo-100 px-2 py-4">
+                <div
+                    class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 dark:bg-red-900/30">
+                    <flux:icon name="information-circle" />
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-900 dark:text-white"></p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ session('status') }}</p>
+                </div>
+            </div>
+        @endif
     </div>
     <div class="index-model-actions">
         <!-- Trigger for creating a new client. MODAL. Only change the name -->

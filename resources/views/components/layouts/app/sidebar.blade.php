@@ -46,7 +46,9 @@
                 @role('admin')
                     <x-app-logo />
                 @endrole
-                Wallet
+                @role('customer')
+                    Wallet
+                @endrole
             </a>
 
             <flux:navlist variant="solid">

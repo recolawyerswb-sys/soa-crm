@@ -87,7 +87,7 @@ class Wallet extends Model
     {
         DB::transaction(function () use ($amount, $movementId) {
             $this->balance -= $amount;
-            $this->total_withdrawn = $this->balance - $amount;
+            $this->total_withdrawn = $this->balance + $amount;
             $this->last_movement_id = $movementId;
             $this->save();
         });

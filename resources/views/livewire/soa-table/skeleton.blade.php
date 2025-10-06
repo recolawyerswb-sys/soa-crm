@@ -6,7 +6,8 @@
         <div class="flex flex-col gap-2">
             <span class="text-xs font-semibold dark:text-slate-400 text-slate-600">{{ count($selectedRows) }} filas seleccionadas</span>
             <div class="flex gap-2">
-                <flux:select size='xs' placeholder="Seleccione una opcion..." wire:model.live="activeBulkAction">
+                <flux:select size='xs' placeholder="Seleccione una opcion..." wire:model="activeBulkAction">
+                    <option value="">Seleccionar...</option>
                     @foreach($this->bulkActions() as $action)
                         {{-- ========= INICIO: CONDICIÓN canSee AÑADIDA ========= --}}
                         @if (is_null($action->canSee) || call_user_func($action->canSee))
