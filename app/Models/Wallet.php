@@ -101,11 +101,6 @@ class Wallet extends Model
             ->select('id', 'created_at') // Selecciona solo las columnas que necesitamos
             ->first();                  // Ejecuta la consulta y toma solo el primer resultado
 
-        // Si no se encuentra ningún movimiento, devolvemos null.
-        if (!$lastMovement) {
-            return null;
-        }
-
         // Si se encuentra, retornamos el array con el formato deseado.
         return [
             'id'   => $lastMovement->id ?? 'No encontrado',
