@@ -180,14 +180,24 @@
                                         <flux:dropdown>
                                             <flux:button icon:trailing="chevron-down" size="sm"></flux:button>
                                             <flux:menu>
-                                                @foreach ($actions as $action)
-                                                    @if (is_null($action->canSee) || call_user_func($action->canSee, $row))
-                                                    <flux:menu.item
-                                                        wire:click="callAction('{{ $action->method }}', '{{ $row->id }}')"
-                                                        icon="{{ $action->icon }}"
-                                                        class="cursor-pointer">
-                                                            {{ $action->label }}
-                                                    </flux:menu.item>
+                                            @foreach ($actions as $action)
+                                                @if (is_null($action->canSee) || call_user_func($action->canSee, $row))
+                                                        @if ($action->linkCallback)
+                                                            @php
+                                                                // Ejecutamos el callback para obtener la URL
+                                                                $url = call_user_func($action->linkCallback, $row);
+                                                            @endphp
+                                                            <flux:menu.item href="{{ $url }}" target="_blank" :icon="$action->icon">
+                                                                {{ $action->label }}
+                                                            </flux:menu.item>
+                                                        @elseif (!$action->linkCallback)
+                                                            <flux:menu.item
+                                                                wire:click="callAction('{{ $action->method }}', '{{ $row->id }}')"
+                                                                icon="{{ $action->icon }}"
+                                                                class="cursor-pointer">
+                                                                    {{ $action->label }}
+                                                            </flux:menu.item>
+                                                        @endif
                                                     @endif
                                                 @endforeach
                                             </flux:menu>
@@ -207,17 +217,31 @@
                                         @if ($column->isView)
                                             @include($column->field, ['row' => $row])
                                         @else
-                                            @if ($column->formatCallback)
-                                                {{-- Lógica personalizada de formato --}}
+                                            {{-- 1. Definimos $value aquí para que esté disponible en todos los bloques --}}
+                                            @php $value = data_get($row, $column->field); @endphp
+
+                                            @if ($column->isCopyable)
+                                                <div x-data="{ copied: false }" class="flex items-center gap-2">
+                                                    {{-- 2. Mostramos el valor real --}}
+                                                    <span x-show="!copied" class="dark:text-slate-400 text-slate-600 select-none">Copiar</span>
+                                                    <button
+                                                        {{-- 3. Copiamos la variable $value, no el nombre del campo --}}
+                                                        x-on:click="navigator.clipboard.writeText('{{ $value }}'); copied = true; setTimeout(() => copied = false, 2000);"
+                                                        title="Copiar al portapapeles"
+                                                    >
+                                                        <flux:icon.clipboard-document-list class="size-4" />
+                                                        <span x-show="copied" x-transition class="text-green-500 text-xs">¡Copiado!</span>
+                                                    </button>
+                                                </div>
+                                            @elseif ($column->formatCallback)
                                                 {!! call_user_func($column->formatCallback, $value, $row) !!}
-                                            {{-- ========= INICIO: LÓGICA DE FORMATO ========= --}}
                                             @elseif ($column->isCurrency)
-                                                <span class="font-mono text-left">{{ $column->currencySymbol }}{{ number_format(data_get($row, $column->field), $column->currencyDecimals) }}</span>
+                                                <span class="font-mono text-left">{{ $column->currencySymbol }}{{ number_format($value, $column->currencyDecimals) }}</span>
                                             @elseif ($column->isDate)
-                                                {{ \Carbon\Carbon::parse(data_get($row, $column->field))->format($column->dateFormat) }}
+                                                {{ \Carbon\Carbon::parse($value)->format($column->dateFormat) }}
                                             @else
                                                 <span class="text-left">
-                                                    {!! data_get($row, $column->field) !!}
+                                                    {!! $value !!}
                                                 </span>
                                             @endif
                                             {{-- ========= FIN: LÓGICA DE FORMATO ========= --}}

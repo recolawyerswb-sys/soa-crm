@@ -10,6 +10,7 @@ class Action
 
     // La propiedad guardará nuestra función de condición. Es nullable.
     public ?\Closure $canSee = null;
+    public ?\Closure $linkCallback = null;
     public ?string $label = null; // Hacemos el label opcional
 
     public function __construct(
@@ -49,6 +50,15 @@ class Action
     public function canSee(\Closure $callback): self
     {
         $this->canSee = $callback;
+        return $this;
+    }
+
+    /**
+     * Define la acción como un enlace que abre una nueva pestaña.
+     */
+    public function link(\Closure $callback): self
+    {
+        $this->linkCallback = $callback;
         return $this;
     }
 }

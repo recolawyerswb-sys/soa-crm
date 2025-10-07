@@ -12,12 +12,14 @@ class Column
 
     public bool $sortable = false; // Indica si la columna es ordenable
     public bool $isCurrency = false;
+    public bool $isCopyable = false;
     public string $currencySymbol = '$';
     public int $currencyDecimals = 2;
     public bool $isDate = false;
     public string $dateFormat = 'd/m/Y';
     public ?Closure $formatCallback = null; // Callback para formatear el valor de la celda
     public ?Closure $canSee = null;
+    public ?Closure $linkCallback = null;
 
 
     // --- FIN: NUEVAS PROPIEDADES ---
@@ -118,6 +120,15 @@ class Column
     public function customFormat(Closure $callback):self
     {
         $this->formatCallback = $callback;
+        return $this;
+    }
+
+    /**
+     * Hace que la celda muestre un botón para copiar su contenido.
+     */
+    public function copyable(): self
+    {
+        $this->isCopyable = true;
         return $this;
     }
 

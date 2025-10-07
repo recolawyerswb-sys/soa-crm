@@ -89,6 +89,7 @@ class NewCustomersTable extends SoaTable
             Column::make('Estado', 'status'),
             Column::make('Tipo de cliente', 'type'),
             Column::make('Numero principal', 'profile.phone_1')
+                ->copyable()
                 ->canSee(fn () => Auth::user()->isAdmin()),
             Column::make('Llamadas totales', 'no_calls')
                 ->sortable(),
@@ -119,6 +120,7 @@ class NewCustomersTable extends SoaTable
                 ->label('Llamar'),
             Action::make('sendWpMessage', 'chat-bubble-oval-left-ellipsis')
                 ->label('Abrir Whatsapp')
+                ->link(fn (Customer $customer) => 'https://wa.me/'.$customer->profile->phone_1)
                 ->canSee(fn() => auth()->user()->isAdmin()),
         ];
     }
