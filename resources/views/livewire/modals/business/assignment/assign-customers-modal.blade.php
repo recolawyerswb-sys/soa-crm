@@ -7,5 +7,5 @@
     description="{{ __('Elije un asesor.') }}"
     modalName="{{ $modalViewName }}"
 >
-    @livewire('business.assignments.masive-assign-form-view')
+    <livewire:business.assignments.masive-assign-form-view lazy />
 </x-dashboard.forms.modal>

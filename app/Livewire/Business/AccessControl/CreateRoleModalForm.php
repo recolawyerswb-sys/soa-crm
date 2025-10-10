@@ -59,6 +59,11 @@ class CreateRoleModalForm extends Component
         $this->form->reset();
     }
 
+    public function placeholder()
+    {
+        return view('livewire.placeholders.dashboards.forms.form-skeleton');
+    }
+
     public function render()
     {
         return view('livewire.business.access-control.create-role-modal-form');

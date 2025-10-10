@@ -54,6 +54,11 @@ class UpdateWalletModalForm extends Component
         $this->form->balance = $this->wallet->balance;
     }
 
+    public function placeholder()
+    {
+        return view('livewire.placeholders.dashboards.forms.form-skeleton');
+    }
+
     public function render()
     {
         return view('livewire.accounts.update-wallet-modal-form');

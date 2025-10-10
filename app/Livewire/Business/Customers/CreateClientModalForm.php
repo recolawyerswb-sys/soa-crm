@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\User;
 use App\Traits\Notifies;
 use Flux\Flux;
+use Livewire\Attributes\Lazy;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -94,6 +95,11 @@ class CreateClientModalForm extends Component
         // Usamos la función data_set para asignar el valor dinámicamente.
         // Esto funciona perfectamente para propiedades anidadas como 'form.telefono1'.
         data_set($this, $model, $value);
+    }
+
+    public function placeholder()
+    {
+        return view('livewire.placeholders.dashboards.forms.form-skeleton');
     }
 
     public function render()

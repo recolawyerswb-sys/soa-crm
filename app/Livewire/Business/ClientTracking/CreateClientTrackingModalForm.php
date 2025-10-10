@@ -77,6 +77,11 @@ class CreateClientTrackingModalForm extends Component
         $this->form->reset();
     }
 
+    public function placeholder()
+    {
+        return view('livewire.placeholders.dashboards.forms.form-skeleton');
+    }
+
     public function render()
     {
         return view('livewire.business.client-tracking.create-client-tracking-modal-form');

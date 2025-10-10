@@ -7,5 +7,5 @@
     description="{{ __('Elije una fase.') }}"
     modalName="{{ $modalViewName }}"
 >
-    @livewire('business.customers.update-mark-info-modal-form')
+    <livewire:business.customers.update-mark-info-modal-form lazy />
 </x-dashboard.forms.modal>

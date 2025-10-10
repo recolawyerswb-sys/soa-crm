@@ -7,5 +7,5 @@
     description="{{ __('Proporciona los detalles del nuevo seguimiento.') }}"
     modalName="{{ $modalViewName }}"
 >
-    @livewire('business.client-tracking.create-client-tracking-modal-form')
+    <livewire:business.client-tracking.create-client-tracking-modal-form lazy />
 </x-dashboard.forms.modal>

@@ -86,6 +86,11 @@ class CreateAgentModalForm extends Component
         $this->form->reset();
     }
 
+    public function placeholder()
+    {
+        return view('livewire.placeholders.dashboards.forms.form-skeleton');
+    }
+
     public function render()
     {
         return view('livewire.business.agents.create-agent-modal-form');

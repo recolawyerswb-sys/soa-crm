@@ -7,5 +7,5 @@
     description="{{ __('Proporciona los detalles del nuevo equipo.') }}"
     modalName="{{ $modalViewName }}"
 >
-    @livewire('business.teams.create-team-modal-form')
+    <livewire:business.teams.create-team-modal-form lazy />
 </x-dashboard.forms.modal>

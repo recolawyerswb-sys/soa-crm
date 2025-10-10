@@ -7,5 +7,5 @@
     description="{{ __('Proporciona los detalles del nuevo rol.') }}"
     modalName="{{ $modalViewName }}"
 >
-    @livewire('business.access-control.create-role-modal-form')
+    <livewire:business.access-control.create-role-modal-form lazy />
 </x-dashboard.forms.modal>

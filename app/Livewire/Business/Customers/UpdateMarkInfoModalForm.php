@@ -69,6 +69,11 @@ class UpdateMarkInfoModalForm extends Component
         Flux::modals()->close();
     }
 
+    public function placeholder()
+    {
+        return view('livewire.placeholders.dashboards.forms.form-skeleton');
+    }
+
     public function render()
     {
         return view('livewire.business.customers.update-mark-info-modal-form', [

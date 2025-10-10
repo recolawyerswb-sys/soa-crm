@@ -30,10 +30,9 @@
     </flux:field>
 </div>
 
-@assets
 <script>
     window.intlTelInput = intlTelInput;
-    const input = document.querySelector("{{ $id }}");
+    const input = document.querySelector("#{{ $id }}");
     const iti = window.intlTelInput(input, {
         loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.11.2/build/js/utils.js"),
     });
@@ -45,4 +44,3 @@
         console.log($number);
     });
 </script>
-@endassets
