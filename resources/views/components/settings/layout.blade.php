@@ -18,6 +18,9 @@
                     </flux:navlist.item>
                 @endrole
             @endforeach
+            @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
+                <flux:navlist.item :href="route('settings.two-factor.show')" wire:navigate>{{ __('Two-Factor Auth') }}</flux:navlist.item>
+            @endif
         </flux:navlist>
     </div>
 

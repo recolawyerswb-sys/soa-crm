@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\Pages\HelpPageController;
 use App\Http\Controllers\Utilities\ImportExportController;
 use App\Livewire\Dashboard\Welcome;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
 Route::get('/', Welcome::class)
@@ -30,6 +31,17 @@ Route::middleware(['auth'])->group(function () {
             Volt::route('user', 'settings.user')->name('user');
             Volt::route('password', 'settings.password')->name('password');
             Volt::route('appearance', 'settings.appearance')->name('appearance');
+
+            Volt::route('settings/two-factor', 'settings.two-factor')
+                ->middleware(
+                    when(
+                        Features::canManageTwoFactorAuthentication()
+                            && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
+                        ['password.confirm'],
+                        [],
+                    ),
+                )
+                ->name('two-factor.show');
         });
 
 });
