@@ -21,7 +21,7 @@ trait UserTrait
 
     public static function getOnlineStatus($withLabel = false)
     {
-        if (!$withLabel){
+        if ($withLabel){
             return $this->is_online ? 'En linea' : 'No esta conectado';
         }
 
@@ -43,5 +43,11 @@ trait UserTrait
 
         // 3. Si el usuario nunca ha iniciado sesión, devuelve un texto.
         return 'Nunca';
+    }
+
+    public function changeOnlineStatus(bool $status = true): void
+    {
+        $this->is_online = $status;
+        $this->save();
     }
 }

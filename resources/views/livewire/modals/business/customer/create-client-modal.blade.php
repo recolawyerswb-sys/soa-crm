@@ -8,6 +8,6 @@
         description="{{ __('Proporciona los detalles del nuevo cliente.') }}"
         modalName="{{ $modalViewName }}"
     >
-        <livewire:business.customers.create-client-modal-form lazy />
+        <livewire:business.customers.create-client-modal-form />
     </x-dashboard.forms.modal>
 </div>

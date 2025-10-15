@@ -1,7 +1,8 @@
 @php
     $greetingMessage = App\Helpers\Views\MiscHelper::getGreeting();
     $userName = auth()->user()->name;
-    $lastUserLogin = auth()->user()->lastLogin();
+    $authUserLastLogin = auth()->user()->lastLogin();
+    $authUserOnlineStatus = auth()->user()->is_online ? 'Conectado' : 'No conectado';
     $avatarUrl = App\Helpers\Views\MiscHelper::genAvatarUrl('fun-emoji', ['seed' => $userName]);
 @endphp
 
@@ -12,7 +13,10 @@
             <b>{{ auth()->user()->name }}.</b>
         </h1>
         <p class="text-sm text-gray-600 dark:text-neutral-200">Ultimo inicio de sesion:
-            <span class="font-bold italic">{{ $lastUserLogin }}</span>
+            <span class="font-bold italic">{{ $authUserLastLogin }}</span>
+        </p>
+        <p class="text-sm text-gray-600 dark:text-neutral-200">Estado:
+            <span class="font-bold italic">{{ $authUserOnlineStatus }}</span>
         </p>
     </div>
     {{-- AUX NAVBAR FOR FAST LINKS --}}

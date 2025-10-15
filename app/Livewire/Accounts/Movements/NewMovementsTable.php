@@ -56,10 +56,8 @@ class NewMovementsTable extends SoaTable
                 ->searchable(),
             // Column::make('Tipo', 'type')
             //     ->searchable(),
-            Column::makeView('Tipo', 'livewire.accounts.movements.table.type-column')
-                ->searchable(),
-            Column::makeView('Estado', 'livewire.accounts.movements.table.status-column')
-                ->searchable(),
+            Column::makeView('Tipo', 'livewire.accounts.movements.table.type-column'),
+            Column::makeView('Estado', 'livewire.accounts.movements.table.status-column'),
             Column::make('Monto', 'amount')
                 ->currency()
                 ->addClasses('font-bold'),

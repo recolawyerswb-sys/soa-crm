@@ -21,7 +21,7 @@
         {{-- <livewire:modals.business.assignment.fast-assign /> --}}
         <livewire:modals.sells.calls.init-call-modal />
         <livewire:modals.business.customer.update-mark-info-modal />
-        <livewire:modals.business.client-tracking.create-client-tracking-modal/>
+        <livewire:modals.business.client-tracking.create-client-tracking-modal />
         @endrole
     @role('admin|agent|lead_agent|customer')
         <livewire:modals.accounts.update-wallet-modal />

@@ -13,7 +13,7 @@
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
         {{-- MODALS --}}
-        <livewire:dashboard.modal-box lazy="on-load">
+        <livewire:dashboard.modal-box>
 
         {{-- SIDEBAR --}}
         <flux:sidebar sticky stashable class="bg-zinc-50 dark:bg-ct-dark-bg">

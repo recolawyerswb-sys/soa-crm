@@ -6,6 +6,6 @@
 >
     <div class="space-y-6">
         {{-- Modal body --}}
-        <livewire:sells.calls.init-call-form lazy>
+        <livewire:sells.calls.init-call-form />
     </div>
 </flux:modal>

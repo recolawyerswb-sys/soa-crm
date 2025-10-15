@@ -94,6 +94,7 @@ class NewCustomersTable extends SoaTable
             Column::make('Llamadas totales', 'no_calls')
                 ->sortable(),
             Column::make(__('Asignado a'), 'assignment.agent.profile.full_name'),
+            Column::makeView(__('Conexion'), 'livewire.business.customers.table.is-online-column'),
             // Column::make(__('ID Wallet'), 'profile.user.wallet.id'),
             Column::make(__('Saldo'), 'profile.user.wallet.balance')
                 ->currency(),

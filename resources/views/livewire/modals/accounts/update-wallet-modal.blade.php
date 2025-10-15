@@ -7,5 +7,5 @@
     description="{{ __('Modifica con precaucion los detalles de esta billetera.') }}"
     modalName="{{ $modalViewName }}"
 >
-    <livewire:accounts.update-wallet-modal-form lazy />
+    <livewire:accounts.update-wallet-modal-form />
 </x-dashboard.forms.modal>

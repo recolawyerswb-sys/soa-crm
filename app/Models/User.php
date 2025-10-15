@@ -30,6 +30,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_online',
+        'last_session_invalidation_at'
     ];
 
     /**
@@ -52,6 +54,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_online' => 'boolean',
+            'last_session_invalidation_at' => 'datetime',
         ];
     }
 

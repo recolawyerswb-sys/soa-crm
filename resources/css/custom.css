@@ -75,3 +75,19 @@
 .table-bg {
     @apply dark:bg-[#020617];
 }
+
+/* CONN STATUS COLUMN */
+.status-circle {
+  display: inline-block; /* Permite asignarle dimensiones */
+  width: 12px;          /* Ancho del círculo */
+  height: 12px;         /* Alto del círculo */
+  border-radius: 50%;   /* ¡Esto es lo que lo hace redondo! */
+}
+
+.status-circle.online {
+  background-color: #28a745; /* Un verde estándar y agradable */
+}
+
+.status-circle.offline {
+  background-color: #dc3545; /* Un rojo estándar para indicar "apagado" */
+}

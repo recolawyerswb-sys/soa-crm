@@ -24,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->web([
             \App\Http\Middleware\HandleInertiaRequests::class,
+            \App\Http\Middleware\CheckSessionValidity::class,
         ]);
     })
     ->withSchedule(function (Schedule $schedule) {

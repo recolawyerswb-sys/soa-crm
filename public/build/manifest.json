@@ -3,13 +3,17 @@
     "file": "assets/_commonjsHelpers-C4iS2aBk.js",
     "name": "_commonjsHelpers"
   },
+  "public/auth_bg.jpg": {
+    "file": "assets/auth_bg-ClqVxBWK.jpg",
+    "src": "public/auth_bg.jpg"
+  },
   "resources/css/app.css": {
-    "file": "assets/app-CLJ2FyXd.css",
+    "file": "assets/app-BBwQj7Q1.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/css/custom.css": {
-    "file": "assets/custom-BeURPzvl.css",
+    "file": "assets/custom-ZMo7H6DN.css",
     "src": "resources/css/custom.css",
     "isEntry": true
   },

@@ -7,5 +7,5 @@
     description="{{ __('Proporciona los detalles de la nueva asignacion.') }}"
     modalName="{{ $modalViewName }}"
 >
-    <livewire:business.assignments.create-assignment-modal-form lazy />
+    <livewire:business.assignments.create-assignment-modal-form />
 </x-dashboard.forms.modal>
