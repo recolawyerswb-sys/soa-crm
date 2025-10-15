@@ -9,12 +9,14 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
-Route::get('/', Welcome::class)
-    ->name('welcome')
-    ->lazy();
+// Route::get('/', Welcome::class)
+//     ->name('welcome')
+//     ->lazy();
 
-Route::get('/customers', [CustomerApiController::class, 'index'])
-    ->middleware(['auth', 'role:admin']);
+// Route::get('/customers', [CustomerApiController::class, 'index'])
+//     ->middleware(['auth', 'role:admin']);
+
+Route::redirect('/', '/crm');
 
 Route::view('crm', 'dashboard')
     ->middleware(['auth', 'verified'])
