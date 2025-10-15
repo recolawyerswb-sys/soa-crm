@@ -49,7 +49,7 @@ class UpdateWalletModalForm extends Component
         $this->form->bank_network = $this->wallet->bank_network;
         $this->form->account_number = $this->wallet->account_number;
         $this->form->card_number = $this->wallet->card_number;
-        $this->form->csv_code = $this->wallet->csv_code;
+        $this->form->cvc_code = $this->wallet->cvc_code;
         $this->form->exp_date = $this->wallet->exp_date;
         $this->form->balance = $this->wallet->balance;
     }
