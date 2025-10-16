@@ -3,9 +3,9 @@
 use Livewire\Volt\Component;
 use function Livewire\Volt\{computed, state};
 
-$authUserBalance = computed(fn () => auth()->user()->wallet->balance);
-state(['authUserCurrency' => auth()->user()->wallet->coin_currency]);
-state(['authUserTotalDeposit' => auth()->user()->wallet->total_deposit]);
+$authUserBalance = computed(fn () => auth()->user()->wallet->balance ?? 0);
+state(['authUserCurrency' => auth()->user()->wallet->coin_currency ?? 'No existe']);
+state(['authUserTotalDeposit' => auth()->user()->wallet->total_deposit ?? 0]);
 
 ?>
 

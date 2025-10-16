@@ -43,26 +43,33 @@ class Customer extends Model
         ];
     }
 
-    protected $dispatchesEvents = [
-        'deleting' => CustomerDeleted::class,
-    ];
+    // protected $dispatchesEvents = [
+    //     'deleting' => CustomerDeleted::class,
+    // ];
 
     protected static function booted(): void
     {
         parent::boot();
         static::deleting(function (Customer $customer) {
 
-            $customer->profile()->user()->wallet()->movements()->each()->delete();
+            $customer->profile->user->wallet->movements->each->delete();
 
-            $customer->profile()->user()->wallet()->delete();
-            $customer->profile()->delete();
+            $customer->profile->user->wallet->delete();
 
-            $customer->assignment()->delete();
+            $customer->assignment->delete();
 
-            // $customer->delete();
+            $customer->profile->user->delete();
 
-            parent::delete();
+            $customer->profile->delete();
+
+            // parent::delete();
         });
+    }
+
+    public function deleteCustomer()
+    {
+        dd($this->profile());
+        // $this->profile->user->delete;
     }
 
     public static function getCustomersCount(): int

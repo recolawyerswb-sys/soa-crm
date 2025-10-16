@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('status')->default('2'); // 1: Aprobado, 2: Pendiente, 0: Rechazado
             $table->text('note')->nullable();
-            $table->string('wallet_id')->nullable();
+            $table->string('wallet_id');
             $table->timestamps();
         });
     }

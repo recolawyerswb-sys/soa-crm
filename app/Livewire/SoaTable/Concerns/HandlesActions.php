@@ -35,7 +35,12 @@ trait HandlesActions
 
     public function deleteSelected()
     {
-        $this->getSelectedRowsQuery()->delete();
+
+        $models = $this->getSelectedRowsQuery()->get();
+        $models->each(function ($model) {
+            $model->delete();
+        });
+
         $this->refreshTable();
         $this->selectedRows = [];
         $this->selectAll = false;

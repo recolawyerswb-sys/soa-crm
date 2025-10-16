@@ -27,7 +27,7 @@ return new class extends Migration
             $table->decimal('total_withdrawn')->default(0.00);
             $table->decimal('total_deposit')->default(0.00);
             $table->string('last_movement_id')->nullable();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }
