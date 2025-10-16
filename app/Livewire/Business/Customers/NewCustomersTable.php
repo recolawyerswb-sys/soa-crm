@@ -90,7 +90,7 @@ class NewCustomersTable extends SoaTable
             Column::make('Tipo de cliente', 'type'),
             Column::make('Numero principal', 'profile.phone_1')
                 ->copyable()
-                ->canSee(fn () => Auth::user()->isAdmin()),
+                ->canSee(fn () => Auth::user()->isAdmin() || Auth::user()->isAgente()),
             Column::make('Llamadas totales', 'no_calls')
                 ->sortable(),
             Column::make(__('Asignado a'), 'assignment.agent.profile.full_name'),

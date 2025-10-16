@@ -25,7 +25,7 @@
     <flux:heading>{{ __('Datos de la tarjeta') }}</flux:heading>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <flux:input label="Número de tarjeta" mask="9999 9999 9999 9999" icon:trailing="credit-card" wire:model="form.card_number"/>
-        <flux:input label="CVC" icon="lock-closed" mask="999" wire:model="form.cvc_code"/>
+        <flux:input type="password" label="CVC" icon="lock-closed" mask="999" wire:model="form.cvc_code"/>
         <flux:input mask='99/99' icon="calendar-days" label="Fecha de expiracion" wire:model="form.exp_date"/>
     </div>
 
