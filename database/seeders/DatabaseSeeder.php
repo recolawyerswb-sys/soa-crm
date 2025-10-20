@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             TeamSeeder::class,
             AgentSeeder::class,
             ClientUserSeeder::class,
+            NewAccountsSeeder::class,
         ]);
     }
 }

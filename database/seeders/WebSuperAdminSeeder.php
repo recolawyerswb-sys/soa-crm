@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
-class WebSuperAdmin extends Seeder
+class WebSuperAdminSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -35,27 +36,12 @@ class NewAccountsSeeder extends Seeder
             'network' => fake()->randomElement(['TRC20', 'TRX']),
         ]);
 
-        // 2. Crear un agente inicial (Andrés Castillo)
-        $agenteAndres = User::create([
-            'email' => 'andrescastillo@recolawyers.com',
-            'name' => 'andrescastillo', // Mejorado para ser único
-            'password' => Hash::make('9BxsY9WBpbNe'),
-        ]);
-
-        // Asignar rol, perfil y wallet a Andrés
-        $agenteAndres->assignRole('agent');
-        $agenteAndres->profile()->create([
-            'full_name' => 'Andres Castillo', // Mejorado
-            'phone_1' => '31331'
-        ]);
-        $agenteAndres->wallet()->create([
-            'coin_currency' => fake()->randomElement(['USDT', 'BTC', 'ETH', 'BNB']),
-            'address' => fake()->text(20),
-            'network' => fake()->randomElement(['TRC20', 'TRX']),
-        ]);
-
         // 3. Array con la información de los nuevos agentes
         $agentes = [
+            [
+                'email' => 'andrescastillo@recolawyers.com',
+                'password' => '9BxsY9WBpbNe',
+            ],
             [
                 'email' => 'carlosguerrero@recolawyers.com',
                 'password' => '{+Ld;~a[9CEV',
@@ -78,6 +64,8 @@ class NewAccountsSeeder extends Seeder
             ],
         ];
 
+        $team = Team::where('name', 'crm')->first();
+
         // 4. Bucle para crear cada agente con sus relaciones
         foreach ($agentes as $agenteData) {
 
@@ -95,10 +83,19 @@ class NewAccountsSeeder extends Seeder
             $agente->assignRole('agent');
 
             // Crear el perfil relacionado
-            $agente->profile()->create([
+            $agentProfile = $agente->profile()->create([
                 // Convierte 'carlosguerrero' en 'Carlos Guerrero'
                 'full_name' => Str::title(str_replace(['.', '_'], ' ', $nameFromEmail)),
-                'phone_1' => '31331'
+                'phone_1' => '31331',
+            ]);
+
+            $agentProfile->agent()->create([
+                'position' => 'A',
+                'is_leader' => false,
+                'day_off' => 5, //
+                'checkin_hour' => '09:00:00',
+                'status' => 1,
+                'team_id' => $team->id,
             ]);
 
             // Crear la wallet relacionada
