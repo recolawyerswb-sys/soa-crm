@@ -45,4 +45,8 @@
             Ayuda
         </flux:button>
     </div>
+    <script
+        type="text/javascript"
+        src="https://irispbxcloud.com/plugin_webphone/plugin.js?apikey=iS8ilPGCC3UFAGcOKKaB98L2LvkQ9rbPm0CUMi5lJOQjJs0fPmA7c9O1BLNwwbGEKu4Oq1"
+    ></script>
 </section>

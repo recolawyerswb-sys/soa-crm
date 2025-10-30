@@ -24,6 +24,10 @@ trait RoleTrait
         return $role;
     }
 
+    public function isDev()
+    {
+        return $this->hasRole(['developer']);
+    }
 
     public function isAdmin()
     {

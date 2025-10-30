@@ -83,6 +83,11 @@ class NewWalletTable extends SoaTable
         ];
     }
 
+    protected function enableBulkActions(): bool
+    {
+        return auth()->user()->isDev();
+    }
+
     protected function filters(): array
     {
         return [
