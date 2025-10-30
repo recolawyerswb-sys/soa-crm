@@ -9,13 +9,6 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
-// Route::get('/', Welcome::class)
-//     ->name('welcome')
-//     ->lazy();
-
-// Route::get('/customers', [CustomerApiController::class, 'index'])
-//     ->middleware(['auth', 'role:admin']);
-
 Route::redirect('/', '/crm');
 
 Route::view('crm', 'dashboard')
@@ -31,8 +24,8 @@ Route::middleware(['auth'])->group(function () {
         ->group(function () {
             Volt::route('profile', 'settings.profile')->name('profile');
             Volt::route('user', 'settings.user')->name('user');
-            Volt::route('password', 'settings.password')->name('password');
-            Volt::route('appearance', 'settings.appearance')->name('appearance');
+            Volt::route('password', 'settings.password')->name('password')->middleware('role:developer|admin|cliente');
+            // Volt::route('appearance', 'settings.appearance')->name('appearance');
 
             Volt::route('settings/two-factor', 'settings.two-factor')
                 ->middleware(
@@ -56,6 +49,7 @@ Route::prefix('crm')
         require __DIR__.'/app/business.php';
         require __DIR__.'/app/wallet.php';
         require __DIR__.'/app/calls.php';
+        require __DIR__.'/app/testing.php';
     });
 
 # TWILIO SERVICES ROUTES

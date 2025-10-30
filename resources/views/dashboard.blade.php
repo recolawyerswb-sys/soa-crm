@@ -1,11 +1,13 @@
 <x-layouts.app :title="__('Panel de control')">
     <div class="flex h-full w-full flex-1 flex-col">
-        @if (Auth::user()->isAdmin())
+        @role('developer|admin')
             <livewire:dashboards.admin-dashboard lazy />
-        @elseif (Auth::user()->isAgente())
+        @endrole
+        @role('agent|lead_agent')
             <livewire:dashboards.agent-dashboard lazy />
-        @elseif (Auth::user()->isCliente())
+        @endrole
+        @role('customer')
             <livewire:dashboards.client-dashboard lazy />
-        @endif
+        @endrole
     </div>
 </x-layouts.app>

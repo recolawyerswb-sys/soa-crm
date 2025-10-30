@@ -20,7 +20,7 @@
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
             <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
-                @role('admin')
+                @role('developer|admin')
                     <x-app-logo />
                 @endrole
                 @role('customer')
@@ -171,9 +171,9 @@
         {{ $slot }}
 
         {{-- @livewireScripts --}}
-        @livewireScriptConfig
         @fluxScripts
-        <x-dashboard.soa-notification.notification></x-dashboard.soa-notification.notification>
+        @livewireScriptConfig
+        <x-dashboard.soa-notification.notification />
         @assets
             <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.11.2/build/js/intlTelInput.min.js"></script>
         @endassets

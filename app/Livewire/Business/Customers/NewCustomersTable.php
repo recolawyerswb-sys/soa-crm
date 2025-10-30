@@ -42,28 +42,28 @@ class NewCustomersTable extends SoaTable
 
         switch (auth()->check()) {
             case auth()->user()->isAgente():
-            $agentId = auth()->user()->profile->agent->id;
-            // RETRIEVE RELATED AGENT RESULTS
-            $customerQuery = Customer::query()
-                ->whereHas('assignment', function ($query) use ($agentId) {
+                $agentId = auth()->user()->profile->agent->id;
+                // RETRIEVE RELATED AGENT RESULTS
+                $customerQuery = Customer::query()
+                    ->whereHas('assignment', function ($query) use ($agentId) {
 
-                    // Dentro de esta función, $query es una consulta sobre el modelo Assignment.
-                    // Aquí es donde filtramos las asignaciones para que solo nos quedemos
-                    // con las que pertenecen al agente actual.
-                    // NOTA: Asegúrate de que la columna en tu tabla 'assignments'
-                    // que guarda la relación con el agente se llame 'agent_id'.
-                    // Si tiene otro nombre, simplemente ajústalo aquí.
-                    $query->where('agent_id', $agentId);
+                        // Dentro de esta función, $query es una consulta sobre el modelo Assignment.
+                        // Aquí es donde filtramos las asignaciones para que solo nos quedemos
+                        // con las que pertenecen al agente actual.
+                        // NOTA: Asegúrate de que la columna en tu tabla 'assignments'
+                        // que guarda la relación con el agente se llame 'agent_id'.
+                        // Si tiene otro nombre, simplemente ajústalo aquí.
+                        $query->where('agent_id', $agentId);
 
-                })
-                ->with(['assignment.agent.profile', 'profile.user.wallet'])
-                ->orderByDesc('id');
+                    })
+                    ->with(['assignment.agent.profile', 'profile.user.wallet'])
+                    ->orderByDesc('id');
             break;
             case auth()->user()->isAdmin():
-            // RETRIEVE ALL RESULTS
-            $customerQuery = Customer::query()
-                ->with(['assignment.agent.profile', 'profile.user.wallet'])
-                ->orderByDesc('id');
+                // RETRIEVE ALL RESULTS
+                $customerQuery = Customer::query()
+                    ->with(['assignment.agent.profile', 'profile.user.wallet'])
+                    ->orderByDesc('id');
             break;
         }
         // Usamos el modelo definido para iniciar la consulta.
@@ -119,9 +119,11 @@ class NewCustomersTable extends SoaTable
                 ->canSee(fn () => auth()->user()->isAdmin()),
             Action::make('makeCall', 'phone')
                 ->label('Llamar'),
+            Action::make('fastComment', 'signal')
+                ->label('Hacer seguimiento'),
             Action::make('sendWpMessage', 'chat-bubble-oval-left-ellipsis')
                 ->label('Abrir Whatsapp')
-                ->link(fn (Customer $customer) => 'https://wa.me/'.$customer->profile->phone_1)
+                ->link(fn (Customer $customer) => 'https://wa.me/'.$customer->profile?->phone_1)
                 ->canSee(fn() => auth()->user()->isAdmin()),
         ];
     }
@@ -180,6 +182,12 @@ class NewCustomersTable extends SoaTable
     }
 
     public function fastEdit($rowId): void
+    {
+        $this->dispatch('enable-edit-for-create-client-modal', $rowId);
+        Flux::modal('create-client')->show();
+    }
+
+    public function fastComment($rowId): void
     {
         $this->dispatch('enable-edit-for-create-client-modal', $rowId);
         Flux::modal('create-client')->show();

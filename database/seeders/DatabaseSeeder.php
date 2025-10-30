@@ -18,7 +18,10 @@ class DatabaseSeeder extends Seeder
             TeamSeeder::class,
             AgentSeeder::class,
             ClientUserSeeder::class,
-            NewAccountsSeeder::class,
+            NewAgentsAccountsSeeder::class,
+            WebDeveloperSeeder::class,
+            WebSuperAdminSeeder::class,
+            WebSupportSeeder::class,
         ]);
     }
 }

@@ -18,6 +18,7 @@ class RoleSeeder extends Seeder
             'admin',
             'manager',
             'crm_manager',
+            'developer',
         ];
 
         // BANCARIO

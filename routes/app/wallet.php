@@ -18,7 +18,7 @@ Route::prefix('wallet')
          */
         Route::get('/', AccountsIndex::class)
             ->name('index')
-            ->middleware(['role:admin']);
+            ->middleware(['role:developer|admin']);
 
         /**
          * E.Q ACCOUNTS/EDIT/{ID}
@@ -28,7 +28,7 @@ Route::prefix('wallet')
          * */
         Volt::route('edit/{id}', 'accounts.edit')
             ->name('edit')
-            ->middleware(['role:admin']);
+            ->middleware(['role:developer|admin']);
 
         /**
          * E.Q ACCOUNTS/MOVEMENTS/
@@ -41,9 +41,9 @@ Route::prefix('wallet')
             ->group(function () {
                 Volt::route('/', 'accounts.movements.index')
                     ->name('index')
-                    ->middleware(['role:admin|banki|customer']);
+                    ->middleware(['role:developer|admin|banki|customer']);
                 Volt::route('create', 'accounts.movements.create')
                     ->name('create')
-                    ->middleware(['role:admin|banki|customer']);
+                    ->middleware(['role:developer|admin|banki|customer']);
             });
     });

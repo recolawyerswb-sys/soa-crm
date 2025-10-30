@@ -8,9 +8,11 @@ use App\Livewire\Business\Teams\Index as TeamsIndex;
 use App\Livewire\Business\Assignments\Index as AssignmentsIndex;
 use App\Livewire\Business\ClientTracking\Index as ClientTrackingIndex;
 use App\Livewire\Business\Customers\Show as CustomersShow;
+use App\Livewire\Business\Users\Index as UsersIndex;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 use Livewire\Volt\Volt;
+
 
 // BUSINESS ROUTES
 Route::prefix('business')
@@ -27,13 +29,13 @@ Route::prefix('business')
             ->group(function () {
                 Route::get('/', CustomersIndex::class)
                     ->name('index')
-                    ->middleware(['role:admin|agent'])
+                    ->middleware('role:developer|admin|agent')
                     ->lazy();
                 Route::get('show/{customer}', CustomersShow::class)
                     ->name('show')
-                    ->middleware(['role:admin|agent'])
+                    ->middleware(['role:developer|admin|agent'])
                     ->lazy();
-            });
+            })->middleware('role:developer|admin|agent');
 
         /**
          * E.Q BUSINESS/AGENTS/
@@ -46,11 +48,11 @@ Route::prefix('business')
             ->group(function () {
                 Route::get('/', AgentsIndex::class)
                     ->name('index')
-                    ->middleware(['role:admin'])
+                    ->middleware(['role:developer|admin|agent'])
                     ->lazy();
                 Route::get('show/{agent}', AgentsShow::class)
                     ->name('show')
-                    ->middleware(['role:admin|agent'])
+                    ->middleware(['role:developer|admin|agent'])
                     ->lazy();
 
                 /**
@@ -64,10 +66,10 @@ Route::prefix('business')
                     ->group(function () {
                         Volt::route('/', 'business.agents.leaders.index')
                             ->name('index')
-                            ->middleware(['role:admin|agent']);
+                            ->middleware(['role:developer|admin|agent']);
                         Volt::route('edit/{id}', 'business.agents.leaders.edit')
                             ->name('edit')
-                            ->middleware(['role:admin|agent']);
+                            ->middleware(['role:developer|admin|agent']);
                     });
             });
 
@@ -82,7 +84,7 @@ Route::prefix('business')
             ->group(function () {
                 Route::get('/', ClientTrackingIndex::class)
                     ->name('index')
-                    ->middleware(['role:admin|agent'])
+                    ->middleware(['role:developer|admin|agent'])
                     ->lazy();
             });
 
@@ -97,7 +99,7 @@ Route::prefix('business')
             ->group(function () {
                 Route::get('/', TeamsIndex::class)
                     ->name('index')
-                    ->middleware(['role:admin|agent'])
+                    ->middleware(['role:developer|admin|agent'])
                     ->lazy();
             });
 
@@ -112,7 +114,7 @@ Route::prefix('business')
             ->group(function () {
                 Route::get('/', AssignmentsIndex::class)
                     ->name('index')
-                    ->middleware(['role:admin|agent'])
+                    ->middleware(['role:developer|admin|agent'])
                     ->lazy();
             });
 
@@ -125,24 +127,13 @@ Route::prefix('business')
         Route::prefix('access-control')
             ->name('access-control.')
             ->group(function () {
-                Route::get('/', AccesscontrolIndex::class)
-                    ->name('index')
-                    ->middleware(['role:admin'])
+                Route::get('roles-permissions', AccesscontrolIndex::class)
+                    ->name('roles-permissions')
+                    ->middleware(['role:developer|admin'])
                     ->lazy();
-                Volt::route('edit/{id}', 'business.access-control.edit')
-                    ->name('edit')
-                    ->middleware(['role:admin']);
-            });
-
-        Route::prefix('users')
-            ->name('users.')
-            ->group(function () {
-                Volt::route('/', 'business.users.index')
-                    ->name('index')
-                    ->middleware(['role:admin'])
+                Route::get('users', UsersIndex::class)
+                    ->name('users')
+                    ->middleware(['role:developer|admin'])
                     ->lazy();
-                Volt::route('edit/{id}', 'business.users.edit')
-                    ->name('edit')
-                    ->middleware(['role:admin']);
             });
     });

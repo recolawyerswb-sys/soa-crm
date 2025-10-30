@@ -30,12 +30,14 @@
                 />
             </div>
 
-            <div x-show="showRecoveryInput">
-                <x-auth-header
-                    :title="__('Codigo de Recuperacion')"
-                    :description="__('Confirma el acceso a la plataforma usando un código de emergencia')"
-                />
-            </div>
+            {{-- @role('developer|admin')
+                <div x-show="showRecoveryInput">
+                    <x-auth-header
+                        :title="__('Codigo de Recuperacion')"
+                        :description="__('Confirma el acceso a la plataforma usando un código de emergencia')"
+                    />
+                </div>
+            @endrole --}}
 
             <form method="POST" action="{{ route('two-factor.login.store') }}">
                 @csrf
@@ -86,13 +88,15 @@
                     </flux:button>
                 </div>
 
-                <div class="mt-5 space-x-0.5 text-sm leading-5 text-center">
-                    <span class="opacity-50">{{ __('También puedes') }}</span>
-                    <div class="inline font-medium underline cursor-pointer opacity-80">
-                        <span x-show="!showRecoveryInput" @click="toggleInput()">{{ __('Ingresar usando un código de recuperación') }}</span>
-                        <span x-show="showRecoveryInput" @click="toggleInput()">{{ __('Ingresar usando un código de autenticación') }}</span>
+                {{-- @role('developer|admin')
+                    <div class="mt-5 space-x-0.5 text-sm leading-5 text-center">
+                        <span class="opacity-50">{{ __('También puedes') }}</span>
+                        <div class="inline font-medium underline cursor-pointer opacity-80">
+                            <span x-show="!showRecoveryInput" @click="toggleInput()">{{ __('Ingresar usando un código de recuperación') }}</span>
+                            <span x-show="showRecoveryInput" @click="toggleInput()">{{ __('Ingresar usando un código de autenticación') }}</span>
+                        </div>
                     </div>
-                </div>
+                @endrole --}}
             </form>
         </div>
     </div>

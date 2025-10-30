@@ -25,11 +25,15 @@ class LogUserCheckIn
         // $event->user contiene el usuario que acaba de iniciar sesión.
         $user = $event->user;
 
-        // Creamos el registro en la tabla 'agent_check_ins'
-        CheckIn::create([
-            'user_id' => $user->id,
-            'check_in_time' => now()->format('H:i:s'), // ¡Aquí guardamos la hora exacta!
-            'user_type' => $user->getCurrentRole(),
-        ]);
+        if (app()->isProduction()) {
+            // Creamos el registro en la tabla 'agent_check_ins'
+            CheckIn::create([
+                'user_id' => $user->id,
+                'check_in_time' => now()->format('H:i:s'), // ¡Aquí guardamos la hora exacta!
+                'user_type' => $user->getCurrentRole(),
+            ]);
+        }
+
+        return;
     }
 }

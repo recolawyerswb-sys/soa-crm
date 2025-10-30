@@ -11,7 +11,7 @@
         <flux:text>Balance total: <b> {{ '$' . number_format($displayUserBalance, 2) }} </b></flux:text>
     </div>
 
-    @if(Auth::user()->isAdmin() || Auth::user()->isBanki())
+    @role('developer|admin|banki')
         <flux:callout icon="chat-bubble-bottom-center-text">
             <flux:callout.heading>Importante antes de crear movimiento</flux:callout.heading>
             <flux:callout.text>
@@ -19,13 +19,13 @@
                 Este mensaje solo sera visible para los administradores.
             </flux:callout.text>
         </flux:callout>
-    @endif
+    @endrole
     <flux:separator />
 
     <flux:heading>{{ __('Datos del movimiento') }}</flux:heading>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <flux:select label="Tipo" wire:model.live="form.type" placeholder="Elije el tipo de movimiento...">
-            @role('admin|banki')
+            @role('developer|admin|banki')
                 @foreach ($this->types as $type => $label)
                     <flux:select.option value="{{ $type }}">{{ $label }}</flux:select.option>
                 @endforeach
@@ -48,17 +48,19 @@
             />
     </div>
     <div class="grid grid-cols-1 gap-3">
-        @if(Auth::user()->isAdmin() || Auth::user()->isBanki())
-            {{-- CUSTOMER ONLY FOR ADMIN --}}
-            <flux:select wire:model.live="form.customer_id" label="Selecciona un cliente" placeholder="Elige un cliente...">
-                @foreach ($this->customers as $id => $name)
-                    <flux:select.option value="{{ $id }}">
-                        {{ $name }}
-                    </flux:select.option>
-                @endforeach
-            </flux:select>
-            <flux:textarea label="Notas generales" wire:model="form.note"/>
+        @if (!$isEditEnabled)
+            @role('developer|admin|banki')
+                {{-- CUSTOMER ONLY FOR ADMIN --}}
+                <flux:select wire:model.live="form.customer_id" label="Selecciona un cliente" placeholder="Elige un cliente...">
+                    @foreach ($this->customers as $id => $name)
+                        <flux:select.option value="{{ $id }}">
+                            {{ $name }}
+                        </flux:select.option>
+                    @endforeach
+                </flux:select>
+            @endrole
         @endif
+        <flux:textarea label="Notas generales" wire:model="form.note"/>
     </div>
 
     <div class="flex">

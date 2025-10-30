@@ -1,13 +1,4 @@
 <div class="relative">
-
-    {{-- <form action="{{ route('utilities.generic.export') }}" method="GET" style="margin: 0;">
-        <input type="hidden" name="model" value="{{ $model }}">
-        <button type="submit"
-            style="padding: 8px 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">
-            Exportar
-        </button>
-    </form> --}}
-
     @if (session('status'))
         <div class="alert alert-success">
             {{ session('status') }}

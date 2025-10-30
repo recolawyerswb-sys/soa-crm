@@ -6,12 +6,15 @@ namespace App\Models;
 
 use App\Traits\HasCommonFunctions;
 use App\Traits\RoleTrait;
-use App\Traits\UserTrait;
+use App\Traits\User\Concerns\Handle2FA;
+use App\Traits\User\Concerns\UserTrait;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
@@ -20,6 +23,8 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles, HasCommonFunctions, RoleTrait, UserTrait;
+
+    use Handle2FA;
 
     /**
      * The attributes that are mass assignable.
@@ -59,6 +64,16 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function booted(): void
+    {
+        parent::boot();
+        static::deleting(function (User $user) {
+            $user->wallet?->movements()?->delete();
+            $user->wallet?->delete();
+            $user->profile?->delete();
+        });
+    }
+
     /**
      * Get the user's initials
      */
@@ -78,6 +93,16 @@ class User extends Authenticatable
         $randomNumber = str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
 
         return $prefixName . $prefixEmail . $randomNumber;
+    }
+
+    /**
+     * Obtiene una cadena con los nombres de los roles del usuario.
+     */
+    protected function roleNames(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->roles->pluck('name')->implode(', ')
+        );
     }
 
     /**

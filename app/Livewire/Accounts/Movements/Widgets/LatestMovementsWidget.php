@@ -61,20 +61,20 @@ class LatestMovementsWidget extends SoaTableLight
     }
 
     #[On('light-approve-movement')]
-    public function approveMovement($id): void
+    public function approveMovement($id, string $note = 'Aprobado desde el widget'): void
     {
         $movement = Movement::findOrFail($id);
-        $movement->approve();
+        $movement->approve($note);
         $this->dispatch('refreshLightTableData');
         Flux::modal('generic-confirmation-modal')->close();
         $this->notify('Movimiento aprobado correctamente.');
     }
 
     #[On('light-decline-movement')]
-    public function declineMovement($id): void
+    public function declineMovement($id, string $note = 'Rechazado desde el widget'): void
     {
         $movement = Movement::findOrFail($id);
-        $movement->decline();
+        $movement->decline($note);
         $this->dispatch('refreshLightTableData');
         Flux::modal('generic-confirmation-modal')->close();
         $this->notify('Movimiento rechazado correctamente.', status: '400');
@@ -97,6 +97,7 @@ class LatestMovementsWidget extends SoaTableLight
                         'actionTitleName' => 'aprobar este movimiento',
                         'actionBtnLabel' => 'aprobar',
                         'actionEventName' => 'light-approve-movement',
+                        'actionEnableNote' => true
                     ], $movement->id);
                     // CALL MODAL
                     Flux::modal('generic-confirmation-modal')->show();
@@ -115,6 +116,7 @@ class LatestMovementsWidget extends SoaTableLight
                         'actionTitleName' => 'rechazar este movimiento',
                         'actionBtnLabel' => 'rechazar',
                         'actionEventName' => 'light-decline-movement',
+                        'actionEnableNote' => true
                     ], $movement->id);
                     // CALL MODAL
                     Flux::modal('generic-confirmation-modal')->show();

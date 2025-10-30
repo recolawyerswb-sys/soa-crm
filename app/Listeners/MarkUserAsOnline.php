@@ -21,6 +21,10 @@ class MarkUserAsOnline
      */
     public function handle(Login $event): void
     {
-        $event->user->changeOnlineStatus(true);
+        if (app()->isProduction()) {
+            $event->user->changeOnlineStatus(true);
+        }
+
+        return;
     }
 }

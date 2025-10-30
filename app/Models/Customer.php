@@ -51,25 +51,9 @@ class Customer extends Model
     {
         parent::boot();
         static::deleting(function (Customer $customer) {
-
-            $customer->profile->user->wallet->movements->each->delete();
-
-            $customer->profile->user->wallet->delete();
-
-            $customer->assignment->delete();
-
-            $customer->profile->user->delete();
-
-            $customer->profile->delete();
-
-            // parent::delete();
+            $customer->profile?->user?->delete();
+            $customer->assignment?->delete();
         });
-    }
-
-    public function deleteCustomer()
-    {
-        dd($this->profile());
-        // $this->profile->user->delete;
     }
 
     public static function getCustomersCount(): int
@@ -85,27 +69,6 @@ class Customer extends Model
     public function assignment(): HasOne
     {
         return $this->hasOne(Assignment::class);
-    }
-
-    public function deleteWithRelations()
-    {
-        DB::transaction(function () {
-            if ($this->profile && $this->profile->user && $this->profile->user->wallet) {
-                foreach ($this->profile->user->wallet->movements as $movement) {
-                    $movement->delete();
-                }
-
-                $this->profile->user->wallet->delete();
-                $this->profile->user->delete();
-                $this->profile->delete();
-            }
-
-            if ($this->assignment) {
-                $this->assignment->delete();
-            }
-
-            $this->delete();
-        });
     }
 
     /**

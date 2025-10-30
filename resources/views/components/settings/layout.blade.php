@@ -19,7 +19,7 @@
                 @endrole
             @endforeach
             @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
-                <flux:navlist.item :href="route('settings.two-factor.show')" wire:navigate>{{ __('Two-Factor Auth') }}</flux:navlist.item>
+                <flux:navlist.item icon="shield-check" :current="request()->routeIs('settings.two-factor.show')" :href="route('settings.two-factor.show')" wire:navigate>{{ __('Autenticación en dos pasos') }}</flux:navlist.item>
             @endif
         </flux:navlist>
     </div>

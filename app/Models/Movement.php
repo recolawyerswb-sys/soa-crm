@@ -61,9 +61,9 @@ class Movement extends Model
     /**
      * Aprobar o desaprobar el movimiento.
      */
-    public function approve(): void
+    public function approve(string $note): void
     {
-        DB::transaction(function () {
+        DB::transaction(function () use ($note) {
             if ($this->status === '1' ) {
                 // Ya está aprobado, no hacer nada.
                 throw new \Exception('El movimiento ya fue aprobado.', 400);
@@ -86,19 +86,21 @@ class Movement extends Model
                 $this->wallet->lessBalance($this->amount, $this->id);
             }
             $this->status = '1';
+            $this->note = $note;
             $this->save();
         });
     }
 
-    public function decline(): void
+    public function decline(string $note): void
     {
         if ($this->status === '0' ) {
             // Ya está aprobado, no hacer nada.
             throw new \Exception('El movimiento ya fue rechazado.', 400);
         }
 
-        DB::transaction(function () {
+        DB::transaction(function () use ($note) {
             $this->status = '0';
+            $this->note = $note;
             $this->save();
         });
     }

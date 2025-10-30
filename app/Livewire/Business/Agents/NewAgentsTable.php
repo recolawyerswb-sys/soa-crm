@@ -50,7 +50,7 @@ class NewAgentsTable extends SoaTable
             Column::make('Usuario', 'profile.user.name')
                 ->searchable(),
             Column::make('Posicion', 'position'),
-            Column::make('Estado', 'status'),
+            Column::makeView('Estado', 'livewire.business.agents.table.status-column'),
             Column::make('Equipo', 'team.name'),
         ];
     }

@@ -8,29 +8,29 @@ class SinglePageNavItems
     {
         return [
             "user" => [
-                "role" => "admin|cliente",
+                "role" => "developer|admin|agent|banki|manager|cliente",
                 "icon" => "user-circle",
                 "routeName" => "settings.user",
                 "label" => "Mi Usuario",
             ],
             "profile" => [
-                "role" => "admin|cliente",
+                "role" => "developer|admin|agent|banki|manager|cliente",
                 "icon" => "user",
                 "routeName" => "settings.profile",
                 "label" => "Mi Perfil",
             ],
             "password" => [
-                "role" => "admin|cliente",
+                "role" => "developer|admin|cliente",
                 "icon" => "lock-closed",
                 "routeName" => "settings.password",
                 "label" => "Cambiar contraseña",
             ],
-            "appearance" => [
-                "role" => "admin|cliente",
-                "icon" => "paint-brush",
-                "routeName" => "settings.appearance",
-                "label" => "Apariencia",
-            ],
+            // "appearance" => [
+            //     "role" => "developer|admin|agent|banki|manager|cliente",
+            //     "icon" => "paint-brush",
+            //     "routeName" => "settings.appearance",
+            //     "label" => "Apariencia",
+            // ],
         ];
     }
 }

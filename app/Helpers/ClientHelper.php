@@ -54,7 +54,7 @@ class ClientHelper
                 $customer->id => $customer->profile->full_name
             ])
             ->toArray();
-}
+    }
 
     public static function getTypes(): array
     {

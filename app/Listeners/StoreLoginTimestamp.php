@@ -21,7 +21,11 @@ class StoreLoginTimestamp
      */
     public function handle(Login $event): void
     {
-        // Guarda la hora actual en la sesión del usuario.
-        session(['logged_in_at' => now()->timestamp]);
+        if (app()->isProduction()) {
+            // Guarda la hora actual en la sesión del usuario.
+            session(['logged_in_at' => now()->timestamp]);
+        }
+
+        return;
     }
 }

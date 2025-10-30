@@ -21,6 +21,10 @@ class MakeUserDisconnected
      */
     public function handle(Logout $event): void
     {
-        $event->user->changeOnlineStatus(false);
+        if (app()->isProduction()) {
+            $event->user->changeOnlineStatus(false);
+        }
+
+        return;
     }
 }

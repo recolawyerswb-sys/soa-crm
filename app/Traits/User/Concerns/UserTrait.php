@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\Traits\User\Concerns;
 
 trait UserTrait
 {
@@ -50,4 +50,6 @@ trait UserTrait
         $this->is_online = $status;
         $this->save();
     }
+
+
 }

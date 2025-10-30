@@ -12,42 +12,42 @@ class NavItems extends SinglePageNavItems
                 "isGroup" => true,
                 "icon" => "building-storefront",
                 "heading" => "Negocio",
-                "role" => "admin|agent",
+                "role" => "developer|admin|agent",
                 "items" => [
                     // CLIENTES
                     [
                         "routeName" => "business.customers.index",
                         "label" => "Clientes",
                         "icon" => "users",
-                        "canSee" => "admin|agent|agent-lead",
+                        "canSee" => "developer|admin|agent|agent-lead",
                     ],
                     // AGENTES
                     [
                         "routeName" => "business.agents.index",
                         "label" => "Agentes",
                         "icon" => "briefcase",
-                        "canSee" => "admin|agent-lead",
+                        "canSee" => "developer|admin|agent-lead",
                     ],
                     // EQUIPOS
                     [
                         "routeName" => "business.teams.index",
                         "label" => "Equipos",
                         "icon" => "user-group",
-                        "canSee" => "admin|agent-lead",
+                        "canSee" => "developer|admin|agent-lead",
                     ],
                     // ASIGNACIONES
                     [
                         "routeName" => "business.assignments.index",
                         "label" => "Asignaciones",
                         "icon" => "arrow-uturn-up",
-                        "canSee" => "admin|agent|agent-lead",
+                        "canSee" => "developer|admin|agent|agent-lead",
                     ],
                     // SEGUIMIENTOS
                     [
                         "routeName" => "business.client-tracking.index",
                         "label" => "Seguimientos",
                         "icon" => "signal",
-                        "canSee" => "admin|agent|agent-lead",
+                        "canSee" => "developer|admin|agent|agent-lead",
                     ],
                 ],
             ],
@@ -55,14 +55,20 @@ class NavItems extends SinglePageNavItems
                 "isGroup" => true,
                 "icon" => "cog-6-tooth",
                 "heading" => "Administrativo",
-                "role" => "admin|manager",
+                "role" => "developer|admin|manager",
                 "items" => [
                     // ROLES Y PERMISOS
                     [
-                        "routeName" => "business.access-control.index",
+                        "routeName" => "business.access-control.roles-permissions",
                         "label" => "Roles y permisos",
                         "icon" => "shield-check",
-                        "canSee" => "admin|manager",
+                        "canSee" => "developer",
+                    ],
+                    [
+                        "routeName" => "business.access-control.users",
+                        "label" => "Usuarios",
+                        "icon" => "user-circle",
+                        "canSee" => "developer|admin",
                     ],
                 ],
             ],
@@ -70,7 +76,7 @@ class NavItems extends SinglePageNavItems
                 "isGroup" => true,
                 "icon" => "phone",
                 "heading" => "Llamadas",
-                "role" => "admin|agent|agent-leader",
+                "role" => "developer|admin",
                 "items" => [
                     // [
                     //     "routeName" => "sells.calls.index",
@@ -82,7 +88,7 @@ class NavItems extends SinglePageNavItems
                         "routeName" => "sells.calls.history",
                         "label" => "Historial",
                         "icon" => "clock",
-                        "canSee" => "admin",
+                        "canSee" => "developer|admin",
                     ],
                     // [
                     //     "routeName" => "sells.calls.test",
@@ -94,7 +100,7 @@ class NavItems extends SinglePageNavItems
                         "routeName" => "sells.calls.reports",
                         "label" => "Reportes",
                         "icon" => "chart-pie",
-                        "canSee" => "admin",
+                        "canSee" => "developer|admin",
                     ],
                 ],
             ],
@@ -102,19 +108,33 @@ class NavItems extends SinglePageNavItems
                 "isGroup" => true,
                 "icon" => "banknotes",
                 "heading" => "Cuentas y movimientos",
-                "role" => "admin|customer",
+                "role" => "developer|admin|customer",
                 "items" => [
                     [
                         "routeName" => "wallet.index",
                         "label" => "Wallets",
                         "icon" => "currency-dollar",
-                        "canSee" => "admin|banki",
+                        "canSee" => "developer|admin|banki",
                     ],
                     [
                         "routeName" => "wallet.movements.index",
                         "label" => auth()->user()->isCliente() ? "Movimientos Universales" : "Movimientos",
                         "icon" => "banknotes",
-                        "canSee" => "admin|customer",
+                        "canSee" => "developer|admin|banki|customer",
+                    ],
+                ],
+            ],
+            "testing" => [
+                "isGroup" => true,
+                "icon" => "phone",
+                "heading" => "Testing y correciones",
+                "role" => "developer",
+                "items" => [
+                    [
+                        "routeName" => "testing.correct.modals",
+                        "label" => "Modales",
+                        "icon" => "cog",
+                        "canSee" => "developer",
                     ],
                 ],
             ],

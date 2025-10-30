@@ -12,12 +12,22 @@ trait RoleTrait
         if ($isUpper) {
             return strtoupper($role);
         }
-        return $role; // Default to 'cliente' if no role is assigned
+        return $role;
     }
+
+    public function getCurrentRoleAsString($isUpper = false)
+    {
+        $role = $this->roles->pluck('name')->implode(', ');
+        if ($isUpper) {
+            return strtoupper($role);
+        }
+        return $role;
+    }
+
 
     public function isAdmin()
     {
-        return $this->hasRole('admin');
+        return $this->hasRole(['admin', 'developer']);
     }
 
     public function isManager()
