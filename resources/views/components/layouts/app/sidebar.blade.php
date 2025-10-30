@@ -178,7 +178,7 @@
             <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.11.2/build/js/intlTelInput.min.js"></script>
             <script
                 type="text/javascript"
-                src="https://irispbxcloud.com/plugin_webphone/plugin.js?apikey=85c77cfe90212d44d5dd412488a1973b992d044b208ab384b0402e22629d4128a48b56"
+                src="https://irispbxcloud.com/plugin_webphone/plugin.js?apikey=aLYnOLruFrtkh02ufvSjAVGdSRyPg6nAW1Qg678dhSWpxuWjsxd5sDCBsOnrEx0Tr2VWao"
             ></script>
         @endassets
     </body>
