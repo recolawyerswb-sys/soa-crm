@@ -18,17 +18,18 @@ Route::prefix('sells')
                 Volt::route('/', 'calls.index')
                     ->name('index')
                     ->lazy()
-                    ->middleware(['role:admin,manager']);
+                    ->middleware(['role:developer|admin|manager']);
                 Route::get('/test', CallsTest::class)
                     ->name('test')
                     ->lazy()
-                    ->middleware(['role:admin|agente|agent-leader']);
+                    ->middleware(['role:developer|admin|agent|agent-leader']);
                 Volt::route('reports', 'calls.reports.index')
                     ->name('reports')
                     ->lazy()
-                    ->middleware(['role:admin']);
+                    ->middleware(['role:developer|admin']);
                 Route::get('history', CallHistory::class)
                     ->name('history')
+                    ->middleware(['role:developer|admin'])
                     ->lazy();
             });
     });

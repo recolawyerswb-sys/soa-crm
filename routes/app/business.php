@@ -29,13 +29,13 @@ Route::prefix('business')
             ->group(function () {
                 Route::get('/', CustomersIndex::class)
                     ->name('index')
-                    ->middleware('role:developer|admin|agent')
+                    ->middleware(['auth', 'role:developer|admin|agent'])
                     ->lazy();
                 Route::get('show/{customer}', CustomersShow::class)
                     ->name('show')
-                    ->middleware(['role:developer|admin|agent'])
+                    ->middleware(['role:developer,admin,agent'])
                     ->lazy();
-            })->middleware('role:developer|admin|agent');
+            })->middleware('auth');
 
         /**
          * E.Q BUSINESS/AGENTS/

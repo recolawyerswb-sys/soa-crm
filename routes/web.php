@@ -5,11 +5,14 @@ use App\Http\Controllers\CustomerApiController;
 use App\Http\Controllers\Dashboard\Pages\HelpPageController;
 use App\Http\Controllers\Utilities\ImportExportController;
 use App\Livewire\Dashboard\Welcome;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
-Route::redirect('/', '/crm');
+Route::fallback(function ()  {
+    return request()->redirect('/crm');
+});
 
 Route::view('crm', 'dashboard')
     ->middleware(['auth', 'verified'])

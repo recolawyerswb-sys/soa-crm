@@ -68,7 +68,7 @@ class NavItems extends SinglePageNavItems
                         "routeName" => "business.access-control.users",
                         "label" => "Usuarios",
                         "icon" => "user-circle",
-                        "canSee" => "developer|admin",
+                        "canSee" => "admin",
                     ],
                 ],
             ],
