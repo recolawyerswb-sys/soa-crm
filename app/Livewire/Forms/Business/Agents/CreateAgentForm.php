@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Str;
 
 class CreateAgentForm extends CustomTranslatedForm
 {
@@ -108,11 +109,13 @@ class CreateAgentForm extends CustomTranslatedForm
                 ]);
 
             } else {
+                $genPwrd = Str::substr(Str::lower($this->full_name), 0, 3) . '-' . Str::substr(Str::lower($this->email), 0, 3);
+
                 // --- CREATE ---
                 $user = User::create([
                     'name' => User::generateUsername($this->full_name, $this->email),
                     'email' => $this->email,
-                    'password' => Hash::make('password'),
+                    'password' => Hash::make($genPwrd),
                 ]);
 
                 $user->assignRole('agent');

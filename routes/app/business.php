@@ -33,7 +33,7 @@ Route::prefix('business')
                     ->lazy();
                 Route::get('show/{customer}', CustomersShow::class)
                     ->name('show')
-                    ->middleware(['role:developer,admin,agent'])
+                    ->middleware(['role:developer|admin|agent'])
                     ->lazy();
             })->middleware('auth');
 

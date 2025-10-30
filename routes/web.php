@@ -11,8 +11,10 @@ use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
 Route::fallback(function ()  {
-    return request()->redirect('/crm');
+    return redirect('/crm');
 });
+
+Route::get('/algo', [CallController::class, 'generateToken']);
 
 Route::view('crm', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -27,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
         ->group(function () {
             Volt::route('profile', 'settings.profile')->name('profile');
             Volt::route('user', 'settings.user')->name('user');
-            Volt::route('password', 'settings.password')->name('password')->middleware('role:developer|admin|cliente');
+            Volt::route('password', 'settings.password')->name('password')->middleware('role:developer|admin|customer');
             // Volt::route('appearance', 'settings.appearance')->name('appearance');
 
             Volt::route('settings/two-factor', 'settings.two-factor')
@@ -80,9 +82,9 @@ Route::prefix('pages')
 
 # UTILITY ROUTES
 Route::prefix('utilities')
+    ->middleware(['auth', 'role:admin'])
     ->name('utilities.')
     ->group(function () {
         Route::get('export', [ImportExportController::class, 'export'])->name('generic.export');
         Route::post('import', [ImportExportController::class, 'import'])->name('generic.import');
-    })
-    ->middleware(['auth', 'role:admin']);
+    });
