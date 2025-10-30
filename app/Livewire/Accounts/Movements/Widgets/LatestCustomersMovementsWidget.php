@@ -26,12 +26,25 @@ class LatestCustomersMovementsWidget extends SoaTableLight
             // Obtenemos el ID del usuario actual para usarlo en la consulta.
             $userId = auth()->id();
 
+            $excludedRoles = ['admin', 'agent', 'agent_lead', 'developer'];
+
             // Traemos solo los 10 últimos movimientos del cliente actual.
             return Movement::query()
                 // AÑADIDO: Filtra los movimientos que pertenecen a una billetera
                 // donde el 'user_id' coincide con el del usuario autenticado.
-                ->whereHas('wallet', function ($query) use ($userId) {
-                    $query->where('user_id', $userId);
+                ->whereHas('wallet.user', function ($userQuery) use ($excludedRoles) {
+
+                    // $userQuery es una consulta sobre el modelo 'User'.
+                    // Usamos 'whereDoesntHave' para excluir a los usuarios que
+                    // tengan una relación 'roles' que coincida con nuestra condición.
+                    $userQuery->whereDoesntHave('roles', function ($roleQuery) use ($excludedRoles) {
+
+                        // $roleQuery es una consulta sobre el modelo 'Role'.
+                        // Asumimos que la columna del nombre del rol es 'name'.
+                        // Si el usuario tiene CUALQUIER rol en esta lista, será excluido.
+                        $roleQuery->whereIn('name', $excludedRoles);
+                    });
+
                 })
                 ->with(['wallet.user'])
                 ->latest()
